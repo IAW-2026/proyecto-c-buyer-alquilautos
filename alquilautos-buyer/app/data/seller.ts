@@ -13,7 +13,6 @@ export type SellerVehicle = {
   modelo: string;
   año: number;
   precio: number;
-  location: string;
   calificacion: number;
   imagen: string;
   estado: "disponible" | "indisponible";
@@ -40,9 +39,8 @@ export const sellerData: SellerData = {
       modelo: "Corolla",
       año: 2021,
       precio: 22000,
-      location: "CABA",
       calificacion: 4.6,
-      imagen: "/vehicles/corolla.jpg",
+      imagen: "/vehiculos/corolla.webp",
       estado: "disponible",
     },
     {
@@ -52,9 +50,8 @@ export const sellerData: SellerData = {
       modelo: "Focus",
       año: 2019,
       precio: 18000,
-      location: "CABA",
       calificacion: 4.3,
-      imagen: "/vehicles/focus.jpg",
+      imagen: "/vehiculos/focus.webp",
       estado: "disponible",
     },
     {
@@ -64,9 +61,8 @@ export const sellerData: SellerData = {
       modelo: "208",
       año: 2022,
       precio: 24000,
-      location: "San Isidro",
       calificacion: 4.8,
-      imagen: "/vehicles/208.jpg",
+      imagen: "/vehiculos/208.webp",
       estado: "indisponible",
     },
   ],
