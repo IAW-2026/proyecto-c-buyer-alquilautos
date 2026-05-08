@@ -23,7 +23,7 @@ type SellerVehicle = {
 };
 
 type SellerData = {
-  owner: SellerOwner;
+  owners: SellerOwner[];
   vehicles: SellerVehicle[];
 };
 
