@@ -1,0 +1,5 @@
+#### En la pagina de inicio en la seccion destacada si no se encuentran vehiculos disponibles se muestra la seccion pero si nada dentro, abria que quitarla.
+
+#### Imagenes descentradas en la seccion destacada.
+
+#### Hacer mas "linda" la pagina indice.

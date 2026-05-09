@@ -93,7 +93,7 @@ export const sellerData: SellerData = {
       precio: 24000,
       calificacion: 4.8,
       imagen: "/vehiculos/208.webp",
-      estado: "indisponible",
+      estado: "disponible",
     },
     {
       id: 897653,
@@ -103,7 +103,7 @@ export const sellerData: SellerData = {
       año: 2020,
       precio: 19500,
       calificacion: 4.2,
-      imagen: "/vehiculos/corolla.webp",
+      imagen: "/vehiculos/chevrolet-onix.webp",
       estado: "disponible",
     },
     {
@@ -114,8 +114,8 @@ export const sellerData: SellerData = {
       año: 2018,
       precio: 20500,
       calificacion: 4.4,
-      imagen: "/vehiculos/focus.webp",
-      estado: "indisponible",
+      imagen: "/vehiculos/volkswagen-golf.webp",
+      estado: "disponible",
     },
     {
       id: 897655,
@@ -125,7 +125,7 @@ export const sellerData: SellerData = {
       año: 2021,
       precio: 17500,
       calificacion: 4.1,
-      imagen: "/vehiculos/208.webp",
+      imagen: "/vehiculos/renault-sandero.webp",
       estado: "disponible",
     },
     {
@@ -136,7 +136,7 @@ export const sellerData: SellerData = {
       año: 2020,
       precio: 26000,
       calificacion: 4.7,
-      imagen: "/vehiculos/corolla.webp",
+      imagen: "/vehiculos/honda-civic.webp",
       estado: "disponible",
     },
     {
@@ -147,7 +147,7 @@ export const sellerData: SellerData = {
       año: 2019,
       precio: 21000,
       calificacion: 4.2,
-      imagen: "/vehiculos/focus.webp",
+      imagen: "/vehiculos/nissan-sentra.webp",
       estado: "disponible",
     },
     {
@@ -158,8 +158,8 @@ export const sellerData: SellerData = {
       año: 2022,
       precio: 18500,
       calificacion: 4.0,
-      imagen: "/vehiculos/208.webp",
-      estado: "indisponible",
+      imagen: "/vehiculos/fiat-cronos.webp",
+      estado: "disponible",
     },
     {
       id: 897659,
@@ -169,7 +169,7 @@ export const sellerData: SellerData = {
       año: 2021,
       precio: 20000,
       calificacion: 4.3,
-      imagen: "/vehiculos/corolla.webp",
+      imagen: "/vehiculos/hyundai-hb20.webp",
       estado: "disponible",
     },
     {
@@ -180,8 +180,8 @@ export const sellerData: SellerData = {
       año: 2018,
       precio: 17000,
       calificacion: 4.1,
-      imagen: "/vehiculos/focus.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/kia-rio.webp",
+      estado: "indisponible",
     },
     {
       id: 897661,
@@ -191,8 +191,8 @@ export const sellerData: SellerData = {
       año: 2020,
       precio: 25500,
       calificacion: 4.6,
-      imagen: "/vehiculos/208.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/mazda-3.webp",
+      estado: "indisponible",
     },
     {
       id: 897662,
@@ -202,7 +202,7 @@ export const sellerData: SellerData = {
       año: 2021,
       precio: 19000,
       calificacion: 4.0,
-      imagen: "/vehiculos/corolla.webp",
+      imagen: "/vehiculos/citroen-c3.webp",
       estado: "indisponible",
     },
     {
@@ -213,8 +213,8 @@ export const sellerData: SellerData = {
       año: 2022,
       precio: 23000,
       calificacion: 4.5,
-      imagen: "/vehiculos/focus.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/toyota-yaris.webp",
+      estado: "indisponible",
     },
     {
       id: 897664,
@@ -224,8 +224,8 @@ export const sellerData: SellerData = {
       año: 2019,
       precio: 19500,
       calificacion: 4.2,
-      imagen: "/vehiculos/208.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/volkswagen-polo.webp",
+      estado: "indisponible",
     },
     {
       id: 897665,
@@ -235,7 +235,7 @@ export const sellerData: SellerData = {
       año: 2018,
       precio: 16000,
       calificacion: 3.9,
-      imagen: "/vehiculos/corolla.webp",
+      imagen: "/vehiculos/ford-fiesta.webp",
       estado: "indisponible",
     },
     {
@@ -246,8 +246,8 @@ export const sellerData: SellerData = {
       año: 2021,
       precio: 28000,
       calificacion: 4.4,
-      imagen: "/vehiculos/focus.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/chevrolet-tracker.webp",
+      estado: "indisponible",
     },
     {
       id: 897667,
@@ -257,8 +257,8 @@ export const sellerData: SellerData = {
       año: 2020,
       precio: 26500,
       calificacion: 4.3,
-      imagen: "/vehiculos/208.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/renault-duster.webp",
+      estado: "indisponible",
     },
     {
       id: 897668,
@@ -268,7 +268,7 @@ export const sellerData: SellerData = {
       año: 2017,
       precio: 15000,
       calificacion: 3.8,
-      imagen: "/vehiculos/corolla.webp",
+      imagen: "/vehiculos/honda-fit.webp",
       estado: "indisponible",
     },
     {
@@ -279,8 +279,8 @@ export const sellerData: SellerData = {
       año: 2022,
       precio: 27000,
       calificacion: 4.6,
-      imagen: "/vehiculos/focus.webp",
-      estado: "disponible",
+      imagen: "/vehiculos/peugeot-2008.webp",
+      estado: "indisponible",
     },
   ],
 };
