@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { sellerData } from "@/app/data/seller";
-import VehicleCard from "@/components/inicio/vehicle-card-section";
+import VehicleCard from "@/components/shared/vehicle-card-section";
 
 const pickTopRatedVehicles = (count: number) =>
   sellerData.vehicles
@@ -19,8 +20,6 @@ const pickTopRatedVehicles = (count: number) =>
 export default function FeaturedSection() {
   const featuredVehicles = pickTopRatedVehicles(7);
   const trackRef = useRef<HTMLDivElement | null>(null);
-  const dragState = useRef({ startX: 0, scrollLeft: 0 });
-  const [isDragging, setIsDragging] = useState(false);
 
   return (
     <section className="relative py-4 md:py-8">
@@ -46,18 +45,19 @@ export default function FeaturedSection() {
               <VehicleCard
                 vehicle={vehicle}
                 actionLabel="Mas detalles"
+                actionHref="/dashboard"
               />
             </div>
           ))}
         </div>
       </div>
       <div className="mt-6 flex justify-center">
-        <button
-          type="button"
-          className="h-10 w-full max-w-xs rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)]"
+        <Link
+          href="/dashboard"
+          className="h-10 w-full max-w-xs rounded-xl bg-[var(--btn-primary-bg)] text-center text-sm font-semibold leading-10 text-[var(--btn-primary-text)]"
         >
           View all
-        </button>
+        </Link>
       </div>
     </section>
   );

@@ -1,6 +1,29 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function HeroSection() {
+  const router = useRouter();
+  const [model, setModel] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+
+    if (model.trim()) {
+      params.set("modelo", model.trim());
+    }
+
+    if (maxPrice.trim()) {
+      params.set("precioMax", maxPrice.trim());
+    }
+
+    const queryString = params.toString();
+    router.push(`/dashboard${queryString ? `?${queryString}` : ""}`);
+  };
+
   return (
     <section className="relative flex min-h-[560px] w-full items-center overflow-hidden py-14 md:min-h-[680px] md:py-24 lg:min-h-[1000px]">
       <Image
@@ -32,6 +55,8 @@ export default function HeroSection() {
                   type="text"
                   placeholder="Ej: Corolla, Focus, 208"
                   className="h-11 rounded-xl border border-[var(--border-default)] bg-white px-4 text-sm outline-none focus:border-[var(--border-focus)]"
+                  value={model}
+                  onChange={(event) => setModel(event.target.value)}
                 />
               </label>
               <label className="flex flex-col gap-2 text-left text-sm font-medium text-[var(--text-primary)]">
@@ -40,12 +65,15 @@ export default function HeroSection() {
                   type="number"
                   placeholder="Ej: 25000"
                   className="h-11 rounded-xl border border-[var(--border-default)] bg-white px-4 text-sm outline-none focus:border-[var(--border-focus)]"
+                  value={maxPrice}
+                  onChange={(event) => setMaxPrice(event.target.value)}
                 />
               </label>
               <div className="flex items-end">
                 <button
                   type="button"
                   className="h-11 w-full rounded-xl bg-[var(--btn-primary-bg)] px-6 text-sm font-semibold text-[var(--btn-primary-text)]"
+                  onClick={handleSearch}
                 >
                   Buscar
                 </button>
