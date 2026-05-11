@@ -1,6 +1,6 @@
 export default function HowItWorksSection() {
 	return (
-		<section className="py-4 md:py-8">
+		<section className="px-6 py-4 md:px-10 md:py-8">
 			<div className="text-center">
 				<h2 className="text-2xl font-semibold">Como funciona Alquilautos</h2>
 				<p className="mt-3 text-sm text-[var(--text-secondary)]">

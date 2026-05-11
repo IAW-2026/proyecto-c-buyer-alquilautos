@@ -3,18 +3,21 @@ import type { SellerVehicle } from "@/app/data/seller";
 
 type VehicleCardProps = {
 	vehicle: SellerVehicle;
+	actionLabel?: string;
 };
 
-export default function VehicleCard({ vehicle }: VehicleCardProps) {
+export default function VehicleCard({
+	vehicle,
+	actionLabel = "Reservar",
+}: VehicleCardProps) {
 	return (
 		<article className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
-			<div className="relative overflow-hidden rounded-xl">
+			<div className="relative aspect-[4/3] overflow-hidden rounded-xl">
 				<Image
 					src={vehicle.imagen}
 					alt={`${vehicle.marca} ${vehicle.modelo}`}
-					width={640}
-					height={400}
-					className="h-44 w-full object-cover"
+					fill
+					className="object-cover"
 				/>
 				<span className="absolute right-3 top-3 rounded-full bg-[var(--status-available-bg)] px-3 py-1 text-xs font-semibold text-[var(--status-available-text)]">
 					Disponible
@@ -40,7 +43,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
 				type="button"
 				className="mt-4 h-10 w-full rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)]"
 			>
-				Reservar
+				{actionLabel}
 			</button>
 		</article>
 	);

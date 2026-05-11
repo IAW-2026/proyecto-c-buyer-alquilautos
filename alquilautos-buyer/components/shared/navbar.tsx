@@ -12,7 +12,7 @@ export default function Navbar() {
 	}, [theme]);
 
 	return (
-		<header className="border-b border-[var(--border-default)] bg-[var(--navbar-bg)]">
+		<header className="absolute inset-x-0 top-0 z-30 bg-[var(--navbar-bg)]">
 			<div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
 				<div className="flex items-center gap-3">
 					<Image

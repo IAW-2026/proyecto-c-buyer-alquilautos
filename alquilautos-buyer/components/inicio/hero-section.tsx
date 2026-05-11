@@ -2,34 +2,44 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <section className="py-4 md:py-8">
-      <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-stretch">
-        <div>
-          <h1 className="text-3xl font-semibold">Alquilautos</h1>
-          <p className="mt-3 text-base text-[var(--text-secondary)]">
-            Encontrá el vehículo perfecto alquilando directamente a dueños particulares. Elegí el auto que mejor se adapte a vos, reservalo por el tiempo exacto que necesites y empezá a disfrutar de tu viaje sin burocracia ni letras chicas.
-          </p>
+    <section className="relative flex min-h-[560px] w-full items-center overflow-hidden py-14 md:min-h-[680px] md:py-24 lg:min-h-[1000px]">
+      <Image
+        src="/indice.webp"
+        alt="Auto destacado"
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
 
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold">Busca tu auto ideal</h2>
-            <p className="mt-2 text-sm text-[var(--text-secondary)]">
+      <div className="relative z-10 w-full px-4 pt-20 md:px-8 md:pt-24">
+        <div className="mx-auto grid w-full max-w-3xl gap-8 text-center md:gap-10">
+          <div className="grid gap-3 text-center -mt-4 md:-mt-8">
+            <h1 className="text-4xl font-bold text-white md:text-5xl lg:text-6xl">Alquilautos</h1>
+            <p className="text-lg font-semibold text-white/90 md:text-xl">
+              Tu auto ideal, sin vueltas.
+            </p>
+          </div>
+
+          <div className="mt-2">
+            <p className="text-sm font-semibold text-white/90">
               Ingresa el modelo y el precio maximo por dia para filtrar resultados.
             </p>
-            <div className="mt-5 grid gap-3 md:grid-cols-[1.6fr_1fr_auto]">
-              <label className="flex flex-col gap-2 text-sm font-medium">
+            <div className="mx-auto mt-2 grid w-full max-w-3xl gap-3 rounded-2xl bg-white/90 p-4 text-left shadow-lg backdrop-blur md:grid-cols-[1.6fr_1fr_auto]">
+              <label className="flex flex-col gap-2 text-left text-sm font-medium text-[var(--text-primary)]">
                 Modelo
                 <input
                   type="text"
                   placeholder="Ej: Corolla, Focus, 208"
-                  className="h-11 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 text-sm outline-none focus:border-[var(--border-focus)]"
+                  className="h-11 rounded-xl border border-[var(--border-default)] bg-white px-4 text-sm outline-none focus:border-[var(--border-focus)]"
                 />
               </label>
-              <label className="flex flex-col gap-2 text-sm font-medium">
+              <label className="flex flex-col gap-2 text-left text-sm font-medium text-[var(--text-primary)]">
                 Precio maximo por dia
                 <input
                   type="number"
                   placeholder="Ej: 25000"
-                  className="h-11 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 text-sm outline-none focus:border-[var(--border-focus)]"
+                  className="h-11 rounded-xl border border-[var(--border-default)] bg-white px-4 text-sm outline-none focus:border-[var(--border-focus)]"
                 />
               </label>
               <div className="flex items-end">
@@ -42,17 +52,6 @@ export default function HeroSection() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="h-full overflow-hidden rounded-3xl">
-          <Image
-            src="/indice.webp"
-            alt="Auto destacado"
-            width={900}
-            height={600}
-            className="h-full w-full rounded-3xl object-cover"
-            priority
-          />
         </div>
       </div>
     </section>
