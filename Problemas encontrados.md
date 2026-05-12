@@ -2,6 +2,6 @@
 
 #### Imagenes descentradas en la seccion destacada.
 
-#### Hacer mas "linda" la pagina indice.
-
 #### El "mas detalles" de la seccion destacada debe enviar al vehiculo, no al dashboard (hecho asi por ahora)
+
+#### warning de imagenes

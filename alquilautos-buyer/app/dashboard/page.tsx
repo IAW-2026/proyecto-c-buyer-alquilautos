@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import FilterSection from "@/components/dashboard/filter-section";
-import VehicleCard from "@/components/shared/vehicle-card-section";
+import DashboardVehiclesSection from "@/components/dashboard/dashboard-vehicles-section";
 
 type SellerOwner = {
   id: number;
@@ -44,8 +44,8 @@ export default function DashboardPage() {
   }, [theme]);
 
   useEffect(() => {
-    setModelFilter(searchParams.get("modelo") ?? "");
-    setMaxPriceFilter(searchParams.get("precioMax") ?? "");
+    setModelFilter(searchParams?.get("modelo") ?? "");
+    setMaxPriceFilter(searchParams?.get("precioMax") ?? "");
   }, [searchParams]);
 
   useEffect(() => {
@@ -91,47 +91,11 @@ export default function DashboardPage() {
             onModelChange={setModelFilter}
             onMaxPriceChange={setMaxPriceFilter}
           />
-
-          <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold">Dashboard de vehiculos</h2>
-                <p className="mt-1 text-sm text-[var(--text-secondary)]">
-                  Autos disponibles del propietario.
-                </p>
-              </div>
-              {data ? (
-                <span className="rounded-full bg-[var(--bg-elevated)] px-3 py-1 text-xs font-semibold text-[var(--text-secondary)]">
-                  {data.vehicles.length} vehiculos
-                </span>
-              ) : null}
-            </div>
-
-            {error ? (
-              <div className="mt-6 rounded-2xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] p-4 text-sm text-[var(--status-unavailable-text)]">
-                {error}
-              </div>
-            ) : null}
-
-            {isLoading ? (
-              <div className="mt-6 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4 text-sm text-[var(--text-secondary)]">
-                Cargando datos desde /api/seller...
-              </div>
-            ) : null}
-
-            {data ? (
-              <div className="mt-6 grid gap-5 md:grid-cols-2">
-                {data.vehicles.map((vehiculo) => (
-                  <VehicleCard
-                    key={vehiculo.id}
-                    vehicle={vehiculo}
-                    actionLabel="Reservar"
-                    secondaryActionLabel="Agregar a favoritos"
-                  />
-                ))}
-              </div>
-            ) : null}
-          </div>
+          <DashboardVehiclesSection
+            vehicles={data?.vehicles ?? null}
+            error={error}
+            isLoading={isLoading}
+          />
       </section>
     </div>
   );

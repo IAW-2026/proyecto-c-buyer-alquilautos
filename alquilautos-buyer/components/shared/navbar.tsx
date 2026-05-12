@@ -29,7 +29,7 @@ export default function Navbar() {
 				<div className="flex items-center gap-6 text-sm text-[var(--navbar-text)]">
 					<nav className="flex items-center gap-6">
 						<Link
-							href="/"
+							href="/dashboard"
 							className="font-semibold text-[var(--navbar-text)]"
 						>
 							Explorar
