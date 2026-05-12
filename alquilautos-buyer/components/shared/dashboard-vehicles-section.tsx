@@ -52,7 +52,7 @@ export default function DashboardVehiclesSection({
 			) : null}
 
 			{vehicles ? (
-				<div className="mt-6 grid gap-5 md:grid-cols-2">
+				<div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
 					{vehicles.map((vehiculo) => (
 						<VehicleCard
 							key={vehiculo.id}

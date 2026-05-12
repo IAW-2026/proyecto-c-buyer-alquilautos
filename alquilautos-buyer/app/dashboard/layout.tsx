@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)]">
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-6 pb-8 pt-12">
+      <main className="mx-auto w-full max-w-8xl px-6 pb-8 pt-25">
         {children}
       </main>
       <Footer />

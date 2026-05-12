@@ -3,7 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import FilterSection from "@/components/dashboard/filter-section";
-import DashboardVehiclesSection from "@/components/dashboard/dashboard-vehicles-section";
+import DashboardVehiclesSection from "@/components/shared/dashboard-vehicles-section";
+import useFilteredVehicles from "@/hooks/use-filtered-vehicles";
 
 type SellerOwner = {
   id: number;
@@ -77,6 +78,11 @@ export default function DashboardPage() {
     };
   }, []);
 
+  const filteredVehicles = useFilteredVehicles(data?.vehicles, {
+    modelFilter,
+    maxPriceFilter,
+  });
+
   return (
     <div className="flex w-full flex-col gap-8">
       <section className="grid gap-6 lg:grid-cols-[260px_1fr]">
@@ -87,7 +93,7 @@ export default function DashboardPage() {
             onMaxPriceChange={setMaxPriceFilter}
           />
           <DashboardVehiclesSection
-            vehicles={data?.vehicles ?? null}
+            vehicles={filteredVehicles ?? null}
             error={error}
             isLoading={isLoading}
           />
