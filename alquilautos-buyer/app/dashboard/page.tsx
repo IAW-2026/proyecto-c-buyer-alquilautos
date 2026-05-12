@@ -32,16 +32,11 @@ type SellerData = {
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
-  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [data, setData] = useState<SellerData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [modelFilter, setModelFilter] = useState("");
   const [maxPriceFilter, setMaxPriceFilter] = useState("");
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
 
   useEffect(() => {
     setModelFilter(searchParams?.get("modelo") ?? "");
