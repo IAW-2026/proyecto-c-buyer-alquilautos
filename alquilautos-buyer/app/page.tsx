@@ -4,13 +4,14 @@ import HowItWorksSection from "@/components/inicio/how-it-works-section";
 
 export default function Home() {
   return (
-    <div className="flex w-full flex-col gap-12">
-      <HeroSection />
+    <main className="w-full px-0 py-8">
+      <div className="flex w-full flex-col gap-12">
+        <HeroSection />
 
-      <FeaturedSection />
-      
-      <HowItWorksSection />    
-      
+        <FeaturedSection />
+
+        <HowItWorksSection />
       </div>
+    </main>
   );
 }

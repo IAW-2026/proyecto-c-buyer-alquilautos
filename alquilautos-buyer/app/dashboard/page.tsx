@@ -84,8 +84,9 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="flex w-full flex-col gap-8">
-      <section className="grid gap-6 lg:grid-cols-[260px_1fr]">
+    <main className="mx-auto w-full max-w-8xl px-6 pb-8 pt-25">
+      <div className="flex w-full flex-col gap-8">
+        <section className="grid gap-6 lg:grid-cols-[260px_1fr]">
           <FilterSection
             modelFilter={modelFilter}
             maxPriceFilter={maxPriceFilter}
@@ -97,7 +98,8 @@ export default function DashboardPage() {
             error={error}
             isLoading={isLoading}
           />
-      </section>
-    </div>
+        </section>
+      </div>
+    </main>
   );
 }
