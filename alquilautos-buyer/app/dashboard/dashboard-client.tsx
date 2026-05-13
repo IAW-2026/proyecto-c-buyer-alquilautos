@@ -83,7 +83,7 @@ export default function DashboardClient() {
   });
 
   return (
-    <main className="mx-auto w-full max-w-8xl px-6 pb-8 pt-25">
+    <main className="mx-auto w-full max-w-7xl px-6 pb-8 pt-25">
       <div className="flex w-full flex-col gap-8">
         <section className="grid gap-6 lg:grid-cols-[260px_1fr]">
           <FilterSection

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist_Mono, Manrope } from "next/font/google";
 import Navbar from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
@@ -24,17 +25,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${manrope.className} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full bg-[var(--bg-page)] text-[var(--text-primary)]">
-        <div className="min-h-screen">
-          <Navbar />
-          {children}
-          <Footer />
-        </div>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={`${manrope.className} ${geistMono.variable} h-full antialiased`}
+      >
+        <body className="min-h-full bg-[var(--bg-page)] text-[var(--text-primary)]">
+          <div className="min-h-screen">
+            <Navbar />
+            {children}
+            <Footer />
+          </div>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
