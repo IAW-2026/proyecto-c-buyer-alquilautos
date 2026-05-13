@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { sellerData } from "@/app/data/seller";
 import VehicleCard from "@/components/shared/vehicle-card-section";
 
