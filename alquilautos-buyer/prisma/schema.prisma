@@ -1,13 +1,54 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
+// Configuración técnica (Arquitecto y Constructor)
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// Modelos en Inglés - Atributos en Español
+model User {
+  id                  String    @id // Clerk ID
+  email               String    @unique
+  nombre              String?
+  apellido            String?
+  fechaNacimiento     DateTime?
+  tipoDocumento       String?
+  numeroDocumento     String?
+  licenciaConducir    String?
+  direccionFacturacion String?
+  
+  // Relación 1-a-1 con su pool único
+  poolFavoritos       FavoritePool? 
+  
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model FavoritePool {
+  id        Int            @id @default(autoincrement())
+  
+  // Relación con el Usuario
+  userId    String         @unique
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Los items dentro del pool (Relación 1-a-muchos)
+  items     FavoriteItem[]
+
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model FavoriteItem {
+  id                Int          @id @default(autoincrement())
+  
+  // ID que viene de la Seller App
+  vehiculoExternoId Int       
+
+  poolId            Int
+  pool              FavoritePool @relation(fields: [poolId], references: [id], onDelete: Cascade)
+
+  // Unicidad: No permite el mismo auto dos veces en el mismo pool
+  @@unique([poolId, vehiculoExternoId])
 }
