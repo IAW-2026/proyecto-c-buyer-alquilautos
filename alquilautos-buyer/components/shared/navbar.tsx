@@ -43,7 +43,7 @@ export default function Navbar() {
 								<Link href="/reservas">Mis reservas</Link>
 								<Link href="/perfil">Mi perfil</Link>
 								<Link
-									href="/dashboard/favoritos"
+									href="/favoritos"
 									className="flex items-center gap-2 font-semibold"
 								>
 									<svg
