@@ -9,3 +9,4 @@
 #### Vista shipping
 #### Vista payments
 #### Acomodar vista de telefono
+#### Que el admin pueda actualizar/borrar usuarios

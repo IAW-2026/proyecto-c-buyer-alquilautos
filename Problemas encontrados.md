@@ -7,3 +7,7 @@
 #### warning de imagenes
 
 #### Comentar codigo
+
+#### Modificar tamaño logo
+
+#### Agregar en el proximo que vehiculos que no estan disponibles, no se pueda acceder
