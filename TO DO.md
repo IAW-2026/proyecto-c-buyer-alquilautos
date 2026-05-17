@@ -1,7 +1,10 @@
 #### Exponer APIS
-#### Vista admin
+#### Vista admin (Necesito BD)
 #### Parte reseñas (mandar los formularios)
-#### Parte favoritos
-#### Parte perfil
+#### Parte favoritos (Necesito BD)
+#### Parte perfil (Necesito BD)
 #### Comentar codigo
 #### Hacer deploy
+#### Funcionalidad boton reservar
+#### Vista shipping
+#### Vista payments

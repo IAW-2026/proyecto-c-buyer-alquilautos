@@ -45,7 +45,7 @@ export default function FeaturedSection() {
               <VehicleCard
                 vehicle={vehicle}
                 actionLabel="Mas detalles"
-                actionHref="/dashboard"
+                actionHref={`/dashboard/vehiculo/${vehicle.id}`}
               />
             </div>
           ))}

@@ -57,8 +57,8 @@ export default function DashboardVehiclesSection({
 						<VehicleCard
 							key={vehiculo.id}
 							vehicle={vehiculo}
-							actionLabel="Reservar"
-							actionHref="/reservas"
+							actionLabel="Mas Detalles"
+							actionHref={`/dashboard/vehiculo/${vehiculo.id}`}
 							secondaryActionLabel="Agregar a favoritos"
 							secondaryActionHref="/dashboard/favoritos"
 						/>

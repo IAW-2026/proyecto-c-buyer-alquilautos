@@ -20,14 +20,11 @@ export default function VehicleCard({
 	secondaryActionLabel,
 	secondaryActionHref,
 }: VehicleCardProps) {
-	const { isSignedIn } = useUser();
+	
 	const actionClassName =
 		"mt-4 h-10 w-full rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)]";
 	const secondaryActionClassName =
 		"h-10 w-full rounded-xl border border-[var(--border-default)] bg-transparent text-sm font-semibold text-[var(--text-primary)]";
-	const defaultRedirect = "/dashboard";
-	const buildSignInHref = (redirectTo: string) =>
-		`/sign-in?redirect_url=${encodeURIComponent(redirectTo)}`;
 
 	return (
 		<article className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
@@ -65,53 +62,32 @@ export default function VehicleCard({
 			</div>
 
 			<div className="mt-4 grid gap-2">
-				{isSignedIn ? (
-					<>
-						{actionHref ? (
-						<Link
-							href={actionHref}
-							className={`${actionClassName} inline-flex items-center justify-center`}
-						>
-							{actionLabel}
-						</Link>
-					) : (
-						<button type="button" className={actionClassName}>
-							{actionLabel}
-						</button>
-					)}
-					{secondaryActionLabel ? (
-						secondaryActionHref ? (
-							<Link
-								href={secondaryActionHref}
-								className={`${secondaryActionClassName} inline-flex items-center justify-center`}
-							>
-								{secondaryActionLabel}
-							</Link>
-						) : (
-							<button type="button" className={secondaryActionClassName}>
-								{secondaryActionLabel}
-							</button>
-						)
-					) : null}
-					</>
+				{actionHref ? (
+					<Link
+					href={actionHref}
+					className={`${actionClassName} inline-flex items-center justify-center`}
+					>
+					{actionLabel}
+					</Link>
 				) : (
-					<>
-						<Link
-							href={buildSignInHref(actionHref ?? defaultRedirect)}
-							className={`${actionClassName} inline-flex items-center justify-center`}
-						>
-							{actionLabel}
-						</Link>
-						{secondaryActionLabel ? (
-							<Link
-								href={buildSignInHref(secondaryActionHref ?? defaultRedirect)}
-								className={`${secondaryActionClassName} inline-flex items-center justify-center`}
-							>
-								{secondaryActionLabel}
-							</Link>
-						) : null}
-					</>
+					<button type="button" className={actionClassName}>
+					{actionLabel}
+					</button>
 				)}
+				{secondaryActionLabel ? (
+					secondaryActionHref ? (
+					<Link
+						href={secondaryActionHref}
+						className={`${secondaryActionClassName} inline-flex items-center justify-center`}
+					>
+						{secondaryActionLabel}
+					</Link>
+					) : (
+					<button type="button" className={secondaryActionClassName}>
+						{secondaryActionLabel}
+					</button>
+					)
+				) : null}
 			</div>
 		</article>
 	);
