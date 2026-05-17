@@ -8,3 +8,4 @@
 #### Funcionalidad boton reservar
 #### Vista shipping
 #### Vista payments
+#### Acomodar vista de telefono
