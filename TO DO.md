@@ -1,12 +1,10 @@
 #### Exponer APIS
-#### Vista admin (Necesito BD)
-#### Parte reseñas (mandar los formularios)
-#### Parte favoritos (Necesito BD)
-#### Parte perfil (Necesito BD)
+#### Vista admin (junto con todo el crud de los usuarios)
+#### Parte reseñas (mandar los formularios con post)
+#### Parte favoritos 
+#### Parte perfil 
 #### Comentar codigo
-#### Hacer deploy
-#### Funcionalidad boton reservar
+#### Funcionalidad boton reservar (Post a seller app por ahora mockeado)
 #### Vista shipping
 #### Vista payments
 #### Acomodar vista de telefono
-#### Que el admin pueda actualizar/borrar usuarios
