@@ -72,8 +72,6 @@ export default function DashboardVehiclesSection({
 								vehicle={vehiculo}
 								actionLabel="Mas Detalles"
 								actionHref={`/dashboard/vehiculo/${vehiculo.id}`}
-								secondaryActionLabel="Agregar a favoritos"
-								secondaryActionHref="/favoritos"
 							/>
 						))}
 					</div>

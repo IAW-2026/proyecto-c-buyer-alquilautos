@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 import { sellerData } from "@/app/data/seller";
+import { bd } from "@/lib/bd";
 import VehicleInfoPanel from "@/components/dashboard/vehiculo/vehicle-info-panel";
 import OwnerCard from "@/components/dashboard/vehiculo/owner-card";
 import ActionPanel from "@/components/dashboard/vehiculo/action-panel";
@@ -20,6 +22,22 @@ export default async function VehiculoPage({ params }: Props) {
   const propietario = sellerData.owners.find(
     (o) => o.id === vehiculo.id_propietario,
   );
+
+  const { userId } = await auth();
+
+  let isFavorito = false;
+
+  if (userId) {
+    const pool = await bd.favoritePool.findUnique({
+      where: { userId },
+      include: {
+        items: {
+          where: { vehiculoExternoId: vehiculoId },
+        },
+      },
+    });
+    isFavorito = (pool?.items.length ?? 0) > 0;
+  }
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 pb-16 pt-28">
@@ -72,11 +90,13 @@ export default async function VehiculoPage({ params }: Props) {
         {/* Columna derecha: panel de acción + propietario */}
         <div className="flex flex-col gap-4">
           <ActionPanel
+            vehiculoId={vehiculo.id}
             marca={vehiculo.marca}
             modelo={vehiculo.modelo}
             año={vehiculo.año}
             precio={vehiculo.precio}
             calificacion={vehiculo.calificacion}
+            initialIsFavorito={isFavorito}
           />
 
           {propietario && (
