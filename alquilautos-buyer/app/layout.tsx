@@ -5,6 +5,9 @@ import Navbar from "@/components/shared/navbar";
 import Footer from "@/components/shared/footer";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 const manrope = Manrope({
   subsets: ["latin"],
 });
