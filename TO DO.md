@@ -9,3 +9,4 @@
 #### Verificar proteccion de links de apis
 #### Verificar logeo con gmail
 #### Conectar la base de datos main
+#### Dejar un comentario en cada api para indicar su funcion
