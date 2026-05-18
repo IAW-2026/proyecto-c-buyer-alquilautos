@@ -5,14 +5,19 @@ const isPublicRoute = createRouteMatcher([
   "/dashboard",
   "/dashboard/vehiculo/(.*)",
   "/sign-in(.*)",
+  "/api/seller",
 ]);
 
-export default clerkMiddleware(async(auth, req) => {
-  console.log("PATH:", req.nextUrl.pathname);
-  if (!isPublicRoute(req)) {
-    await auth.protect();
+export default clerkMiddleware(
+  async (auth, req) => {
+    if (!isPublicRoute(req)) {
+      await auth.protect();
+    }
+  },
+  {
+    signInUrl: "/sign-in",
   }
-});
+);
 
 export const config = {
   matcher: [

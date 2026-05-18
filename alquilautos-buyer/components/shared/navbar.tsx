@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { UserButton, Show } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 export default function Navbar() {
 	const [theme, setTheme] = useState<"light" | "dark">("light");
+	const { isSignedIn } = useUser();
 
 	useEffect(() => {
 		document.documentElement.setAttribute("data-theme", theme);
@@ -53,17 +54,16 @@ export default function Navbar() {
 					</nav>
 
 					<div className="flex items-center gap-3">
-						<Show when="signed-in">
+						{isSignedIn ? (
 							<UserButton />
-						</Show>
-						<Show when="signed-out">
+						) : (
 							<Link
 								href="/sign-in"
 								className="inline-flex h-9 items-center justify-center rounded-full border border-[var(--border-default)] px-4 text-xs font-semibold"
 							>
 								Ingresar
 							</Link>
-						</Show>
+						)}
 					</div>
 
 					<button

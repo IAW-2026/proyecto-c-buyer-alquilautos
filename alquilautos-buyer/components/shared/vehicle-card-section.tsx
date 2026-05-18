@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
 import type { SellerVehicle } from "@/app/data/seller";
 
 type VehicleCardProps = {
