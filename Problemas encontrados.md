@@ -2,12 +2,8 @@
 
 #### Imagenes descentradas en la seccion destacada.
 
-#### El "mas detalles" de la seccion destacada debe enviar al vehiculo, no al dashboard (hecho asi por ahora)
-
 #### warning de imagenes
-
-#### Comentar codigo
 
 #### Modificar tamaño logo
 
-#### Agregar en el proximo que vehiculos que no estan disponibles, no se pueda acceder
+#### Agregar en el proximo que vehiculos que no estan disponibles, no se pueda acceder o no se puede reservar

@@ -91,6 +91,7 @@ export default async function VehiculoPage({ params }: Props) {
         <div className="flex flex-col gap-4">
           <ActionPanel
             vehiculoId={vehiculo.id}
+            propietarioId={vehiculo.id_propietario}
             marca={vehiculo.marca}
             modelo={vehiculo.modelo}
             año={vehiculo.año}
