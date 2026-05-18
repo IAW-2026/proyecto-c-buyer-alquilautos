@@ -35,10 +35,11 @@ export default function SignUpPage() {
                 Registrate para comenzar a alquilar vehículos.
               </p>
             </div>
-            <SignUp />
+            <SignUp forceRedirectUrl="/onboarding" />
           </div>
         </section>
       </div>
     </main>
   );
 }
+
