@@ -1,0 +1,95 @@
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { sellerData } from "@/app/data/seller";
+import { reservasMock } from "@/app/data/reservas";
+import ReservaResumen from "@/components/reservas/reserva-resumen";
+import ReservaPropietario from "@/components/reservas/reserva-propietario";
+import ReservaVehiculoInfo from "@/components/reservas/reserva-vehiculo-info";
+import ReservaAcciones from "@/components/reservas/reserva-acciones";
+
+type Props = {
+  params: Promise<{ id_reserva: string }>;
+};
+
+function calcularDias(inicio: string, fin: string): number {
+  const diff = new Date(fin).getTime() - new Date(inicio).getTime();
+  return diff === 0 ? 1 : Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+export default async function ReservaDetallePage({ params }: Props) {
+  const { id_reserva } = await params;
+
+  const reserva = reservasMock.find((r) => r.id_reserva === Number(id_reserva));
+  if (!reserva) notFound();
+
+  const vehiculo = sellerData.vehicles.find((v) => v.id === reserva.id_vehiculo);
+  const propietario = vehiculo
+    ? sellerData.owners.find((o) => o.id === vehiculo.id_propietario)
+    : undefined;
+
+  const dias = calcularDias(reserva.fecha_inicio, reserva.fecha_final);
+  const total = vehiculo ? dias * vehiculo.precio : null;
+
+  return (
+    <main className="mx-auto w-full max-w-4xl px-4 pb-16 pt-28 sm:px-6">
+      {/* Breadcrumb */}
+      <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
+        <Link href="/reservas" className="transition-colors hover:text-[var(--text-primary)]">
+          Mis reservas
+        </Link>
+        <span>/</span>
+        <span className="text-[var(--text-primary)]">Reserva #{reserva.id_reserva}</span>
+      </nav>
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+        {/* Columna izquierda */}
+        <div className="flex flex-col gap-6">
+          {vehiculo && (
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-[var(--border-default)]">
+              <Image
+                src={vehiculo.imagen}
+                alt={`${vehiculo.marca} ${vehiculo.modelo}`}
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
+          {vehiculo && (
+            <ReservaVehiculoInfo
+              marca={vehiculo.marca}
+              modelo={vehiculo.modelo}
+              año={vehiculo.año}
+              precio={vehiculo.precio}
+            />
+          )}
+        </div>
+
+        {/* Columna derecha */}
+        <div className="flex flex-col gap-4">
+          <ReservaResumen
+            idReserva={reserva.id_reserva}
+            estado={reserva.estado}
+            fechaInicio={reserva.fecha_inicio}
+            fechaFinal={reserva.fecha_final}
+            dias={dias}
+            total={total}
+          />
+          <ReservaAcciones
+            idReserva={reserva.id_reserva}
+            estado={reserva.estado}
+            fechaInicio={reserva.fecha_inicio}
+            fechaFinal={reserva.fecha_final}
+          />
+          {propietario && (
+            <ReservaPropietario
+              nombre={propietario.nombre}
+              email={propietario.email}
+            />
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}

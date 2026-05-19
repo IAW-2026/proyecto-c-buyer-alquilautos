@@ -236,7 +236,7 @@ export default function ReservaModal({
             </div>
 
             <p className="text-sm text-[var(--text-secondary)] text-center">
-              ¿Estás seguro que querés confirmar esta reserva?
+              ¿Estás seguro que querés solicitar esta reserva?
             </p>
 
             {error && (
@@ -252,7 +252,7 @@ export default function ReservaModal({
                 disabled={isLoading}
                 className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)] disabled:opacity-60"
               >
-                {isLoading ? "Confirmando..." : "Confirmar reserva"}
+                {isLoading ? "Confirmando..." : "Confirmar solicitud"}
               </button>
               <button
                 type="button"
@@ -276,7 +276,7 @@ export default function ReservaModal({
             </div>
             <div>
               <p className="text-base font-semibold text-[var(--text-primary)]">
-                ¡Reserva creada exitosamente!
+                ¡Reserva solicitada exitosamente!
               </p>
               <p className="mt-1 text-sm text-[var(--text-secondary)]">
                 ID de reserva: <span className="font-semibold">{idReserva}</span>
