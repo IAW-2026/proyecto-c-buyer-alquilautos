@@ -8,10 +8,7 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/onboarding",
   "/api/seller",
-  "/api/onboarding",
-  "/api/favoritos",
-  "/api/favoritos/(.*)",
-  "/api/usuario",
+  "/api/alquilador",
   "/api/alquilador/(.*)",
 ]);
 

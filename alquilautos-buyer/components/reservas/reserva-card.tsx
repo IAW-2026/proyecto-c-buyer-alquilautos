@@ -8,10 +8,15 @@ type ReservaCardProps = {
   vehiculo: SellerVehicle | undefined;
 };
 
-const estadoStyles = {
-  Pendiente: "bg-[var(--color-accent-100)] text-[var(--color-accent-700)]",
-  Confirmada: "bg-[var(--status-available-bg)] text-[var(--status-available-text)]",
-  Rechazada: "bg-[var(--status-unavailable-bg)] text-[var(--status-unavailable-text)]",
+const estadoStyles: Record<string, string> = {
+  Pendiente:   "bg-[var(--color-accent-100)] text-[var(--color-accent-700)]",
+  Aceptada:    "bg-[var(--status-available-bg)] text-[var(--status-available-text)]",
+  Rechazada:   "bg-[var(--status-unavailable-bg)] text-[var(--status-unavailable-text)]",
+  Cancelada:   "bg-[var(--status-unavailable-bg)] text-[var(--status-unavailable-text)]",
+  Coordinada:  "bg-[var(--color-primary-50)] text-[var(--color-primary-600)]",
+  Pagada:      "bg-[var(--color-primary-100)] text-[var(--color-primary-700)]",
+  Entregada:   "bg-[var(--status-available-bg)] text-[var(--status-available-text)]",
+  Finalizada:  "bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)]",
 };
 
 function formatearFecha(fecha: string): string {
@@ -22,7 +27,6 @@ function formatearFecha(fecha: string): string {
 export default function ReservaCard({ reserva, vehiculo }: ReservaCardProps) {
   return (
     <article className="flex flex-col gap-4 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-4 sm:flex-row sm:items-center sm:gap-6">
-      {/* Imagen */}
       {vehiculo && (
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl sm:h-32 sm:w-48 sm:shrink-0">
           <Image
@@ -34,7 +38,6 @@ export default function ReservaCard({ reserva, vehiculo }: ReservaCardProps) {
         </div>
       )}
 
-      {/* Info */}
       <div className="flex flex-1 flex-col gap-3">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -48,7 +51,7 @@ export default function ReservaCard({ reserva, vehiculo }: ReservaCardProps) {
               Reserva #{reserva.id_reserva}
             </p>
           </div>
-          <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${estadoStyles[reserva.estado]}`}>
+          <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${estadoStyles[reserva.estado] ?? ""}`}>
             {reserva.estado}
           </span>
         </div>

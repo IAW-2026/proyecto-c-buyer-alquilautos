@@ -2,15 +2,21 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { reservasMock } from "@/app/data/reservas";
 
-export async function GET() {
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
+  const { id } = await params;
+
   // TODO: reemplazar por fetch real a la Seller App
-  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/alquiler?id_alquilador=${userId}`);
+  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/alquilador/${id}`);
   // const reservas = await response.json();
 
   return NextResponse.json(reservasMock, { status: 200 });

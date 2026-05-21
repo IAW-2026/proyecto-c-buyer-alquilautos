@@ -10,9 +10,14 @@ type ReservaResumenProps = {
 };
 
 const estadoStyles: Record<EstadoReserva, string> = {
-  Pendiente: "bg-[var(--color-accent-100)] text-[var(--color-accent-700)]",
-  Confirmada: "bg-[var(--status-available-bg)] text-[var(--status-available-text)]",
-  Rechazada: "bg-[var(--status-unavailable-bg)] text-[var(--status-unavailable-text)]",
+  Pendiente:   "bg-[var(--color-accent-100)] text-[var(--color-accent-700)]",
+  Aceptada:    "bg-[var(--status-available-bg)] text-[var(--status-available-text)]",
+  Rechazada:   "bg-[var(--status-unavailable-bg)] text-[var(--status-unavailable-text)]",
+  Cancelada:   "bg-[var(--status-unavailable-bg)] text-[var(--status-unavailable-text)]",
+  Coordinada:  "bg-[var(--color-primary-50)] text-[var(--color-primary-600)]",
+  Pagada:      "bg-[var(--color-primary-100)] text-[var(--color-primary-700)]",
+  Entregada:   "bg-[var(--status-available-bg)] text-[var(--status-available-text)]",
+  Finalizada:  "bg-[var(--color-neutral-100)] text-[var(--color-neutral-600)]",
 };
 
 function formatearFecha(fecha: string): string {

@@ -17,7 +17,7 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
     setDeletingId(vehiculoExternoId);
 
     try {
-      const response = await fetch(`/api/favoritos/${vehiculoExternoId}`, {
+      const response = await fetch(`/api/favorito/${vehiculoExternoId}`, {
         method: "DELETE",
       });
 

@@ -1,4 +1,12 @@
-export type EstadoReserva = "Pendiente" | "Confirmada" | "Rechazada";
+export type EstadoReserva =
+  | "Pendiente"
+  | "Aceptada"
+  | "Rechazada"
+  | "Cancelada"
+  | "Coordinada"
+  | "Pagada"
+  | "Entregada"
+  | "Finalizada";
 
 export type Reserva = {
   id_reserva: number;
@@ -36,7 +44,7 @@ export const reservasMock: Reserva[] = [
     id_alquilador: "user_mock",
     fecha_inicio: "2026-05-01",
     fecha_final: "2026-05-05",
-    estado: "Confirmada",
+    estado: "Aceptada",
   },
   {
     id_reserva: 1004,
@@ -45,7 +53,7 @@ export const reservasMock: Reserva[] = [
     id_alquilador: "user_mock",
     fecha_inicio: "2026-04-10",
     fecha_final: "2026-04-15",
-    estado: "Confirmada",
+    estado: "Aceptada",
   },
   {
     id_reserva: 1005,

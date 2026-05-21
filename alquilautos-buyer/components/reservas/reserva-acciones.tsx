@@ -8,22 +8,18 @@ import CoordinarEntregaModal from "@/components/reservas/coordinar-entrega-modal
 type ReservaAccionesProps = {
   idReserva: number;
   estado: EstadoReserva;
-  fechaInicio: string;
-  fechaFinal: string;
 };
 
 export default function ReservaAcciones({
   idReserva,
   estado,
-  fechaInicio,
-  fechaFinal,
 }: ReservaAccionesProps) {
   const [showCancelarModal, setShowCancelarModal] = useState(false);
   const [showCoordinarModal, setShowCoordinarModal] = useState(false);
 
   return (
     <>
-      {estado === "Confirmada" && (
+      {estado === "Aceptada" && (
         <button
           type="button"
           onClick={() => setShowCoordinarModal(true)}
@@ -59,10 +55,6 @@ export default function ReservaAcciones({
       {showCoordinarModal && (
         <CoordinarEntregaModal
           idReserva={idReserva}
-          fechaEntrega={fechaInicio}
-          fechaDevolucion={fechaFinal}
-          horaInicio="14:00"
-          horaFin="19:00"
           onClose={() => setShowCoordinarModal(false)}
         />
       )}

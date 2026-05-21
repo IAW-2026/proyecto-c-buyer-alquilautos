@@ -9,6 +9,8 @@ export default async function ReservasPage() {
   if (!userId) redirect("/sign-in");
 
   // TODO: reemplazar por fetch real a la Seller App
+  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/alquilador/${userId}`);
+  // const reservas: Reserva[] = await response.json();
   const reservas: Reserva[] = reservasMock;
 
   return (

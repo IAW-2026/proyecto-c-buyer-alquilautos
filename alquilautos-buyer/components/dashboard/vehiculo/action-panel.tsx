@@ -45,7 +45,7 @@ export default function ActionPanel({
         }
         setIsFavorito(false);
       } else {
-        const response = await fetch("/api/favoritos", {
+        const response = await fetch("/api/favorito", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ vehiculoExternoId: vehiculoId }),

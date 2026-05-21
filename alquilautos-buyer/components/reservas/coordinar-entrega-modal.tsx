@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+type Horario = {
+  tipo: "entrega" | "devolucion";
+  fecha: string;
+  hora_inicio_disponible: string;
+  hora_fin_disponible: string;
+};
+
+type HorariosData = {
+  id_reserva: number;
+  id_entrega: number;
+  horarios: Horario[];
+};
 
 type CoordinarEntregaModalProps = {
   idReserva: number;
-  fechaEntrega: string;
-  fechaDevolucion: string;
-  horaInicio: string;
-  horaFin: string;
   onClose: () => void;
 };
 
@@ -28,19 +37,42 @@ function formatearFecha(fecha: string): string {
 
 export default function CoordinarEntregaModal({
   idReserva,
-  fechaEntrega,
-  fechaDevolucion,
-  horaInicio,
-  horaFin,
   onClose,
 }: CoordinarEntregaModalProps) {
-  const opciones = generarOpciones(horaInicio, horaFin);
-
+  const [horariosData, setHorariosData] = useState<HorariosData | null>(null);
+  const [isLoadingHorarios, setIsLoadingHorarios] = useState(true);
   const [horaEntrega, setHoraEntrega] = useState("");
   const [horaDevolucion, setHoraDevolucion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchHorarios = async () => {
+      try {
+        const response = await fetch(`/api/horario/${idReserva}`);
+        if (!response.ok) throw new Error("Error al obtener horarios");
+        const data = await response.json();
+        setHorariosData(data);
+      } catch {
+        setError("No se pudieron cargar los horarios disponibles.");
+      } finally {
+        setIsLoadingHorarios(false);
+      }
+    };
+
+    fetchHorarios();
+  }, [idReserva]);
+
+  const horarioEntrega = horariosData?.horarios.find((h) => h.tipo === "entrega");
+  const horarioDevolucion = horariosData?.horarios.find((h) => h.tipo === "devolucion");
+
+  const opcionesEntrega = horarioEntrega
+    ? generarOpciones(horarioEntrega.hora_inicio_disponible, horarioEntrega.hora_fin_disponible)
+    : [];
+  const opcionesDevolucion = horarioDevolucion
+    ? generarOpciones(horarioDevolucion.hora_inicio_disponible, horarioDevolucion.hora_fin_disponible)
+    : [];
 
   const handleConfirmar = async () => {
     if (!horaEntrega || !horaDevolucion) {
@@ -52,12 +84,15 @@ export default function CoordinarEntregaModal({
     setError(null);
 
     try {
-      const response = await fetch(`/api/reserva/${idReserva}/coordinar`, {
-        method: "POST",
+      const response = await fetch("/api/entrega/horario", {
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          hora_entrega: horaEntrega,
-          hora_devolucion: horaDevolucion,
+        id_reserva: idReserva,
+        horarios: [
+          { tipo: "entrega", hora_seleccionada: horaEntrega },
+          { tipo: "devolucion", hora_seleccionada: horaDevolucion },
+        ],
         }),
       });
 
@@ -103,12 +138,16 @@ export default function CoordinarEntregaModal({
               <p className="text-base font-semibold text-[var(--text-primary)]">
                 ¡Entrega coordinada!
               </p>
-              <p className="mt-1 text-sm text-[var(--text-secondary)]">
-                Entrega: {formatearFecha(fechaEntrega)} a las {horaEntrega}
-              </p>
-              <p className="mt-0.5 text-sm text-[var(--text-secondary)]">
-                Devolución: {formatearFecha(fechaDevolucion)} a las {horaDevolucion}
-              </p>
+              {horarioEntrega && (
+                <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                  Entrega: {formatearFecha(horarioEntrega.fecha)} a las {horaEntrega}
+                </p>
+              )}
+              {horarioDevolucion && (
+                <p className="mt-0.5 text-sm text-[var(--text-secondary)]">
+                  Devolución: {formatearFecha(horarioDevolucion.fecha)} a las {horaDevolucion}
+                </p>
+              )}
             </div>
             <button
               type="button"
@@ -134,57 +173,69 @@ export default function CoordinarEntregaModal({
               </p>
             </div>
 
-            {/* Horario entrega */}
-            <div className="flex flex-col gap-2">
-              <p className="text-sm font-medium text-[var(--text-primary)]">
-                Horario de entrega
-              </p>
-              <p className="text-xs text-[var(--text-secondary)]">
-                {formatearFecha(fechaEntrega)} · Rango disponible: {horaInicio} – {horaFin}
-              </p>
-              <div className="grid grid-cols-3 gap-2">
-                {opciones.map((hora) => (
-                  <button
-                    key={`entrega-${hora}`}
-                    type="button"
-                    onClick={() => setHoraEntrega(hora)}
-                    className={`h-10 rounded-xl border text-sm font-semibold transition ${
-                      horaEntrega === hora
-                        ? "border-[var(--btn-primary-bg)] bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
-                        : "border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--text-primary)] hover:border-[var(--border-strong)]"
-                    }`}
-                  >
-                    {hora}
-                  </button>
-                ))}
+            {isLoadingHorarios ? (
+              <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-6 text-center text-sm text-[var(--text-secondary)]">
+                Cargando horarios disponibles...
               </div>
-            </div>
+            ) : (
+              <>
+                {/* Horario entrega */}
+                {horarioEntrega && (
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-medium text-[var(--text-primary)]">
+                      Horario de entrega
+                    </p>
+                    <p className="text-xs text-[var(--text-secondary)]">
+                      {formatearFecha(horarioEntrega.fecha)} · Rango disponible: {horarioEntrega.hora_inicio_disponible} – {horarioEntrega.hora_fin_disponible}
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {opcionesEntrega.map((hora) => (
+                        <button
+                          key={`entrega-${hora}`}
+                          type="button"
+                          onClick={() => setHoraEntrega(hora)}
+                          className={`h-10 rounded-xl border text-sm font-semibold transition ${
+                            horaEntrega === hora
+                              ? "border-[var(--btn-primary-bg)] bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
+                              : "border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--text-primary)] hover:border-[var(--border-strong)]"
+                          }`}
+                        >
+                          {hora}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
-            {/* Horario devolución */}
-            <div className="flex flex-col gap-2">
-              <p className="text-sm font-medium text-[var(--text-primary)]">
-                Horario de devolución
-              </p>
-              <p className="text-xs text-[var(--text-secondary)]">
-                {formatearFecha(fechaDevolucion)} · Rango disponible: {horaInicio} – {horaFin}
-              </p>
-              <div className="grid grid-cols-3 gap-2">
-                {opciones.map((hora) => (
-                  <button
-                    key={`devolucion-${hora}`}
-                    type="button"
-                    onClick={() => setHoraDevolucion(hora)}
-                    className={`h-10 rounded-xl border text-sm font-semibold transition ${
-                      horaDevolucion === hora
-                        ? "border-[var(--btn-primary-bg)] bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
-                        : "border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--text-primary)] hover:border-[var(--border-strong)]"
-                    }`}
-                  >
-                    {hora}
-                  </button>
-                ))}
-              </div>
-            </div>
+                {/* Horario devolución */}
+                {horarioDevolucion && (
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm font-medium text-[var(--text-primary)]">
+                      Horario de devolución
+                    </p>
+                    <p className="text-xs text-[var(--text-secondary)]">
+                      {formatearFecha(horarioDevolucion.fecha)} · Rango disponible: {horarioDevolucion.hora_inicio_disponible} – {horarioDevolucion.hora_fin_disponible}
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {opcionesDevolucion.map((hora) => (
+                        <button
+                          key={`devolucion-${hora}`}
+                          type="button"
+                          onClick={() => setHoraDevolucion(hora)}
+                          className={`h-10 rounded-xl border text-sm font-semibold transition ${
+                            horaDevolucion === hora
+                              ? "border-[var(--btn-primary-bg)] bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
+                              : "border-[var(--border-default)] bg-[var(--bg-elevated)] text-[var(--text-primary)] hover:border-[var(--border-strong)]"
+                          }`}
+                        >
+                          {hora}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
 
             {error && (
               <div className="rounded-xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] px-4 py-2 text-sm text-[var(--status-unavailable-text)]">
@@ -196,7 +247,7 @@ export default function CoordinarEntregaModal({
               <button
                 type="button"
                 onClick={handleConfirmar}
-                disabled={isLoading}
+                disabled={isLoading || isLoadingHorarios}
                 className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)] disabled:opacity-60"
               >
                 {isLoading ? "Confirmando..." : "Confirmar horarios"}

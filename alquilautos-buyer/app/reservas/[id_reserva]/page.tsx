@@ -79,8 +79,6 @@ export default async function ReservaDetallePage({ params }: Props) {
           <ReservaAcciones
             idReserva={reserva.id_reserva}
             estado={reserva.estado}
-            fechaInicio={reserva.fecha_inicio}
-            fechaFinal={reserva.fecha_final}
           />
           {propietario && (
             <ReservaPropietario

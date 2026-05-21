@@ -17,6 +17,7 @@ model User {
   numeroDocumento     String?
   licenciaConducir    String?
   direccionFacturacion String?
+  calificacion Float @default(0)
   
   // Relación 1-a-1 con su pool único
   poolFavoritos       FavoritePool? 

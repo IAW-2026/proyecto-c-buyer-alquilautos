@@ -21,8 +21,10 @@ export default function CancelarReservaModal({
     setError(null);
 
     try {
-      const response = await fetch(`/api/reserva/${idReserva}/cancelar`, {
-        method: "POST",
+      const response = await fetch(`/api/reserva/${idReserva}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ estado: "Cancelada" }),
       });
 
       if (!response.ok) {
