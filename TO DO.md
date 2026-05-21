@@ -11,3 +11,9 @@
 #### Dejar un comentario en cada api para indicar su funcion
 #### Hacer READ.ME
 #### Chequear documentacion de las apis 
+#### Responder reseña del propietario
+#### Tener un post para poder recibir la calificacion de un alquilador agregar tabla en BD
+#### DNI UNICO, EMAIL UNICO.
+#### Ajustar nombre apis (no deben ser plural)
+#### Acomodar tema oscuro
+#### Poder ver todos los vehiculos ded un propietario
