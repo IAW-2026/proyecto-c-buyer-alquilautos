@@ -4,6 +4,7 @@ import { useState } from "react";
 import { sellerData } from "@/app/data/seller";
 import { calificacionesVehiculos } from "@/app/data/feedback";
 import FavoriteCard from "@/components/favoritos/favorite-card";
+import { deleteFavorito } from "@/app/actions/favorito";
 import type { FavoriteItem } from "@prisma/client";
 
 type FavoritesListProps = {
@@ -18,12 +19,7 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
     setDeletingId(vehiculoExternoId);
 
     try {
-      const response = await fetch(`/api/favorito/${vehiculoExternoId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) throw new Error("Error al eliminar");
-
+      await deleteFavorito(vehiculoExternoId);
       setItems((prev) =>
         prev.filter((item) => item.vehiculoExternoId !== vehiculoExternoId),
       );

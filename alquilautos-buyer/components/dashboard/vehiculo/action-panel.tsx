@@ -3,6 +3,7 @@
 import { useState } from "react";
 import StarRating from "@/components/dashboard/vehiculo/star-rating";
 import ReservaModal from "@/components/dashboard/vehiculo/reserva-modal";
+import { addFavorito, deleteFavorito } from "@/app/actions/favorito";
 
 type ActionPanelProps = {
   vehiculoId: number;
@@ -36,24 +37,10 @@ export default function ActionPanel({
 
     try {
       if (isFavorito) {
-        const response = await fetch(`/api/favoritos/${vehiculoId}`, {
-          method: "DELETE",
-        });
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error ?? "Error al eliminar de favoritos");
-        }
+        await deleteFavorito(vehiculoId);
         setIsFavorito(false);
       } else {
-        const response = await fetch("/api/favorito", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ vehiculoExternoId: vehiculoId }),
-        });
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error ?? "Error al agregar a favoritos");
-        }
+        await addFavorito(vehiculoId);
         setIsFavorito(true);
       }
     } catch (err) {

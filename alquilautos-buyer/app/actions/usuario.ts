@@ -1,16 +1,22 @@
+"use server";
+
 import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
 import { bd } from "@/lib/bd";
 
-export async function PATCH(req: Request) {
+type UsuarioData = {
+  nombre?: string;
+  apellido?: string;
+  fechaNacimiento?: string;
+  numeroDocumento?: string;
+  licenciaConducir?: string;
+  direccionFacturacion?: string;
+};
+
+export async function actualizarUsuario(data: UsuarioData) {
   const { userId } = await auth();
+  if (!userId) throw new Error("No autenticado");
 
-  if (!userId) {
-    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-  }
-
-  const body = await req.json();
-  const { nombre, apellido, fechaNacimiento, numeroDocumento, licenciaConducir, direccionFacturacion } = body;
+  const { nombre, apellido, fechaNacimiento, numeroDocumento, licenciaConducir, direccionFacturacion } = data;
 
   const user = await bd.user.update({
     where: { id: userId },
@@ -24,5 +30,5 @@ export async function PATCH(req: Request) {
     },
   });
 
-  return NextResponse.json(user, { status: 200 });
+  return user;
 }

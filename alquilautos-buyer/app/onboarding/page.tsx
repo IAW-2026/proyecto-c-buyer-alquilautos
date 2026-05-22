@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { completarOnboarding } from "@/app/actions/onboarding";
 
 type FormData = {
   nombre: string;
@@ -39,7 +39,6 @@ const INITIAL_FORM: FormData = {
 };
 
 export default function OnboardingPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,21 +53,9 @@ export default function OnboardingPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/onboarding", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error ?? "Error al guardar los datos");
-      }
-
-      router.push("/dashboard");
+      await completarOnboarding(formData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
-    } finally {
       setIsLoading(false);
     }
   };
@@ -76,7 +63,6 @@ export default function OnboardingPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] px-4 py-16">
       <div className="w-full max-w-2xl">
-        {/* Header */}
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
           <Image src="/logo.png" alt="Alquilautos" width={56} height={56} priority />
           <h1 className="text-2xl font-semibold text-[var(--text-primary)]">
@@ -87,7 +73,6 @@ export default function OnboardingPage() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-8 shadow-[var(--shadow-md)]">
           {error ? (
             <div className="mb-6 rounded-2xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] p-4 text-sm text-[var(--status-unavailable-text)]">

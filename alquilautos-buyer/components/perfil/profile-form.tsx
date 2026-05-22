@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useClerk } from "@clerk/nextjs";
+import { actualizarUsuario } from "@/app/actions/usuario";
 
 type ProfileFormProps = {
   nombre: string | null;
@@ -66,17 +67,7 @@ export default function ProfileForm({
     setSuccess(false);
 
     try {
-      const response = await fetch("/api/usuario", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error ?? "Error al guardar");
-      }
-
+      await actualizarUsuario(formData);
       setSuccess(true);
       setIsEditing(false);
     } catch (err) {
@@ -97,7 +88,6 @@ export default function ProfileForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      {/* Email deshabilitado */}
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-[var(--text-secondary)]">
           Email
@@ -113,7 +103,6 @@ export default function ProfileForm({
         </p>
       </div>
 
-      {/* Campos editables */}
       <div className="grid gap-4 sm:grid-cols-2">
         {fields.map((field) => (
           <label
