@@ -7,6 +7,7 @@ import type { SellerVehicle, SellerOwner } from "@/app/data/seller";
 type FavoriteCardProps = {
   vehicle: SellerVehicle;
   owner: SellerOwner | undefined;
+  calificacion?: number;
   onDelete: (vehiculoExternoId: number) => void;
   isDeleting: boolean;
 };
@@ -14,6 +15,7 @@ type FavoriteCardProps = {
 export default function FavoriteCard({
   vehicle,
   owner,
+  calificacion,
   onDelete,
   isDeleting,
 }: FavoriteCardProps) {
@@ -46,7 +48,7 @@ export default function FavoriteCard({
               {vehicle.marca} {vehicle.modelo}
             </h3>
             <p className="text-sm text-[var(--text-secondary)]">
-              {vehicle.año} · {vehicle.calificacion.toFixed(1)}★
+              {vehicle.año}{calificacion !== undefined ? ` · ${calificacion.toFixed(1)}★` : ""}
             </p>
             {owner && (
               <p className="mt-1 text-sm text-[var(--text-secondary)]">

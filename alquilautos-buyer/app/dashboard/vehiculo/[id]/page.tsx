@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { sellerData } from "@/app/data/seller";
+import { calificacionesVehiculos, calificacionesPropietarios } from "@/app/data/feedback";
 import { bd } from "@/lib/bd";
 import VehicleInfoPanel from "@/components/dashboard/vehiculo/vehicle-info-panel";
 import OwnerCard from "@/components/dashboard/vehiculo/owner-card";
@@ -22,6 +23,16 @@ export default async function VehiculoPage({ params }: Props) {
   const propietario = sellerData.owners.find(
     (o) => o.id === vehiculo.id_propietario,
   );
+
+  const calificacionVehiculo = calificacionesVehiculos.find(
+    (c) => c.id_vehiculo === vehiculoId,
+  )?.calificacion_promedio;
+
+  const calificacionPropietario = propietario
+    ? calificacionesPropietarios.find(
+        (c) => c.id_propietario === propietario.id,
+      )?.calificacion_promedio
+    : undefined;
 
   const { userId } = await auth();
 
@@ -96,7 +107,7 @@ export default async function VehiculoPage({ params }: Props) {
             modelo={vehiculo.modelo}
             año={vehiculo.año}
             precio={vehiculo.precio}
-            calificacion={vehiculo.calificacion}
+            calificacion={calificacionVehiculo}
             initialIsFavorito={isFavorito}
           />
 
@@ -105,7 +116,7 @@ export default async function VehiculoPage({ params }: Props) {
               nombre={propietario.nombre}
               email={propietario.email}
               telefono={propietario.telefono}
-              calificacion={propietario.calificacion}
+              calificacion={calificacionPropietario}
             />
           )}
         </div>

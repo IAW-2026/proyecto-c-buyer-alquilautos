@@ -11,7 +11,7 @@ type ActionPanelProps = {
   modelo: string;
   año: number;
   precio: number;
-  calificacion: number;
+  calificacion?: number;
   initialIsFavorito: boolean;
 };
 
@@ -71,9 +71,11 @@ export default function ActionPanel({
         </h1>
         <p className="mt-1 text-sm text-[var(--text-secondary)]">{año}</p>
 
-        <div className="mt-3">
-          <StarRating rating={calificacion} />
-        </div>
+        {calificacion !== undefined && (
+          <div className="mt-3">
+            <StarRating rating={calificacion} />
+          </div>
+        )}
 
         <div className="mt-5 flex items-end gap-2">
           <span className="text-3xl font-bold text-[var(--text-primary)]">

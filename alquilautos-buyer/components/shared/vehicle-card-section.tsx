@@ -8,14 +8,15 @@ type VehicleCardProps = {
 	vehicle: SellerVehicle;
 	actionLabel?: string;
 	actionHref?: string;
+	calificacion?: number;
 };
 
 export default function VehicleCard({
 	vehicle,
 	actionLabel = "Reservar",
 	actionHref,
+	calificacion,
 }: VehicleCardProps) {
-	
 	const actionClassName =
 		"mt-4 h-10 w-full rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)]";
 
@@ -45,7 +46,7 @@ export default function VehicleCard({
 						{vehicle.marca} {vehicle.modelo}
 					</h3>
 					<p className="mt-1 text-sm text-[var(--text-secondary)]">
-						{vehicle.año} · {vehicle.calificacion.toFixed(1)}★
+						{vehicle.año}{calificacion !== undefined ? ` · ${calificacion.toFixed(1)}★` : ""}
 					</p>
 				</div>
 				<div className="text-right">
@@ -57,14 +58,14 @@ export default function VehicleCard({
 			<div className="mt-4 grid gap-2">
 				{actionHref ? (
 					<Link
-					href={actionHref}
-					className={`${actionClassName} inline-flex items-center justify-center`}
+						href={actionHref}
+						className={`${actionClassName} inline-flex items-center justify-center`}
 					>
-					{actionLabel}
+						{actionLabel}
 					</Link>
 				) : (
 					<button type="button" className={actionClassName}>
-					{actionLabel}
+						{actionLabel}
 					</button>
 				)}
 			</div>

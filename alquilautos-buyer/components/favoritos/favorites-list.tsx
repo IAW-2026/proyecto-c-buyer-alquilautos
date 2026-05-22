@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { sellerData } from "@/app/data/seller";
+import { calificacionesVehiculos } from "@/app/data/feedback";
 import FavoriteCard from "@/components/favoritos/favorite-card";
 import type { FavoriteItem } from "@prisma/client";
 
@@ -62,6 +63,9 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
         const owner = vehicle
           ? sellerData.owners.find((o) => o.id === vehicle.id_propietario)
           : undefined;
+        const calificacion = calificacionesVehiculos.find(
+          (c) => c.id_vehiculo === item.vehiculoExternoId,
+        )?.calificacion_promedio;
 
         if (!vehicle) return null;
 
@@ -70,6 +74,7 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
             key={item.id}
             vehicle={vehicle}
             owner={owner}
+            calificacion={calificacion}
             onDelete={handleDelete}
             isDeleting={deletingId === item.vehiculoExternoId}
           />

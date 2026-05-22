@@ -4,7 +4,7 @@ type OwnerCardProps = {
   nombre: string;
   email: string;
   telefono: string;
-  calificacion: number;
+  calificacion?: number;
 };
 
 export default function OwnerCard({
@@ -26,10 +26,12 @@ export default function OwnerCard({
           <p className="text-sm font-semibold text-[var(--text-primary)]">
             {nombre}
           </p>
-          <StarRating
-            rating={calificacion}
-            valueClassName="text-xs text-[var(--text-secondary)]"
-          />
+          {calificacion !== undefined && (
+            <StarRating
+              rating={calificacion}
+              valueClassName="text-xs text-[var(--text-secondary)]"
+            />
+          )}
         </div>
       </div>
       <div className="mt-4 grid gap-2 text-sm">

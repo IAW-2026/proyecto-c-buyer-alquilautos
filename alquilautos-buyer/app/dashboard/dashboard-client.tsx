@@ -5,35 +5,14 @@ import { useEffect, useState } from "react";
 import FilterSection from "@/components/dashboard/filter-section";
 import DashboardVehiclesSection from "@/components/shared/dashboard-vehicles-section";
 import useFilteredVehicles from "@/hooks/use-filtered-vehicles";
-
-type SellerOwner = {
-  id: number;
-  nombre: string;
-  email: string;
-  telefono: string;
-  calificacion: number;
-};
-
-type SellerVehicle = {
-  id: number;
-  id_propietario: number;
-  marca: string;
-  modelo: string;
-  "año": number;
-  precio: number;
-  calificacion: number;
-  imagen: string;
-  estado: "disponible" | "indisponible";
-};
-
-type SellerData = {
-  owners: SellerOwner[];
-  vehicles: SellerVehicle[];
-};
+import type { SellerData } from "@/app/data/seller";
+import type { CalificacionVehiculo } from "@/app/data/feedback";
+import { calificacionesVehiculos } from "@/app/data/feedback";
 
 export default function DashboardClient() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<SellerData | null>(null);
+  const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>(calificacionesVehiculos);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [modelFilter, setModelFilter] = useState(
@@ -46,7 +25,7 @@ export default function DashboardClient() {
   useEffect(() => {
     let isActive = true;
 
-    const loadSellerData = async () => {
+    const loadData = async () => {
       try {
         const response = await fetch("/api/seller");
 
@@ -55,6 +34,10 @@ export default function DashboardClient() {
         }
 
         const payload = (await response.json()) as SellerData;
+
+        // TODO: reemplazar por fetch real a la Feedback App
+        // const feedbackRes = await fetch("/api/resena/vehiculo/calificaciones");
+        // if (feedbackRes.ok) setCalificaciones(await feedbackRes.json());
 
         if (isActive) {
           setData(payload);
@@ -70,7 +53,7 @@ export default function DashboardClient() {
       }
     };
 
-    loadSellerData();
+    loadData();
 
     return () => {
       isActive = false;
@@ -94,6 +77,7 @@ export default function DashboardClient() {
           />
           <DashboardVehiclesSection
             vehicles={filteredVehicles ?? null}
+            calificaciones={calificaciones}
             error={error}
             isLoading={isLoading}
           />

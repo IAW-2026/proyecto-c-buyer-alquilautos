@@ -2,21 +2,12 @@
 
 import { useState } from "react";
 import VehicleCard from "@/components/shared/vehicle-card-section";
-
-type SellerVehicle = {
-	id: number;
-	id_propietario: number;
-	marca: string;
-	modelo: string;
-	"año": number;
-	precio: number;
-	calificacion: number;
-	imagen: string;
-	estado: "disponible" | "indisponible";
-};
+import type { SellerVehicle } from "@/app/data/seller";
+import type { CalificacionVehiculo } from "@/app/data/feedback";
 
 type DashboardVehiclesSectionProps = {
 	vehicles: SellerVehicle[] | null;
+	calificaciones: CalificacionVehiculo[];
 	error: string | null;
 	isLoading: boolean;
 };
@@ -25,6 +16,7 @@ const PAGE_SIZE = 9;
 
 export default function DashboardVehiclesSection({
 	vehicles,
+	calificaciones,
 	error,
 	isLoading,
 }: DashboardVehiclesSectionProps) {
@@ -66,14 +58,21 @@ export default function DashboardVehiclesSection({
 			{paginated ? (
 				<>
 					<div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-						{paginated.map((vehiculo) => (
-							<VehicleCard
-								key={vehiculo.id}
-								vehicle={vehiculo}
-								actionLabel="Mas Detalles"
-								actionHref={`/dashboard/vehiculo/${vehiculo.id}`}
-							/>
-						))}
+						{paginated.map((vehiculo) => {
+							const calificacion = calificaciones.find(
+								(c) => c.id_vehiculo === vehiculo.id,
+							)?.calificacion_promedio;
+
+							return (
+								<VehicleCard
+									key={vehiculo.id}
+									vehicle={vehiculo}
+									actionLabel="Mas Detalles"
+									actionHref={`/dashboard/vehiculo/${vehiculo.id}`}
+									calificacion={calificacion}
+								/>
+							);
+						})}
 					</div>
 
 					{totalPages > 1 ? (
