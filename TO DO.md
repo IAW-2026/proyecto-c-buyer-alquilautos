@@ -12,3 +12,4 @@
 #### Poder ver todos los vehiculos de un propietario
 #### Cambiar imagen de los vehiculos a "fotos" (nombre usado en el endpoint)
 #### CAMBIAR NAVBAR
+#### Verificar datos correctos de perfil (Fecha real, etc)
