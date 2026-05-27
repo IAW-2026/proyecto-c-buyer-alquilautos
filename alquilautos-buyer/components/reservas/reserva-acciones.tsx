@@ -5,16 +5,27 @@ import type { EstadoReserva } from "@/app/data/reservas";
 import CancelarReservaModal from "@/components/reservas/cancelar-reserva-modal";
 import CoordinarEntregaModal from "@/components/reservas/coordinar-entrega-modal";
 import PagoLinkModal from "@/components/reservas/pago-link-modal";
+import ResenaModal from "@/components/reservas/resena-modal";
 
 type ReservaAccionesProps = {
   idReserva: number;
   estado: EstadoReserva;
+  idVehiculo: number;
+  idPropietario: number;
+  idEmisor: string;
 };
 
-export default function ReservaAcciones({ idReserva, estado }: ReservaAccionesProps) {
+export default function ReservaAcciones({
+  idReserva,
+  estado,
+  idVehiculo,
+  idPropietario,
+  idEmisor,
+}: ReservaAccionesProps) {
   const [showCancelarModal, setShowCancelarModal] = useState(false);
   const [showCoordinarModal, setShowCoordinarModal] = useState(false);
   const [showPagoModal, setShowPagoModal] = useState(false);
+  const [showResenaModal, setShowResenaModal] = useState(false);
 
   return (
     <>
@@ -66,6 +77,19 @@ export default function ReservaAcciones({ idReserva, estado }: ReservaAccionesPr
         </button>
       )}
 
+      {estado === "Finalizada" && (
+      <button
+        type="button"
+        onClick={() => setShowResenaModal(true)}
+        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl border border-[var(--color-accent-400)] bg-[var(--color-accent-50)] text-sm font-semibold text-[var(--color-accent-600)] transition hover:bg-[var(--color-accent-100)]"
+      >
+        <svg viewBox="0 0 24 24" className="h-4 w-4 text-[var(--color-accent-400)]" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2l2.83 5.74 6.34.92-4.59 4.47 1.08 6.31L12 16.98 6.34 19.44l1.08-6.31-4.59-4.47 6.34-.92L12 2z" />
+        </svg>
+        Escribir reseña
+      </button>
+    )}
+
       {showCancelarModal && (
         <CancelarReservaModal
           idReserva={idReserva}
@@ -84,6 +108,16 @@ export default function ReservaAcciones({ idReserva, estado }: ReservaAccionesPr
         <PagoLinkModal
           idReserva={idReserva}
           onClose={() => setShowPagoModal(false)}
+        />
+      )}
+
+      {showResenaModal && (
+        <ResenaModal
+          idReserva={idReserva}
+          idVehiculo={idVehiculo}
+          idPropietario={idPropietario}
+          idEmisor={idEmisor}
+          onClose={() => setShowResenaModal(false)}
         />
       )}
     </>

@@ -40,3 +40,4 @@ export const calificacionesPropietarios: CalificacionPropietario[] = [
   { id_propietario: 458979, calificacion_promedio: 4.6, cantidad_resenas: 18 },
   { id_propietario: 458980, calificacion_promedio: 4.9, cantidad_resenas: 25 },
 ];
+

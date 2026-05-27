@@ -71,6 +71,6 @@ export const reservasMock: Reserva[] = [
     id_alquilador: "user_mock",
     fecha_inicio: "2026-02-15",
     fecha_final: "2026-02-18",
-    estado: "Rechazada",
+    estado: "Finalizada",
   },
 ];

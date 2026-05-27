@@ -7,6 +7,7 @@ import ReservaResumen from "@/components/reservas/reserva-resumen";
 import ReservaPropietario from "@/components/reservas/reserva-propietario";
 import ReservaVehiculoInfo from "@/components/reservas/reserva-vehiculo-info";
 import ReservaAcciones from "@/components/reservas/reserva-acciones";
+import { auth } from "@clerk/nextjs/server";
 
 type Props = {
   params: Promise<{ id_reserva: string }>;
@@ -24,6 +25,7 @@ export default async function ReservaDetallePage({ params }: Props) {
   if (!reserva) notFound();
 
   const vehiculo = await getVehiculoById(reserva.id_vehiculo);
+  const { userId } = await auth();
   const propietario = vehiculo ? await getPropietarioById(vehiculo.id_propietario) : null;
 
   const dias = calcularDias(reserva.fecha_inicio, reserva.fecha_final);
@@ -74,6 +76,9 @@ export default async function ReservaDetallePage({ params }: Props) {
           <ReservaAcciones
             idReserva={reserva.id_reserva}
             estado={reserva.estado}
+            idVehiculo={reserva.id_vehiculo}
+            idPropietario={vehiculo?.id_propietario ?? 0}
+            idEmisor={userId ?? ""}
           />
           {propietario && (
             <ReservaPropietario

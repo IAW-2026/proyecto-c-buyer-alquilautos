@@ -8,8 +8,9 @@
 #### Dejar un comentario en cada api para indicar su funcion
 #### Hacer READ.ME
 #### Chequear documentacion de las apis 
-#### Responder reseña del propietario
 #### Tener un post para poder recibir la calificacion de un alquilador agregar tabla en BD
 #### DNI UNICO, EMAIL UNICO.
 #### Acomodar tema oscuro
 #### Poder ver todos los vehiculos de un propietario
+#### Cambiar imagen de los vehiculos a "fotos" (nombre usado en el endpoint)
+#### CAMBIAR NAVBAR
