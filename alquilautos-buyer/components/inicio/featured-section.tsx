@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useRef, useEffect, useState } from "react";
-import { sellerData } from "@/app/data/seller";
-import { calificacionesVehiculos, type CalificacionVehiculo } from "@/app/data/feedback";
+import type { SellerVehicle } from "@/app/data/seller";
+import type { CalificacionVehiculo } from "@/app/data/feedback";
 import VehicleCard from "@/components/shared/vehicle-card-section";
 
-const pickTopRatedVehicles = (count: number, calificaciones: CalificacionVehiculo[]) =>
-  sellerData.vehicles
+const pickTopRatedVehicles = (vehicles: SellerVehicle[], count: number, calificaciones: CalificacionVehiculo[]) =>
+  vehicles
     .filter((vehicle) => vehicle.estado === "disponible")
     .slice()
     .sort((a, b) => {
@@ -19,23 +19,36 @@ const pickTopRatedVehicles = (count: number, calificaciones: CalificacionVehicul
     .slice(0, count);
 
 export default function FeaturedSection() {
-  const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>(calificacionesVehiculos);
+  const [vehicles, setVehicles] = useState<SellerVehicle[]>([]);
+  const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>([]);
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchCalificaciones = async () => {
+    const fetchData = async () => {
       try {
-        // TODO: reemplazar por fetch real a la Feedback App via endpoint
-        // const res = await fetch("/api/resena/vehiculo/calificaciones");
-        // if (res.ok) setCalificaciones(await res.json());
+        const sellerRes = await fetch("/api/seller");
+        if (!sellerRes.ok) return;
+
+        const data = await sellerRes.json();
+        setVehicles(data.vehicles);
+
+        const cals = await Promise.all(
+          data.vehicles.map((v: SellerVehicle) =>
+            fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null),
+          ),
+        );
+        setCalificaciones(cals.filter(Boolean));
       } catch {
-        // usa el mock por defecto
+        // sin datos, muestra lista vacía
       }
     };
-    fetchCalificaciones();
+
+    fetchData();
   }, []);
 
-  const featuredVehicles = pickTopRatedVehicles(7, calificaciones);
+  const featuredVehicles = pickTopRatedVehicles(vehicles, 7, calificaciones);
 
   return (
     <section className="relative py-4 md:py-8">

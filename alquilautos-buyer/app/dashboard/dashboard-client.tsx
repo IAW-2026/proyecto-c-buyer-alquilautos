@@ -5,14 +5,13 @@ import { useEffect, useState } from "react";
 import FilterSection from "@/components/dashboard/filter-section";
 import DashboardVehiclesSection from "@/components/shared/dashboard-vehicles-section";
 import useFilteredVehicles from "@/hooks/use-filtered-vehicles";
-import type { SellerData } from "@/app/data/seller";
+import type { SellerData, SellerVehicle } from "@/app/data/seller";
 import type { CalificacionVehiculo } from "@/app/data/feedback";
-import { calificacionesVehiculos } from "@/app/data/feedback";
 
 export default function DashboardClient() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<SellerData | null>(null);
-  const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>(calificacionesVehiculos);
+  const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [modelFilter, setModelFilter] = useState(
@@ -28,19 +27,21 @@ export default function DashboardClient() {
     const loadData = async () => {
       try {
         const response = await fetch("/api/seller");
-
-        if (!response.ok) {
-          throw new Error("No se pudo cargar la data del seller");
-        }
+        if (!response.ok) throw new Error("No se pudo cargar la data del seller");
 
         const payload = (await response.json()) as SellerData;
 
-        // TODO: reemplazar por fetch real a la Feedback App
-        // const feedbackRes = await fetch("/api/resena/vehiculo/calificaciones");
-        // if (feedbackRes.ok) setCalificaciones(await feedbackRes.json());
+        const cals = await Promise.all(
+          payload.vehicles.map((v: SellerVehicle) =>
+            fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null),
+          ),
+        );
 
         if (isActive) {
           setData(payload);
+          setCalificaciones(cals.filter(Boolean));
         }
       } catch (err) {
         if (isActive) {

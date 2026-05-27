@@ -1,9 +1,33 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { reservasMock } from "@/app/data/reservas";
 
 type Props = {
   params: Promise<{ id_reserva: string }>;
 };
+
+export async function GET(_req: Request, { params }: Props) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+  }
+
+  const { id_reserva } = await params;
+
+  // TODO: reemplazar por fetch real a la Seller App
+  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id_reserva}`);
+  // const reserva = await response.json();
+  // return NextResponse.json(reserva, { status: 200 });
+
+  const reserva = reservasMock.find((r) => r.id_reserva === Number(id_reserva));
+
+  if (!reserva) {
+    return NextResponse.json({ error: "Reserva no encontrada" }, { status: 404 });
+  }
+
+  return NextResponse.json(reserva, { status: 200 });
+}
 
 export async function PATCH(req: Request, { params }: Props) {
   const { userId } = await auth();

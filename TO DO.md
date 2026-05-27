@@ -1,7 +1,6 @@
 #### Vista admin (junto con todo el crud de los usuarios)
 #### Parte reseñas (mandar los formularios con post)
 #### Comentar codigo
-#### Vista payments
 #### Acomodar vista de telefono
 #### Verificar proteccion de links de apis
 #### Verificar logeo con gmail

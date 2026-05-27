@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { sellerData } from "@/app/data/seller";
-import { reservasMock } from "@/app/data/reservas";
+import { getReservaById } from "@/app/services/reserva";
+import { getVehiculoById, getPropietarioById } from "@/app/services/seller";
 import ReservaResumen from "@/components/reservas/reserva-resumen";
 import ReservaPropietario from "@/components/reservas/reserva-propietario";
 import ReservaVehiculoInfo from "@/components/reservas/reserva-vehiculo-info";
@@ -20,20 +20,17 @@ function calcularDias(inicio: string, fin: string): number {
 export default async function ReservaDetallePage({ params }: Props) {
   const { id_reserva } = await params;
 
-  const reserva = reservasMock.find((r) => r.id_reserva === Number(id_reserva));
+  const reserva = await getReservaById(Number(id_reserva));
   if (!reserva) notFound();
 
-  const vehiculo = sellerData.vehicles.find((v) => v.id === reserva.id_vehiculo);
-  const propietario = vehiculo
-    ? sellerData.owners.find((o) => o.id === vehiculo.id_propietario)
-    : undefined;
+  const vehiculo = await getVehiculoById(reserva.id_vehiculo);
+  const propietario = vehiculo ? await getPropietarioById(vehiculo.id_propietario) : null;
 
   const dias = calcularDias(reserva.fecha_inicio, reserva.fecha_final);
   const total = vehiculo ? dias * vehiculo.precio : null;
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 pb-16 pt-28 sm:px-6">
-      {/* Breadcrumb */}
       <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
         <Link href="/reservas" className="transition-colors hover:text-[var(--text-primary)]">
           Mis reservas
@@ -43,7 +40,6 @@ export default async function ReservaDetallePage({ params }: Props) {
       </nav>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        {/* Columna izquierda */}
         <div className="flex flex-col gap-6">
           {vehiculo && (
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-[var(--border-default)]">
@@ -66,7 +62,6 @@ export default async function ReservaDetallePage({ params }: Props) {
           )}
         </div>
 
-        {/* Columna derecha */}
         <div className="flex flex-col gap-4">
           <ReservaResumen
             idReserva={reserva.id_reserva}

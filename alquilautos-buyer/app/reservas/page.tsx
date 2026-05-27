@@ -1,17 +1,18 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { sellerData } from "@/app/data/seller";
-import { reservasMock, type Reserva } from "@/app/data/reservas";
+import { getReservasByAlquilador } from "@/app/services/reserva";
+import { getTodasLasReservas } from "@/app/services/reserva";//mock
+import { getVehiculoById } from "@/app/services/seller";
 import ReservaCard from "@/components/reservas/reserva-card";
 
 export default async function ReservasPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
-  // TODO: reemplazar por fetch real a la Seller App
-  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/alquilador/${userId}`);
-  // const reservas: Reserva[] = await response.json();
-  const reservas: Reserva[] = reservasMock;
+  const reservas = await getTodasLasReservas(); //mock
+  const vehiculos = await Promise.all(
+    reservas.map((r) => getVehiculoById(r.id_vehiculo)),
+  );
 
   return (
     <main className="mx-auto w-full max-w-4xl px-4 pb-16 pt-28 sm:px-6">
@@ -37,18 +38,13 @@ export default async function ReservasPage() {
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          {reservas.map((reserva) => {
-            const vehiculo = sellerData.vehicles.find(
-              (v) => v.id === reserva.id_vehiculo,
-            );
-            return (
-              <ReservaCard
-                key={reserva.id_reserva}
-                reserva={reserva}
-                vehiculo={vehiculo}
-              />
-            );
-          })}
+          {reservas.map((reserva, index) => (
+            <ReservaCard
+              key={reserva.id_reserva}
+              reserva={reserva}
+              vehiculo={vehiculos[index] ?? undefined}
+            />
+          ))}
         </div>
       )}
     </main>

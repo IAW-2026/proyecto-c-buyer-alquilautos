@@ -4,21 +4,42 @@ import { useState } from "react";
 import type { EstadoReserva } from "@/app/data/reservas";
 import CancelarReservaModal from "@/components/reservas/cancelar-reserva-modal";
 import CoordinarEntregaModal from "@/components/reservas/coordinar-entrega-modal";
+import PagoLinkModal from "@/components/reservas/pago-link-modal";
 
 type ReservaAccionesProps = {
   idReserva: number;
   estado: EstadoReserva;
 };
 
-export default function ReservaAcciones({
-  idReserva,
-  estado,
-}: ReservaAccionesProps) {
+export default function ReservaAcciones({ idReserva, estado }: ReservaAccionesProps) {
   const [showCancelarModal, setShowCancelarModal] = useState(false);
   const [showCoordinarModal, setShowCoordinarModal] = useState(false);
+  const [showPagoModal, setShowPagoModal] = useState(false);
 
   return (
     <>
+      {estado === "Coordinada" && (
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2 rounded-xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] px-4 py-2.5">
+            <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-[var(--status-unavailable-text)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <p className="text-sm font-medium text-[var(--status-unavailable-text)]">
+              Pago pendiente
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowPagoModal(true)}
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)]"
+          >
+            Pagar
+          </button>
+        </div>
+      )}
+
       {estado === "Aceptada" && (
         <button
           type="button"
@@ -56,6 +77,13 @@ export default function ReservaAcciones({
         <CoordinarEntregaModal
           idReserva={idReserva}
           onClose={() => setShowCoordinarModal(false)}
+        />
+      )}
+
+      {showPagoModal && (
+        <PagoLinkModal
+          idReserva={idReserva}
+          onClose={() => setShowPagoModal(false)}
         />
       )}
     </>

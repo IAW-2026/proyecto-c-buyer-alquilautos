@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { sellerData } from "@/app/data/seller";
-import { calificacionesVehiculos } from "@/app/data/feedback";
+import { useState, useEffect } from "react";
 import FavoriteCard from "@/components/favoritos/favorite-card";
 import { deleteFavorito } from "@/app/actions/favorito";
 import type { FavoriteItem } from "@prisma/client";
+import type { SellerVehicle, SellerOwner } from "@/app/data/seller";
+import type { CalificacionVehiculo } from "@/app/data/feedback";
 
 type FavoritesListProps = {
   initialItems: FavoriteItem[];
@@ -13,7 +13,36 @@ type FavoritesListProps = {
 
 export default function FavoritesList({ initialItems }: FavoritesListProps) {
   const [items, setItems] = useState<FavoriteItem[]>(initialItems);
+  const [vehicles, setVehicles] = useState<SellerVehicle[]>([]);
+  const [owners, setOwners] = useState<SellerOwner[]>([]);
+  const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>([]);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/seller");
+        if (!res.ok) return;
+
+        const data = await res.json();
+        setVehicles(data.vehicles);
+        setOwners(data.owners);
+
+        const cals = await Promise.all(
+          data.vehicles.map((v: SellerVehicle) =>
+            fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null),
+          ),
+        );
+        setCalificaciones(cals.filter(Boolean));
+      } catch {
+        // mantiene arrays vacíos
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleDelete = async (vehiculoExternoId: number) => {
     setDeletingId(vehiculoExternoId);
@@ -53,13 +82,11 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   return (
     <div className="flex flex-col gap-4">
       {items.map((item) => {
-        const vehicle = sellerData.vehicles.find(
-          (v) => v.id === item.vehiculoExternoId,
-        );
+        const vehicle = vehicles.find((v) => v.id === item.vehiculoExternoId);
         const owner = vehicle
-          ? sellerData.owners.find((o) => o.id === vehicle.id_propietario)
+          ? owners.find((o) => o.id === vehicle.id_propietario)
           : undefined;
-        const calificacion = calificacionesVehiculos.find(
+        const calificacion = calificaciones.find(
           (c) => c.id_vehiculo === item.vehiculoExternoId,
         )?.calificacion_promedio;
 
