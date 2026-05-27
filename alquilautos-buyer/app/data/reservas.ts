@@ -53,7 +53,7 @@ export const reservasMock: Reserva[] = [
     id_alquilador: "user_mock",
     fecha_inicio: "2026-04-10",
     fecha_final: "2026-04-15",
-    estado: "Aceptada",
+    estado: "Coordinada",
   },
   {
     id_reserva: 1005,

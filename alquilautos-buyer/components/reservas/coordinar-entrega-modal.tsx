@@ -88,11 +88,11 @@ export default function CoordinarEntregaModal({
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        id_reserva: idReserva,
-        horarios: [
-          { tipo: "entrega", hora_seleccionada: horaEntrega },
-          { tipo: "devolucion", hora_seleccionada: horaDevolucion },
-        ],
+          id_reserva: idReserva,
+          horarios: [
+            { tipo: "entrega", hora_seleccionada: horaEntrega },
+            { tipo: "devolucion", hora_seleccionada: horaDevolucion },
+          ],
         }),
       });
 
@@ -102,6 +102,28 @@ export default function CoordinarEntregaModal({
       }
 
       setSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error inesperado");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelarEntrega = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/cancelar/${idReserva}`, {
+        method: "PATCH",
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error ?? "Error al cancelar la entrega");
+      }
+
+      onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
     } finally {
@@ -179,7 +201,6 @@ export default function CoordinarEntregaModal({
               </div>
             ) : (
               <>
-                {/* Horario entrega */}
                 {horarioEntrega && (
                   <div className="flex flex-col gap-2">
                     <p className="text-sm font-medium text-[var(--text-primary)]">
@@ -207,7 +228,6 @@ export default function CoordinarEntregaModal({
                   </div>
                 )}
 
-                {/* Horario devolución */}
                 {horarioDevolucion && (
                   <div className="flex flex-col gap-2">
                     <p className="text-sm font-medium text-[var(--text-primary)]">
@@ -254,11 +274,11 @@ export default function CoordinarEntregaModal({
               </button>
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleCancelarEntrega}
                 disabled={isLoading}
-                className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-[var(--border-default)] bg-transparent text-sm font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-elevated)] disabled:opacity-60"
+                className="inline-flex h-11 w-full items-center justify-center rounded-2xl border border-[var(--status-unavailable-border)] bg-transparent text-sm font-semibold text-[var(--status-unavailable-text)] transition hover:bg-[var(--status-unavailable-bg)] disabled:opacity-60"
               >
-                Cancelar
+                Cancelar entrega
               </button>
             </div>
           </div>
