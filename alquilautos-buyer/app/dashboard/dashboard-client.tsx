@@ -22,44 +22,39 @@ export default function DashboardClient() {
   );
 
   useEffect(() => {
-    let isActive = true;
+  let isActive = true;
 
-    const loadData = async () => {
-      try {
-        const response = await fetch("/api/seller");
-        if (!response.ok) throw new Error("No se pudo cargar la data del seller");
+  const loadData = async () => {
+    try {
+      const res = await fetch("/api/vehiculo/disponible");
+      if (!res.ok) throw new Error("No se pudo cargar los vehículos");
 
-        const payload = (await response.json()) as SellerData;
+      const { vehiculos } = await res.json();
 
-        const cals = await Promise.all(
-          payload.vehicles.map((v: SellerVehicle) =>
-            fetch(`/api/resena/vehiculo/${v.id}/promedio`)
-              .then((r) => (r.ok ? r.json() : null))
-              .catch(() => null),
-          ),
-        );
+      const cals = await Promise.all(
+        vehiculos.map((v: SellerVehicle) =>
+          fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null),
+        ),
+      );
 
-        if (isActive) {
-          setData(payload);
-          setCalificaciones(cals.filter(Boolean));
-        }
-      } catch (err) {
-        if (isActive) {
-          setError(err instanceof Error ? err.message : "Error inesperado");
-        }
-      } finally {
-        if (isActive) {
-          setIsLoading(false);
-        }
+      if (isActive) {
+        setData({ vehicles: vehiculos, owners: [] });
+        setCalificaciones(cals.filter(Boolean));
       }
-    };
+    } catch (err) {
+      if (isActive) {
+        setError(err instanceof Error ? err.message : "Error inesperado");
+      }
+    } finally {
+      if (isActive) setIsLoading(false);
+    }
+  };
 
-    loadData();
-
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  loadData();
+  return () => { isActive = false; };
+}, []);
 
   const filteredVehicles = useFilteredVehicles(data?.vehicles, {
     modelFilter,

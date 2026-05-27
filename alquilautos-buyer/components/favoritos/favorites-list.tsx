@@ -19,30 +19,39 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch("/api/seller");
-        if (!res.ok) return;
+  const fetchData = async () => {
+    try {
+      const res = await fetch("/api/vehiculo/disponible");
+      if (!res.ok) return;
 
-        const data = await res.json();
-        setVehicles(data.vehicles);
-        setOwners(data.owners);
+      const { vehiculos } = await res.json();
+      setVehicles(vehiculos);
 
-        const cals = await Promise.all(
-          data.vehicles.map((v: SellerVehicle) =>
-            fetch(`/api/resena/vehiculo/${v.id}/promedio`)
-              .then((r) => (r.ok ? r.json() : null))
-              .catch(() => null),
-          ),
-        );
-        setCalificaciones(cals.filter(Boolean));
-      } catch {
-        // mantiene arrays vacíos
-      }
-    };
+      // Fetchear propietario por cada vehículo
+      const ownersRaw = await Promise.all(
+        vehiculos.map((v: SellerVehicle) =>
+          fetch(`/api/propietario/${v.id_propietario}`)
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null),
+        ),
+      );
+      setOwners(ownersRaw.filter(Boolean));
 
-    fetchData();
-  }, []);
+      const cals = await Promise.all(
+        vehiculos.map((v: SellerVehicle) =>
+          fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null),
+        ),
+      );
+      setCalificaciones(cals.filter(Boolean));
+    } catch {
+      // mantiene arrays vacíos
+    }
+  };
+
+  fetchData();
+}, []);
 
   const handleDelete = async (vehiculoExternoId: number) => {
     setDeletingId(vehiculoExternoId);

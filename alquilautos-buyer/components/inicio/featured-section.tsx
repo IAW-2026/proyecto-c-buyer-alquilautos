@@ -24,29 +24,29 @@ export default function FeaturedSection() {
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sellerRes = await fetch("/api/seller");
-        if (!sellerRes.ok) return;
+  const fetchData = async () => {
+    try {
+      const res = await fetch("/api/vehiculo/disponible");
+      if (!res.ok) return;
 
-        const data = await sellerRes.json();
-        setVehicles(data.vehicles);
+      const { vehiculos } = await res.json();
+      setVehicles(vehiculos);
 
-        const cals = await Promise.all(
-          data.vehicles.map((v: SellerVehicle) =>
-            fetch(`/api/resena/vehiculo/${v.id}/promedio`)
-              .then((r) => (r.ok ? r.json() : null))
-              .catch(() => null),
-          ),
-        );
-        setCalificaciones(cals.filter(Boolean));
-      } catch {
-        // sin datos, muestra lista vacía
-      }
-    };
+      const cals = await Promise.all(
+        vehiculos.map((v: SellerVehicle) =>
+          fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+            .then((r) => (r.ok ? r.json() : null))
+            .catch(() => null),
+        ),
+      );
+      setCalificaciones(cals.filter(Boolean));
+    } catch {
+      // sin datos, muestra lista vacía
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
 
   const featuredVehicles = pickTopRatedVehicles(vehicles, 7, calificaciones);
 
