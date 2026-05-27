@@ -7,6 +7,7 @@ import ReservaResumen from "@/components/reservas/reserva-resumen";
 import ReservaPropietario from "@/components/reservas/reserva-propietario";
 import ReservaVehiculoInfo from "@/components/reservas/reserva-vehiculo-info";
 import ReservaAcciones from "@/components/reservas/reserva-acciones";
+import ResenasSection from "@/components/reservas/resenas-section";
 import { auth } from "@clerk/nextjs/server";
 
 type Props = {
@@ -88,6 +89,10 @@ export default async function ReservaDetallePage({ params }: Props) {
           )}
         </div>
       </div>
+
+      {reserva.estado === "Finalizada" && (
+        <ResenasSection idEmisor={userId ?? ""} />
+      )}
     </main>
   );
 }

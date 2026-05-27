@@ -12,6 +12,11 @@ const isPublicRoute = createRouteMatcher([
   "/api/alquilador",
   "/api/alquilador/(.*)",
   "/api/resena/(.*)",
+  "/api/resena/vehiculo/(.*)",
+  "/api/resena/propietario/(.*)",
+  "/api/resena/alquilador/(.*)",
+  "/api/respuesta",
+  "/api/resumen/(.*)",
 ]);
 
 export default clerkMiddleware(

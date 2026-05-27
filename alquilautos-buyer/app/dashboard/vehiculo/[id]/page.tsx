@@ -105,13 +105,14 @@ export default async function VehiculoPage({ params }: Props) {
           />
 
           {propietario && (
-            <OwnerCard
-              nombre={propietario.nombre}
-              email={propietario.email}
-              telefono={propietario.telefono}
-              calificacion={calificacionPropietario?.calificacion_promedio}
-            />
-          )}
+          <OwnerCard
+            propietarioId={propietario.id}
+            nombre={propietario.nombre}
+            email={propietario.email}
+            telefono={propietario.telefono}
+            calificacion={calificacionPropietario?.calificacion_promedio}
+          />
+        )}
         </div>
       </div>
     </main>
