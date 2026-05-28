@@ -1,9 +1,7 @@
 #### Comentar codigo
-#### Verificar proteccion de links de apis
 #### Verificar logeo con gmail
 #### Conectar la base de datos main
 #### Dejar un comentario en cada api para indicar su funcion
-#### Hacer READ.ME
 #### Chequear documentacion de las apis 
 #### DNI UNICO, EMAIL UNICO.
 #### Poder ver todos los vehiculos de un propietario
