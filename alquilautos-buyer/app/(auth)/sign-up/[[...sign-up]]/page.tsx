@@ -11,7 +11,9 @@ export default function SignUpPage() {
             alt="Vehiculo en ruta"
             fill
             priority
+            loading="eager"
             className="object-cover"
+            sizes="(max-width: 1024px) 0vw, 55vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
           <div className="relative z-10 flex w-full flex-col items-start justify-end gap-6 pb-12 pl-14 pr-10 pt-10 text-left text-white">

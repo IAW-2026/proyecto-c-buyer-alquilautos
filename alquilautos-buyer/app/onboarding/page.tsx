@@ -64,7 +64,7 @@ export default function OnboardingPage() {
     <main className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] px-4 py-16">
       <div className="w-full max-w-2xl">
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          <Image src="/logo.png" alt="Alquilautos" width={56} height={56} priority />
+          <Image src="/logo.png" alt="Alquilautos" width={56} height={56} priority loading="eager" style={{ width: "56px", height: "56px" }} />
           <h1 className="text-2xl font-semibold text-[var(--text-primary)]">
             Completá tu perfil
           </h1>

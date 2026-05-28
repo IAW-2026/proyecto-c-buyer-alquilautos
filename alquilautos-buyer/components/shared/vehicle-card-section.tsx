@@ -28,7 +28,8 @@ export default function VehicleCard({
 					alt={`${vehicle.marca} ${vehicle.modelo}`}
 					fill
 					className="object-cover"
-				/>
+					sizes="(max-width: 768px) 100vw, 320px"
+					/>
 				<span
 					className={`absolute right-3 top-3 rounded-full px-3 py-1 text-xs font-semibold ${
 						vehicle.estado === "disponible"

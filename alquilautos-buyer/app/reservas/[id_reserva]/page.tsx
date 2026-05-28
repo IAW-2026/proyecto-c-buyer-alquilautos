@@ -47,12 +47,14 @@ export default async function ReservaDetallePage({ params }: Props) {
           {vehiculo && (
             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-[var(--border-default)]">
               <Image
-                src={vehiculo.imagen}
-                alt={`${vehiculo.marca} ${vehiculo.modelo}`}
-                fill
-                className="object-cover"
-                priority
-              />
+              src={vehiculo.imagen}
+              alt={`${vehiculo.marca} ${vehiculo.modelo}`}
+              fill
+              className="object-cover"
+              priority
+              loading="eager"
+              sizes="(max-width: 1024px) 100vw, calc(100vw - 380px)"
+            />
             </div>
           )}
           {vehiculo && (

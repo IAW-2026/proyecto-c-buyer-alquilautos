@@ -30,11 +30,12 @@ export default function ReservaCard({ reserva, vehiculo }: ReservaCardProps) {
       {vehiculo && (
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl sm:h-32 sm:w-48 sm:shrink-0">
           <Image
-            src={vehiculo.imagen}
-            alt={`${vehiculo.marca} ${vehiculo.modelo}`}
-            fill
-            className="object-cover"
-          />
+          src={vehiculo.imagen}
+          alt={`${vehiculo.marca} ${vehiculo.modelo}`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, 192px"
+        />
         </div>
       )}
 

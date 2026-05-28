@@ -8,10 +8,11 @@ export default function Footer() {
 				<div className="flex flex-col gap-4">
 					<div className="flex items-center gap-3">
 						<Image
-							src="/logo.png"
-							alt="Alquilautos"
-							width={32}
-							height={32}
+						src="/logo.png"
+						alt="Alquilautos"
+						width={32}
+						height={32}
+						style={{ width: "32px", height: "32px" }}
 						/>
 						<span className="text-base font-semibold">Alquilautos</span>
 					</div>

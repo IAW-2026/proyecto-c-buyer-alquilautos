@@ -33,6 +33,7 @@ export default async function PerfilPage() {
             alt={`${user.nombre ?? "Usuario"}`}
             fill
             className="object-cover"
+            sizes="80px"
           />
         </div>
         <div>

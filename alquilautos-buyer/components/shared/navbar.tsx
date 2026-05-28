@@ -54,7 +54,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/logo.png" alt="Alquilautos" width={34} height={34} priority />
+            <Image src="/logo.png" alt="Alquilautos" width={34} height={34} priority loading="eager" style={{ width: "34px", height: "34px" }} />
             <span className="text-base font-bold tracking-tight text-white">
               AlquilAutos
             </span>

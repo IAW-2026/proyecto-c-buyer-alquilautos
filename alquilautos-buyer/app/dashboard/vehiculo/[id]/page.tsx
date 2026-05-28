@@ -69,6 +69,8 @@ export default async function VehiculoPage({ params }: Props) {
               fill
               className="object-cover"
               priority
+              loading="eager"
+              sizes="(max-width: 1024px) 100vw, calc(100vw - 460px)"
             />
             <span
               className={`absolute left-4 top-4 rounded-full px-3 py-1 text-xs font-semibold ${

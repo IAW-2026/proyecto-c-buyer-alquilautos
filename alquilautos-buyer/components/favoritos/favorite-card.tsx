@@ -28,6 +28,7 @@ export default function FavoriteCard({
           alt={`${vehicle.marca} ${vehicle.modelo}`}
           fill
           className="object-cover"
+          sizes="(max-width: 640px) 100vw, 192px"
         />
         <span
           className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-xs font-semibold ${
