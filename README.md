@@ -49,12 +49,6 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
 
 # Base de datos
 DATABASE_URL=
-
-# URLs de otras apps (pendiente integración)
-SELLER_APP_URL=
-SHIPPING_APP_URL=
-PAYMENTS_APP_URL=
-FEEDBACK_APP_URL=
 ```
 
 ---
