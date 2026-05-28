@@ -15,6 +15,10 @@ export async function GET(_req: Request, { params }: Props) {
 
   const { id } = await params;
 
+  if (userId !== id) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+  }
+
   // TODO: reemplazar por fetch real a la Seller App
   // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/alquilador/${id}`);
   // const reservas = await response.json();
