@@ -34,7 +34,7 @@ export default function FeaturedSection() {
 
       const cals = await Promise.all(
         vehiculos.map((v: SellerVehicle) =>
-          fetch(`/api/resena/vehiculo/${v.id}/promedio`)
+          fetch(`/api/promedio/vehiculo/${v.id}`)
             .then((r) => (r.ok ? r.json() : null))
             .catch(() => null),
         ),

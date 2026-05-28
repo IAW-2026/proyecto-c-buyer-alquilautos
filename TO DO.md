@@ -1,4 +1,3 @@
-#### Vista admin (junto con todo el crud de los usuarios)
 #### Comentar codigo
 #### Acomodar vista de telefono
 #### Verificar proteccion de links de apis
@@ -13,3 +12,4 @@
 #### Cambiar imagen de los vehiculos a "fotos" (nombre usado en el endpoint)
 #### CAMBIAR NAVBAR
 #### Verificar datos correctos de perfil (Fecha real, etc)
+#### Mantener camel case o con "_"
