@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useClerk } from "@clerk/nextjs";
 import { completarOnboarding } from "@/app/actions/onboarding";
 
 type FormData = {
@@ -39,6 +40,7 @@ const INITIAL_FORM: FormData = {
 };
 
 export default function OnboardingPage() {
+  const { session } = useClerk();
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +56,8 @@ export default function OnboardingPage() {
 
     try {
       await completarOnboarding(formData);
+      await session?.reload();
+      window.location.href = "/";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
       setIsLoading(false);
@@ -64,7 +68,15 @@ export default function OnboardingPage() {
     <main className="flex min-h-screen items-center justify-center bg-[var(--bg-page)] px-4 py-16">
       <div className="w-full max-w-2xl">
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          <Image src="/logo.png" alt="Alquilautos" width={56} height={56} priority loading="eager" style={{ width: "56px", height: "56px" }} />
+          <Image
+            src="/logo.png"
+            alt="Alquilautos"
+            width={56}
+            height={56}
+            priority
+            loading="eager"
+            style={{ width: "56px", height: "56px" }}
+          />
           <h1 className="text-2xl font-semibold text-[var(--text-primary)]">
             Completá tu perfil
           </h1>
@@ -74,11 +86,11 @@ export default function OnboardingPage() {
         </div>
 
         <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-8 shadow-[var(--shadow-md)]">
-          {error ? (
+          {error && (
             <div className="mb-6 rounded-2xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] p-4 text-sm text-[var(--status-unavailable-text)]">
               {error}
             </div>
-          ) : null}
+          )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="grid gap-5 sm:grid-cols-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VehicleCard from "@/components/shared/vehicle-card-section";
 import type { SellerVehicle } from "@/app/data/seller";
 import type { CalificacionVehiculo } from "@/app/data/feedback";
@@ -21,6 +21,9 @@ export default function DashboardVehiclesSection({
 	isLoading,
 }: DashboardVehiclesSectionProps) {
 	const [page, setPage] = useState(1);
+	useEffect(() => {
+		setPage(1);
+	}, [vehicles]);
 
 	const totalPages = vehicles ? Math.ceil(vehicles.length / PAGE_SIZE) : 1;
 	const paginated = vehicles

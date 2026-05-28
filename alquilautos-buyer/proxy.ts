@@ -19,17 +19,29 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+const isOnboardingRoute = createRouteMatcher(["/onboarding"]);
 
 export default clerkMiddleware(
   async (auth, req) => {
+    const { userId, sessionClaims } = await auth();
+    const metadata = sessionClaims?.publicMetadata as {
+      role?: string;
+      onboardingCompleto?: boolean;
+    } | undefined;
+
+    // Si está logueado y no completó el onboarding → redirigir al onboarding
+    if (userId && !metadata?.onboardingCompleto && !isOnboardingRoute(req)) {
+      return NextResponse.redirect(new URL("/onboarding", req.url));
+    }
+
+    // Proteger rutas admin
     if (isAdminRoute(req)) {
-      const { sessionClaims } = await auth();
-      const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
-      if (role !== "adminBuyer") {
+      if (metadata?.role !== "adminBuyer") {
         return NextResponse.redirect(new URL("/", req.url));
       }
     }
 
+    // Proteger rutas privadas
     if (!isPublicRoute(req)) {
       await auth.protect();
     }

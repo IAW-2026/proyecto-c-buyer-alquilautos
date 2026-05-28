@@ -18,7 +18,7 @@ const hoy = new Date().toISOString().split("T")[0];
 function calcularDias(inicio: string, fin: string): number {
   if (!inicio || !fin) return 0;
   const diff = new Date(fin).getTime() - new Date(inicio).getTime();
-  return diff === 0 ? 1 : Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return diff === 0 ? 1 : Math.ceil(diff / (1000 * 60 * 60 * 24))+1;
 }
 
 function calcularMaxFin(inicio: string): string {

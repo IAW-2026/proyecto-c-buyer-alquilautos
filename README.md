@@ -1,5 +1,14 @@
 # AlquilAutos — Buyer App
 
+## Cuenta de administrador
+
+| Campo | Valor |
+|-------|-------|
+| Email | joaco28guti@gmail.com |
+| Contraseña | Guti1234567888 |
+
+---
+
 Aplicación web para alquilar vehículos entre particulares. Permite a los usuarios explorar vehículos disponibles, realizar reservas, gestionar entregas y dejar reseñas. Forma parte de un ecosistema de microapps que se comunican entre sí.
 
 ---
@@ -49,6 +58,12 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
 
 # Base de datos
 DATABASE_URL=
+
+# URLs de otras apps (pendiente integración)
+SELLER_APP_URL=
+SHIPPING_APP_URL=
+PAYMENTS_APP_URL=
+FEEDBACK_APP_URL=
 ```
 
 ---
@@ -134,9 +149,8 @@ Capa de abstracción para Server Components. Por ahora retornan mocks pero tiene
 
 ```
 Pendiente → Aceptada → Coordinada → Pagada → Entregada → Finalizada
-               ↘      
-         ↘ Cancelada
-         ↘ Rechazada  
+         ↘ Rechazada
+         ↘ Cancelada  ↗
 ```
 
 > Las transiciones de estado las maneja la Seller App. Las cancelaciones marcadas en el diagrama reflejan únicamente los estados desde los cuales **el usuario alquilador puede cancelar desde esta app** (`Pendiente` y `Aceptada`). Los demás cambios de estado son gestionados externamente.

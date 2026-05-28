@@ -35,12 +35,6 @@ export default function FilterSection({
 						onChange={(event) => onMaxPriceChange(event.target.value)}
 					/>
 				</label>
-				<button
-					type="button"
-					className="h-10 rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)]"
-				>
-					Aplicar filtros
-				</button>
 			</div>
 		</aside>
 	);

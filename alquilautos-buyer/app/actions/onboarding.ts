@@ -58,8 +58,9 @@ export async function completarOnboarding(data: OnboardingData) {
     publicMetadata: {
       role: "alquilador",
       dbUserId: user.id,
+      onboardingCompleto: true,
     },
   });
 
-  redirect("/dashboard");
+  return { success: true };
 }
