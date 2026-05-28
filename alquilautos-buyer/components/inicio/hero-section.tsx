@@ -48,13 +48,13 @@ export default function HeroSection() {
             <p className="text-sm font-semibold text-white/90">
               Ingresa el modelo y el precio maximo por dia para filtrar resultados.
             </p>
-            <div className="mx-auto mt-2 grid w-full max-w-3xl gap-3 rounded-2xl bg-white/90 p-4 text-left shadow-lg backdrop-blur md:grid-cols-[1.6fr_1fr_auto]">
+            <div className="mx-auto mt-2 grid w-full max-w-3xl gap-3 rounded-2xl bg-[var(--bg-surface)] p-4 text-left shadow-lg backdrop-blur md:grid-cols-[1.6fr_1fr_auto]">
               <label className="flex flex-col gap-2 text-left text-sm font-medium text-[var(--text-primary)]">
                 Modelo
                 <input
                   type="text"
                   placeholder="Ej: Corolla, Focus, 208"
-                  className="h-11 rounded-xl border border-[var(--border-default)] bg-white px-4 text-sm outline-none focus:border-[var(--border-focus)]"
+                  className="h-11 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--border-focus)]"
                   value={model}
                   onChange={(event) => setModel(event.target.value)}
                 />
@@ -64,7 +64,7 @@ export default function HeroSection() {
                 <input
                   type="number"
                   placeholder="Ej: 25000"
-                  className="h-11 rounded-xl border border-[var(--border-default)] bg-white px-4 text-sm outline-none focus:border-[var(--border-focus)]"
+                  className="h-11 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--border-focus)]"
                   value={maxPrice}
                   onChange={(event) => setMaxPrice(event.target.value)}
                 />
