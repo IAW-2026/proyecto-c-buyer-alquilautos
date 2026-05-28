@@ -1,6 +1,5 @@
 #### Comentar codigo
 #### Verificar logeo con gmail
-#### Conectar la base de datos main
 #### Dejar un comentario en cada api para indicar su funcion
 #### Chequear documentacion de las apis 
 #### DNI UNICO, EMAIL UNICO.
