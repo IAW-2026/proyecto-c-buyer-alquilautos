@@ -1,7 +1,6 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { bd } from "@/lib/bd";
 
 type OnboardingData = {
@@ -28,6 +27,24 @@ export async function completarOnboarding(data: OnboardingData) {
   const email = clerkUser.emailAddresses[0]?.emailAddress;
 
   if (!email) throw new Error("No se pudo obtener el email");
+
+  const existente = await bd.user.findFirst({
+    where: {
+      OR: [
+        { numeroDocumento },
+        { licenciaConducir },
+      ],
+    },
+  });
+
+  if (existente) {
+    if (existente.numeroDocumento === numeroDocumento) {
+      throw new Error("Ya existe una cuenta con ese DNI.");
+    }
+    if (existente.licenciaConducir === licenciaConducir) {
+      throw new Error("Ya existe una cuenta con esa licencia de conducir.");
+    }
+  }
 
   const user = await bd.user.upsert({
     where: { id: userId },

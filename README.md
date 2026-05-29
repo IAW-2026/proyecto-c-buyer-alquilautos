@@ -202,13 +202,13 @@ Para asignar el rol admin: Dashboard de Clerk → Users → seleccionar usuario 
 
 ```prisma
 model User {
-  id                   String    @id  // Clerk ID
+  id                   String    @id // Clerk ID
   email                String    @unique
   nombre               String?
   apellido             String?
   fechaNacimiento      DateTime?
-  numeroDocumento      String?
-  licenciaConducir     String?
+  numeroDocumento      String?   @unique
+  licenciaConducir     String?   @unique
   direccionFacturacion String?
   calificacion         Float     @default(0)
 
