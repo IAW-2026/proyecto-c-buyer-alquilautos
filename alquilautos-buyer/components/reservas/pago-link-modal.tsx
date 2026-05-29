@@ -13,10 +13,18 @@ export default function PagoLinkModal({ idReserva, onClose }: PagoLinkModalProps
   const [copiado, setCopiado] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchLink = async () => {
+  const handleGenerarLink = async () => {
     setIsLoading(true);
     setError(null);
     try {
+      // Notificar a Payments App que se generó el link
+      await fetch(`/api/pago/${idReserva}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ estado: "pendiente" }),
+      });
+
+      // Obtener el link de pago
       const res = await fetch(`/api/pago/link?id_reserva=${idReserva}`);
       if (!res.ok) throw new Error("No se pudo obtener el link de pago");
       const data = await res.json();
@@ -34,11 +42,6 @@ export default function PagoLinkModal({ idReserva, onClose }: PagoLinkModalProps
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
   };
-
-  // Fetchea el link al montar
-  useState(() => {
-    fetchLink();
-  });
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--bg-overlay)] px-4">
@@ -73,9 +76,23 @@ export default function PagoLinkModal({ idReserva, onClose }: PagoLinkModalProps
             Pagá tu reserva #{idReserva} desde el siguiente link de Mercado Pago.
           </p>
 
+          {/* Advertencia — solo si no se generó el link todavía */}
+          {!link && (
+            <div className="flex items-start gap-2 rounded-2xl border border-[var(--color-danger-100)] bg-[var(--color-danger-50)] px-4 py-3">
+              <svg viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-danger-500)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <p className="text-xs text-[var(--color-danger-500)]">
+                <span className="font-semibold">Atención:</span> Al generar el link, tu reserva quedará pendiente de pago y no avanzará hasta que se complete.
+              </p>
+            </div>
+          )}
+
           {isLoading && (
             <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-3 text-center text-sm text-[var(--text-secondary)]">
-              Obteniendo link...
+              Generando link...
             </div>
           )}
 
@@ -98,6 +115,17 @@ export default function PagoLinkModal({ idReserva, onClose }: PagoLinkModalProps
                 {copiado ? "¡Copiado!" : "Copiar"}
               </button>
             </div>
+          )}
+
+          {!link && (
+            <button
+              type="button"
+              onClick={handleGenerarLink}
+              disabled={isLoading}
+              className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)] disabled:opacity-60"
+            >
+              {isLoading ? "Generando..." : "Generar link de pago"}
+            </button>
           )}
 
           <button

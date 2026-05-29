@@ -35,7 +35,7 @@ export const reservasMock: Reserva[] = [
     id_alquilador: "user_mock",
     fecha_inicio: "2026-06-10",
     fecha_final: "2026-06-12",
-    estado: "Pendiente",
+    estado: "Pagada",
   },
   {
     id_reserva: 1003,
@@ -72,5 +72,23 @@ export const reservasMock: Reserva[] = [
     fecha_inicio: "2026-02-15",
     fecha_final: "2026-02-18",
     estado: "Finalizada",
+  },
+  {
+    id_reserva: 1007,
+    id_vehiculo: 897666, // Chevrolet Tracker - Martin Suarez
+    id_propietario: 458977,
+    id_alquilador: "user_mock",
+    fecha_inicio: "2026-01-10",
+    fecha_final: "2026-01-12",
+    estado: "Cancelada",
+  },
+  {
+    id_reserva: 1008,
+    id_vehiculo: 897667, // Renault Duster - Camila Rios
+    id_propietario: 458978,
+    id_alquilador: "user_mock",
+    fecha_inicio: "2026-01-20",
+    fecha_final: "2026-01-25",
+    estado: "Entregada",
   },
 ];
