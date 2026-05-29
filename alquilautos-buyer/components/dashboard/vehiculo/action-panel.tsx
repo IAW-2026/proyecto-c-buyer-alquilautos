@@ -23,6 +23,7 @@ type ActionPanelProps = {
   modelo: string;
   año: number;
   precio: number;
+  estado: "disponible" | "indisponible";
   calificacion?: number;
   initialIsFavorito: boolean;
 };
@@ -43,6 +44,7 @@ export default function ActionPanel({
   modelo,
   año,
   precio,
+  estado,
   calificacion,
   initialIsFavorito,
 }: ActionPanelProps) {
@@ -120,8 +122,13 @@ export default function ActionPanel({
         <div className="mt-6 flex flex-col gap-3">
           <button
             type="button"
-            onClick={() => setShowModal(true)}
-            className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)]"
+            onClick={() => estado === "disponible" && setShowModal(true)}
+            disabled={estado === "indisponible"}
+            className={`inline-flex h-12 w-full items-center justify-center rounded-2xl text-sm font-semibold transition ${
+              estado === "disponible"
+                ? "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] hover:bg-[var(--btn-primary-bg-hover)]"
+                : "cursor-not-allowed bg-[var(--color-neutral-200)] text-[var(--text-disabled)]"
+            }`}
           >
             Reservar ahora
           </button>

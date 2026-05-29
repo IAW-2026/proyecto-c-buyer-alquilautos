@@ -99,9 +99,11 @@ export default async function VehiculoPage({ params }: Props) {
             modelo={vehiculo.modelo}
             año={vehiculo.año}
             precio={vehiculo.precio}
+            estado={vehiculo.estado}
             calificacion={calificacionVehiculo?.calificacion_promedio}
             initialIsFavorito={isFavorito}
           />
+
 
           {propietario && (
             <OwnerCard
