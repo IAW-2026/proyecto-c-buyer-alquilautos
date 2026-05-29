@@ -22,6 +22,18 @@ export async function completarOnboarding(data: OnboardingData) {
     throw new Error("Faltan campos requeridos");
   }
 
+  const fechaNac = new Date(fechaNacimiento);
+  const hoy = new Date();
+  const edadMinima = new Date(hoy.getFullYear() - 16, hoy.getMonth(), hoy.getDate());
+
+  if (fechaNac > hoy) {
+    throw new Error("La fecha de nacimiento no puede ser en el futuro.");
+  }
+
+  if (fechaNac > edadMinima) {
+    throw new Error("Debés tener al menos 16 años para registrarte.");
+  }
+
   const clerk = await clerkClient();
   const clerkUser = await clerk.users.getUser(userId);
   const email = clerkUser.emailAddresses[0]?.emailAddress;
