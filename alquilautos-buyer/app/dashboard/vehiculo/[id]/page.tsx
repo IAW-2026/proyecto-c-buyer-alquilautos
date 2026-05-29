@@ -62,7 +62,7 @@ export default async function VehiculoPage({ params }: Props) {
         <div className="flex flex-col gap-6">
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-[var(--border-default)]">
             <Image
-              src={vehiculo.imagen}
+              src={vehiculo.fotos}
               alt={`${vehiculo.marca} ${vehiculo.modelo}`}
               fill
               className="object-cover"
@@ -93,7 +93,7 @@ export default async function VehiculoPage({ params }: Props) {
 
         <div className="flex flex-col gap-4">
           <ActionPanel
-            vehiculoId={vehiculo.id}
+            vehiculoId={vehiculo.id_vehiculo}
             propietarioId={vehiculo.id_propietario}
             marca={vehiculo.marca}
             modelo={vehiculo.modelo}

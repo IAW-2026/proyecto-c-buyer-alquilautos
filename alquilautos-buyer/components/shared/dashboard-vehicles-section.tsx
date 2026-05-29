@@ -63,18 +63,18 @@ export default function DashboardVehiclesSection({
 					<div className="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
 						{paginated.map((vehiculo) => {
 							const calificacion = calificaciones.find(
-								(c) => c.id_vehiculo === vehiculo.id,
+							(c) => c.id_vehiculo === vehiculo.id_vehiculo,
 							)?.calificacion_promedio;
 
 							return (
 								<VehicleCard
-									key={vehiculo.id}
+									key={vehiculo.id_vehiculo}
 									vehicle={vehiculo}
 									actionLabel="Mas Detalles"
-									actionHref={`/dashboard/vehiculo/${vehiculo.id}`}
+									actionHref={`/dashboard/vehiculo/${vehiculo.id_vehiculo}`}
 									calificacion={calificacion}
 								/>
-							);
+								);
 						})}
 					</div>
 

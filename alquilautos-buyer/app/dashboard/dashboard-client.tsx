@@ -33,7 +33,7 @@ export default function DashboardClient() {
 
       const cals = await Promise.all(
         vehiculos.map((v: SellerVehicle) =>
-          fetch(`/api/promedio/vehiculo/${v.id}`)
+          fetch(`/api/promedio/vehiculo/${v.id_vehiculo}`)
             .then((r) => (r.ok ? r.json() : null))
             .catch(() => null),
         ),

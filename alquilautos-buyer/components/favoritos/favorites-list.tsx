@@ -19,39 +19,38 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const res = await fetch("/api/vehiculo/disponible");
-      if (!res.ok) return;
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/vehiculo/disponible");
+        if (!res.ok) return;
 
-      const { vehiculos } = await res.json();
-      setVehicles(vehiculos);
+        const { vehiculos } = await res.json();
+        setVehicles(vehiculos);
 
-      // Fetchear propietario por cada vehículo
-      const ownersRaw = await Promise.all(
-        vehiculos.map((v: SellerVehicle) =>
-          fetch(`/api/propietario/${v.id_propietario}`)
-            .then((r) => (r.ok ? r.json() : null))
-            .catch(() => null),
-        ),
-      );
-      setOwners(ownersRaw.filter(Boolean));
+        const ownersRaw = await Promise.all(
+          vehiculos.map((v: SellerVehicle) =>
+            fetch(`/api/propietario/${v.id_propietario}`)
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null),
+          ),
+        );
+        setOwners(ownersRaw.filter(Boolean));
 
-      const cals = await Promise.all(
-        vehiculos.map((v: SellerVehicle) =>
-          fetch(`/api/promedio/vehiculo/${v.id}`)
-            .then((r) => (r.ok ? r.json() : null))
-            .catch(() => null),
-        ),
-      );
-      setCalificaciones(cals.filter(Boolean));
-    } catch {
-      // mantiene arrays vacíos
-    }
-  };
+        const cals = await Promise.all(
+          vehiculos.map((v: SellerVehicle) =>
+            fetch(`/api/promedio/vehiculo/${v.id_vehiculo}`)
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null),
+          ),
+        );
+        setCalificaciones(cals.filter(Boolean));
+      } catch {
+        // mantiene arrays vacíos
+      }
+    };
 
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
   const handleDelete = async (vehiculoExternoId: number) => {
     setDeletingId(vehiculoExternoId);
@@ -91,10 +90,10 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   return (
     <div className="flex flex-col gap-4">
       {items.map((item) => {
-        const vehicle = vehicles.find((v) => v.id === item.vehiculoExternoId);
+        const vehicle = vehicles.find((v) => v.id_vehiculo === item.vehiculoExternoId);
         const owner = vehicle
-        ? owners.find((o) => o.id_propietario === vehicle.id_propietario)
-        : undefined;
+          ? owners.find((o) => o.id_propietario === vehicle.id_propietario)
+          : undefined;
         const calificacion = calificaciones.find(
           (c) => c.id_vehiculo === item.vehiculoExternoId,
         )?.calificacion_promedio;

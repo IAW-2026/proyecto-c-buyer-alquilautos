@@ -24,12 +24,12 @@ export default function FavoriteCard({
       {/* Imagen */}
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl sm:h-32 sm:w-48 sm:shrink-0">
         <Image
-          src={vehicle.imagen}
-          alt={`${vehicle.marca} ${vehicle.modelo}`}
-          fill
-          className="object-cover"
-          sizes="(max-width: 640px) 100vw, 192px"
-        />
+            src={vehicle.fotos}
+            alt={`${vehicle.marca} ${vehicle.modelo}`}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, 192px"
+          />
         <span
           className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-xs font-semibold ${
             vehicle.estado === "disponible"
@@ -71,19 +71,19 @@ export default function FavoriteCard({
         {/* Acciones */}
         <div className="flex flex-col gap-2 sm:flex-row">
           <Link
-            href={`/dashboard/vehiculo/${vehicle.id}`}
-            className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)] sm:w-auto sm:px-6"
-          >
-            Ver detalle
-          </Link>
-          <button
-            type="button"
-            onClick={() => onDelete(vehicle.id)}
-            disabled={isDeleting}
-            className="inline-flex h-10 w-full items-center justify-center rounded-xl border border-[var(--status-unavailable-border)] bg-transparent text-sm font-semibold text-[var(--status-unavailable-text)] transition hover:bg-[var(--status-unavailable-bg)] disabled:opacity-50 sm:w-auto sm:px-6"
-          >
-            {isDeleting ? "Eliminando..." : "Eliminar"}
-          </button>
+              href={`/dashboard/vehiculo/${vehicle.id_vehiculo}`}
+              className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)] sm:w-auto sm:px-6"
+            >
+              Ver detalle
+            </Link>
+            <button
+              type="button"
+              onClick={() => onDelete(vehicle.id_vehiculo)}
+              disabled={isDeleting}
+              className="inline-flex h-10 w-full items-center justify-center rounded-xl border border-[var(--status-unavailable-border)] bg-transparent text-sm font-semibold text-[var(--status-unavailable-text)] transition hover:bg-[var(--status-unavailable-bg)] disabled:opacity-50 sm:w-auto sm:px-6"
+            >
+              {isDeleting ? "Eliminando..." : "Eliminar"}
+            </button>
         </div>
       </div>
     </article>

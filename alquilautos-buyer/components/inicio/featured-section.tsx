@@ -11,8 +11,8 @@ const pickTopRatedVehicles = (vehicles: SellerVehicle[], count: number, califica
     .filter((vehicle) => vehicle.estado === "disponible")
     .slice()
     .sort((a, b) => {
-      const calA = calificaciones.find((c) => c.id_vehiculo === a.id)?.calificacion_promedio ?? 0;
-      const calB = calificaciones.find((c) => c.id_vehiculo === b.id)?.calificacion_promedio ?? 0;
+      const calA = calificaciones.find((c) => c.id_vehiculo === a.id_vehiculo)?.calificacion_promedio ?? 0;
+      const calB = calificaciones.find((c) => c.id_vehiculo === b.id_vehiculo)?.calificacion_promedio ?? 0;
       if (calB !== calA) return calB - calA;
       return a.precio - b.precio;
     })
@@ -24,29 +24,29 @@ export default function FeaturedSection() {
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const res = await fetch("/api/vehiculo/disponible");
-      if (!res.ok) return;
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/vehiculo/disponible");
+        if (!res.ok) return;
 
-      const { vehiculos } = await res.json();
-      setVehicles(vehiculos);
+        const { vehiculos } = await res.json();
+        setVehicles(vehiculos);
 
-      const cals = await Promise.all(
-        vehiculos.map((v: SellerVehicle) =>
-          fetch(`/api/promedio/vehiculo/${v.id}`)
-            .then((r) => (r.ok ? r.json() : null))
-            .catch(() => null),
-        ),
-      );
-      setCalificaciones(cals.filter(Boolean));
-    } catch {
-      // sin datos, muestra lista vacía
-    }
-  };
+        const cals = await Promise.all(
+          vehiculos.map((v: SellerVehicle) =>
+            fetch(`/api/promedio/vehiculo/${v.id_vehiculo}`)
+              .then((r) => (r.ok ? r.json() : null))
+              .catch(() => null),
+          ),
+        );
+        setCalificaciones(cals.filter(Boolean));
+      } catch {
+        // sin datos, muestra lista vacía
+      }
+    };
 
-  fetchData();
-}, []);
+    fetchData();
+  }, []);
 
   const featuredVehicles = pickTopRatedVehicles(vehicles, 7, calificaciones);
 
@@ -68,15 +68,15 @@ export default function FeaturedSection() {
         >
           {featuredVehicles.map((vehicle) => {
             const calificacion = calificaciones.find(
-              (c) => c.id_vehiculo === vehicle.id,
+              (c) => c.id_vehiculo === vehicle.id_vehiculo,
             )?.calificacion_promedio;
 
             return (
-              <div key={vehicle.id} className="w-[320px] shrink-0 snap-start">
+              <div key={vehicle.id_vehiculo} className="w-[320px] shrink-0 snap-start">
                 <VehicleCard
                   vehicle={vehicle}
                   actionLabel="Mas detalles"
-                  actionHref={`/dashboard/vehiculo/${vehicle.id}`}
+                  actionHref={`/dashboard/vehiculo/${vehicle.id_vehiculo}`}
                   calificacion={calificacion}
                 />
               </div>

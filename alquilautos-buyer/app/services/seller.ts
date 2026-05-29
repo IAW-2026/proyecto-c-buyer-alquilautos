@@ -9,8 +9,8 @@ export async function getVehiculos(): Promise<SellerVehicle[]> {
 export async function getVehiculoById(id: number): Promise<SellerVehicle | null> {
   // TODO: const res = await fetch(`${process.env.SELLER_APP_URL}/api/vehiculo/disponible`);
   // const { vehiculos } = await res.json();
-  // return vehiculos.find((v: SellerVehicle) => v.id === id) ?? null;
-  return sellerData.vehicles.find((v) => v.id === id) ?? null;
+  // return vehiculos.find((v: SellerVehicle) => v.id_vehiculo === id) ?? null;
+  return sellerData.vehicles.find((v) => v.id_vehiculo === id) ?? null;
 }
 
 export async function getPropietarios(): Promise<SellerOwner[]> {
