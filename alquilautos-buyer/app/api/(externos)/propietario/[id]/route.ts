@@ -15,7 +15,7 @@ export async function GET(_req: Request, { params }: Props) {
   // const res = await fetch(`${process.env.SELLER_APP_URL}/api/propietario/${propietarioId}`);
   // return NextResponse.json(await res.json());
 
-  const propietario = sellerData.owners.find((o) => o.id === propietarioId);
+  const propietario = sellerData.owners.find((o) => o.id_propietario === propietarioId);
   if (!propietario) {
     return NextResponse.json({ error: "Propietario no encontrado" }, { status: 404 });
   }

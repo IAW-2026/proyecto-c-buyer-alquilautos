@@ -16,7 +16,7 @@ type Props = {
 
 function calcularDias(inicio: string, fin: string): number {
   const diff = new Date(fin).getTime() - new Date(inicio).getTime();
-  return diff === 0 ? 1 : Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
 }
 
 export default async function ReservaDetallePage({ params }: Props) {
@@ -86,6 +86,7 @@ export default async function ReservaDetallePage({ params }: Props) {
           {propietario && (
             <ReservaPropietario
               nombre={propietario.nombre}
+              apellido={propietario.apellido}
               email={propietario.email}
             />
           )}

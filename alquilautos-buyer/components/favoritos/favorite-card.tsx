@@ -55,7 +55,7 @@ export default function FavoriteCard({
               <p className="mt-1 text-sm text-[var(--text-secondary)]">
                 Propietario:{" "}
                 <span className="font-medium text-[var(--text-primary)]">
-                  {owner.nombre}
+                  {owner.nombre} {owner.apellido}
                 </span>
               </p>
             )}

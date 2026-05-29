@@ -16,6 +16,7 @@ type ResumenPropietario = {
 type OwnerCardProps = {
   propietarioId: number;
   nombre: string;
+  apellido: string;
   email: string;
   telefono: string;
   calificacion?: number;
@@ -33,6 +34,7 @@ function FilaResumen({ label, valor }: { label: string; valor: number }) {
 export default function OwnerCard({
   propietarioId,
   nombre,
+  apellido,
   email,
   telefono,
   calificacion,
@@ -57,7 +59,7 @@ export default function OwnerCard({
         </div>
         <div>
           <p className="text-sm font-semibold text-[var(--text-primary)]">
-            {nombre}
+            {nombre} {apellido}
           </p>
           {calificacion !== undefined && (
             <StarRating

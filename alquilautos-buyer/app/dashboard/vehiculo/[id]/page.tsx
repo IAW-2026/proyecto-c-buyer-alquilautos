@@ -24,7 +24,7 @@ export default async function VehiculoPage({ params }: Props) {
 
   const calificacionVehiculo = await getCalificacionVehiculo(vehiculoId);
   const calificacionPropietario = propietario
-    ? await getCalificacionPropietario(propietario.id)
+    ? await getCalificacionPropietario(propietario.id_propietario)
     : null;
 
   const { userId } = await auth();
@@ -45,7 +45,6 @@ export default async function VehiculoPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 pb-16 pt-28">
-      {/* Breadcrumb */}
       <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
         <Link
           href="/dashboard"
@@ -60,7 +59,6 @@ export default async function VehiculoPage({ params }: Props) {
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-        {/* Columna izquierda: imagen + detalles */}
         <div className="flex flex-col gap-6">
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-[var(--border-default)]">
             <Image
@@ -93,7 +91,6 @@ export default async function VehiculoPage({ params }: Props) {
           />
         </div>
 
-        {/* Columna derecha: panel de acción + propietario */}
         <div className="flex flex-col gap-4">
           <ActionPanel
             vehiculoId={vehiculo.id}
@@ -107,14 +104,15 @@ export default async function VehiculoPage({ params }: Props) {
           />
 
           {propietario && (
-          <OwnerCard
-            propietarioId={propietario.id}
-            nombre={propietario.nombre}
-            email={propietario.email}
-            telefono={propietario.telefono}
-            calificacion={calificacionPropietario?.calificacion_promedio}
-          />
-        )}
+            <OwnerCard
+              propietarioId={propietario.id_propietario}
+              nombre={propietario.nombre}
+              apellido={propietario.apellido}
+              email={propietario.email}
+              telefono={propietario.telefono}
+              calificacion={calificacionPropietario?.calificacion_promedio}
+            />
+          )}
         </div>
       </div>
     </main>

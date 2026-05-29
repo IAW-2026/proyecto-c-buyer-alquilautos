@@ -1,8 +1,12 @@
 export type SellerOwner = {
-  id: number;
+  id_propietario: number;
   nombre: string;
+  apellido: string;
   email: string;
   telefono: string;
+  dni: string;
+  direccion: string;
+  fecha_nacimiento: string;
 };
 
 export type SellerVehicle = {
@@ -23,11 +27,11 @@ export type SellerData = {
 
 export const sellerData: SellerData = {
   owners: [
-    { id: 458976, nombre: "Lucia Benitez", email: "lucia.benitez@example.com", telefono: "+54 9 11 5555 0101" },
-    { id: 458977, nombre: "Martin Suarez", email: "martin.suarez@example.com", telefono: "+54 9 11 5555 0102" },
-    { id: 458978, nombre: "Camila Rios", email: "camila.rios@example.com", telefono: "+54 9 11 5555 0103" },
-    { id: 458979, nombre: "Nicolas Herrera", email: "nicolas.herrera@example.com", telefono: "+54 9 11 5555 0104" },
-    { id: 458980, nombre: "Valentina Costa", email: "valentina.costa@example.com", telefono: "+54 9 11 5555 0105" },
+    { id_propietario: 458976, nombre: "Lucia", apellido: "Benitez", email: "lucia.benitez@example.com", telefono: "+54 9 11 5555 0101", dni: "32100001", direccion: "Av. Rivadavia 1234, Buenos Aires", fecha_nacimiento: "1990-03-15" },
+    { id_propietario: 458977, nombre: "Martin", apellido: "Suarez", email: "martin.suarez@example.com", telefono: "+54 9 11 5555 0102", dni: "32100002", direccion: "Calle Corrientes 567, Buenos Aires", fecha_nacimiento: "1988-07-22" },
+    { id_propietario: 458978, nombre: "Camila", apellido: "Rios", email: "camila.rios@example.com", telefono: "+54 9 11 5555 0103", dni: "32100003", direccion: "Av. Santa Fe 890, Buenos Aires", fecha_nacimiento: "1995-11-08" },
+    { id_propietario: 458979, nombre: "Nicolas", apellido: "Herrera", email: "nicolas.herrera@example.com", telefono: "+54 9 11 5555 0104", dni: "32100004", direccion: "Av. Callao 321, Buenos Aires", fecha_nacimiento: "1992-05-30" },
+    { id_propietario: 458980, nombre: "Valentina", apellido: "Costa", email: "valentina.costa@example.com", telefono: "+54 9 11 5555 0105", dni: "32100005", direccion: "Calle Florida 654, Buenos Aires", fecha_nacimiento: "1993-09-17" },
   ],
   vehicles: [
     { id: 897650, id_propietario: 458976, marca: "Toyota", modelo: "Corolla", año: 2021, precio: 22000, imagen: "/vehiculos/corolla.webp", estado: "disponible" },

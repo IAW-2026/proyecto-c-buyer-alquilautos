@@ -93,8 +93,8 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
       {items.map((item) => {
         const vehicle = vehicles.find((v) => v.id === item.vehiculoExternoId);
         const owner = vehicle
-          ? owners.find((o) => o.id === vehicle.id_propietario)
-          : undefined;
+        ? owners.find((o) => o.id_propietario === vehicle.id_propietario)
+        : undefined;
         const calificacion = calificaciones.find(
           (c) => c.id_vehiculo === item.vehiculoExternoId,
         )?.calificacion_promedio;
