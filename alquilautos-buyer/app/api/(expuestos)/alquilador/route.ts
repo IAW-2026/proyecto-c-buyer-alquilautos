@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { bd } from "@/lib/bd";
 
+
+//  Devuelve todos los alquiladores registrados en la base de datos en un array con sus datos personales y calificación.
+
 export async function GET() {
   const users = await bd.user.findMany({
     include: {

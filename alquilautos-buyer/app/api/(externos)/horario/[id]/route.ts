@@ -5,6 +5,8 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+// Obtiene los horarios disponibles de entrega y devolución para una reserva consultando a la Shipping App
+
 export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
 

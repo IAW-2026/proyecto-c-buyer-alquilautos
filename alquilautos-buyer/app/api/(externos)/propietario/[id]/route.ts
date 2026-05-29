@@ -7,6 +7,8 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+//Obtiene los datos completos de un propietario por su ID consultando a la Seller App
+
 export async function GET(_req: Request, { params }: Props) {
   const { id } = await params;
   const propietarioId = Number(id);

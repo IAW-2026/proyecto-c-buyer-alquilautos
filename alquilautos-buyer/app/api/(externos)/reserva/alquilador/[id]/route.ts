@@ -6,6 +6,8 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+//Obtiene todas las reservas de un alquilador específico consultando a la Seller App, solo permite acceder a las propias
+
 export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
 

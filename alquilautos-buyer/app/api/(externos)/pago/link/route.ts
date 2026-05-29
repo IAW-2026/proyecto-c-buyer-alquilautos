@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
+//  Obtiene el link de pago de Mercado Pago para una reserva consultando a la Payments App
 export async function GET() {
   const { userId } = await auth();
   if (!userId) {

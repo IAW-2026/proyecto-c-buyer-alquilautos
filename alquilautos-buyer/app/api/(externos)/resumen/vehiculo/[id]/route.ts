@@ -3,6 +3,8 @@ import { resumenVehiculo } from "@/app/data/feedback";
 
 type Props = { params: Promise<{ id: string }> };
 
+//Obtiene el resumen de reseñas de un vehículo con subcalificaciones y descripción generada por IA consultando a la Feedback App
+
 export async function GET(_req: Request, { params }: Props) {
   const { id } = await params;
   // TODO: const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/resumen/vehiculo/${id}`);

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
+//Envía una nueva reseña de vehículo o propietario a la Feedback App
+
 export async function POST(req: Request) {
   const { userId } = await auth();
   if (!userId) {

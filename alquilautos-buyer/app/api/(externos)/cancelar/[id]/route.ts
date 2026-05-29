@@ -5,6 +5,7 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+//  Cancela la entrega asociada a una reserva enviando la solicitud a la Shipping App.
 export async function PATCH(_req: Request, { params }: Props) {
   const { userId } = await auth();
 

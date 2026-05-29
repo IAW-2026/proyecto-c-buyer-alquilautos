@@ -4,6 +4,8 @@ import { resenasAlquiladores } from "@/app/data/feedback";
 
 type Props = { params: Promise<{ id: string }> };
 
+//Obtiene las reseñas hechas sobre un alquilador para una reserva consultando a la Feedback App 
+
 export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
   if (!userId) {

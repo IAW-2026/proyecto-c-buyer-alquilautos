@@ -5,6 +5,8 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+// Actualiza la calificación promedio de un alquilador, recibe un número entre 0 y 5.
+
 export async function PATCH(req: Request, { params }: Props) {
   const { id } = await params;
 

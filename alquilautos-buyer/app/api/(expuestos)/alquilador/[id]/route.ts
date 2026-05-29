@@ -5,6 +5,8 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+// Devuelve los datos completos de un alquilador específico por su ID.
+
 export async function GET(_req: Request, { params }: Props) {
   const { id } = await params;
 
