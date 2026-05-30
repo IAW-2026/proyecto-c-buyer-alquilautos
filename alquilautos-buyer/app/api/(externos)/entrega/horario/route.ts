@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-//Confirma los horarios de entrega y devolución de una reserva enviándolos a la Shipping App
+//Confirma los horarios de entrega y devolución de una reserva enviándolos a la Shipping App (VERIFICADO)
 export async function PATCH(req: Request) {
   const { userId } = await auth();
 
@@ -30,7 +30,6 @@ export async function PATCH(req: Request) {
   return NextResponse.json(
     {
       id_reserva,
-      estado: "Coordinada",
       horarios,
     },
     { status: 200 },

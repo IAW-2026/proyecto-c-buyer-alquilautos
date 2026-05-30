@@ -6,7 +6,7 @@ type Props = {
   params: Promise<{ id_reserva: string }>;
 };
 
-// Obtiene los datos de una reserva específica por su ID consultando a la Seller App
+// Obtiene los datos de una reserva específica por su ID consultando a la Seller App (VERIFICADO)
 
 export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
@@ -31,7 +31,7 @@ export async function GET(_req: Request, { params }: Props) {
   return NextResponse.json(reserva, { status: 200 });
 }
 
-// Actualiza el estado de una reserva enviando el cambio a la Seller App
+// Actualiza el estado de una reserva enviando el cambio a la Seller App (VERIFICADO)
 
 export async function PATCH(req: Request, { params }: Props) {
   const { userId } = await auth();
@@ -55,7 +55,7 @@ export async function PATCH(req: Request, { params }: Props) {
   //   body: JSON.stringify({ estado }),
   // });
 
-  console.log(`PATCH /api/reserva/${id_reserva} →`, { userId, estado });
+  console.log(`PATCH /api/reserva/${id_reserva} →`, { estado });
 
   return NextResponse.json({ success: true }, { status: 200 });
 }

@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-//Crea una nueva reserva enviando los datos a la Seller App con el ID del alquilador logueado
+//Crea una nueva reserva enviando los datos a la Seller App con el ID del alquilador logueado (VERIFICADO)
 
 export async function POST(req: Request) {
   const { userId } = await auth();
