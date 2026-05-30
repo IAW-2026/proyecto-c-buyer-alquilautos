@@ -39,14 +39,20 @@ export async function actualizarUsuarioAdmin(userId: string, data: UsuarioAdminD
 
     return { success: true };
   } catch (err) {
-    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
-      const campo = (err.meta?.target as string[])?.[0];
-      if (campo === "numeroDocumento") return { error: "Ya existe una cuenta con ese DNI." };
-      if (campo === "licenciaConducir") return { error: "Ya existe una cuenta con esa licencia de conducir." };
-      return { error: "Ya existe una cuenta con esos datos." };
+  if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+    const target = err.meta?.target;
+    const campo = Array.isArray(target) ? target[0] : String(target ?? "");
+    
+    if (campo.includes("numeroDocumento") || campo.includes("User_numeroDocumento")) {
+      return { error: "Ya existe una cuenta con ese DNI." };
     }
-    return { error: "Error inesperado al guardar los datos." };
+    if (campo.includes("licenciaConducir") || campo.includes("User_licenciaConducir")) {
+      return { error: "Ya existe una cuenta con esa licencia de conducir." };
+    }
+    return { error: "Ya existe una cuenta con esos datos." };
   }
+  return { error: "Error inesperado al guardar los datos." };
+}
 }
 
 export async function eliminarUsuarioAdmin(userId: string) {
