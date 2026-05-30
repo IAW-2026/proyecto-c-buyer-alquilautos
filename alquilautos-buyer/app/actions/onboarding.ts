@@ -12,14 +12,14 @@ type OnboardingData = {
   direccionFacturacion: string;
 };
 
-export async function completarOnboarding(data: OnboardingData) {
+export async function completarOnboarding(data: OnboardingData): Promise<{ success: boolean } | { error: string }> {
   const { userId } = await auth();
-  if (!userId) throw new Error("No autenticado");
+  if (!userId) return { error: "No autenticado" };
 
   const { nombre, apellido, fechaNacimiento, numeroDocumento, licenciaConducir, direccionFacturacion } = data;
 
   if (!nombre || !apellido || !fechaNacimiento || !numeroDocumento || !licenciaConducir || !direccionFacturacion) {
-    throw new Error("Faltan campos requeridos");
+    return { error: "Faltan campos requeridos" };
   }
 
   const fechaNac = new Date(fechaNacimiento);
@@ -27,18 +27,18 @@ export async function completarOnboarding(data: OnboardingData) {
   const edadMinima = new Date(hoy.getFullYear() - 16, hoy.getMonth(), hoy.getDate());
 
   if (fechaNac > hoy) {
-    throw new Error("La fecha de nacimiento no puede ser en el futuro.");
+    return { error: "La fecha de nacimiento no puede ser en el futuro." };
   }
 
   if (fechaNac > edadMinima) {
-    throw new Error("Debés tener al menos 16 años para registrarte.");
+    return { error: "Debés tener al menos 16 años para registrarte." };
   }
 
   const clerk = await clerkClient();
   const clerkUser = await clerk.users.getUser(userId);
   const email = clerkUser.emailAddresses[0]?.emailAddress;
 
-  if (!email) throw new Error("No se pudo obtener el email");
+  if (!email) return { error: "No se pudo obtener el email" };
 
   const existente = await bd.user.findFirst({
     where: {
@@ -51,10 +51,10 @@ export async function completarOnboarding(data: OnboardingData) {
 
   if (existente) {
     if (existente.numeroDocumento === numeroDocumento) {
-      throw new Error("Ya existe una cuenta con ese DNI.");
+      return { error: "Ya existe una cuenta con ese DNI." };
     }
     if (existente.licenciaConducir === licenciaConducir) {
-      throw new Error("Ya existe una cuenta con esa licencia de conducir.");
+      return { error: "Ya existe una cuenta con esa licencia de conducir." };
     }
   }
 

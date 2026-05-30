@@ -55,7 +55,14 @@ export default function OnboardingPage() {
     setError(null);
 
     try {
-      await completarOnboarding(formData);
+      const result = await completarOnboarding(formData);
+
+      if ("error" in result) {
+        setError(result.error);
+        setIsLoading(false);
+        return;
+      }
+
       await session?.reload();
       window.location.href = "/";
     } catch (err) {
