@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useUser } from "@clerk/nextjs";
 import type { SellerVehicle } from "@/app/data/seller";
 
 type VehicleCardProps = {
@@ -17,8 +18,16 @@ export default function VehicleCard({
 	actionHref,
 	calificacion,
 }: VehicleCardProps) {
+	const { isSignedIn } = useUser();
+
 	const actionClassName =
 		"mt-4 h-10 w-full rounded-xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)]";
+
+	const href = actionHref
+		? isSignedIn
+			? actionHref
+			: "/sign-in"
+		: undefined;
 
 	return (
 		<article className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
@@ -29,7 +38,7 @@ export default function VehicleCard({
 					fill
 					className="object-cover"
 					sizes="(max-width: 768px) 100vw, 320px"
-					/>
+				/>
 				<span
 					className={`absolute right-3 top-3 rounded-full px-3 py-1 text-xs font-semibold ${
 						vehicle.estado === "disponible"
@@ -57,9 +66,9 @@ export default function VehicleCard({
 			</div>
 
 			<div className="mt-4 grid gap-2">
-				{actionHref ? (
+				{href ? (
 					<Link
-						href={actionHref}
+						href={href}
 						className={`${actionClassName} inline-flex items-center justify-center`}
 					>
 						{actionLabel}
