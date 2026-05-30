@@ -69,14 +69,16 @@ export default function AdminProfileForm({
     setError(null);
     setSuccess(false);
 
-    try {
-      await actualizarUsuarioAdmin(userId, formData);
-      setSuccess(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error inesperado");
-    } finally {
+    const result = await actualizarUsuarioAdmin(userId, formData);
+
+    if ("error" in result) {
+      setError(result.error);
       setIsLoading(false);
+      return;
     }
+
+    setSuccess(true);
+    setIsLoading(false);
   };
 
   return (

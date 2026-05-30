@@ -2,6 +2,7 @@
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { bd } from "@/lib/bd";
+import { Prisma } from "@prisma/client";
 
 type UsuarioAdminData = {
   nombre?: string;
@@ -18,22 +19,34 @@ async function verificarAdmin() {
   if (role !== "adminBuyer") throw new Error("No autorizado");
 }
 
-export async function actualizarUsuarioAdmin(userId: string, data: UsuarioAdminData) {
+export async function actualizarUsuarioAdmin(userId: string, data: UsuarioAdminData): Promise<{ success: boolean } | { error: string }> {
   await verificarAdmin();
 
   const { nombre, apellido, fechaNacimiento, numeroDocumento, licenciaConducir, direccionFacturacion } = data;
 
-  return bd.user.update({
-    where: { id: userId },
-    data: {
-      ...(nombre !== undefined && { nombre }),
-      ...(apellido !== undefined && { apellido }),
-      ...(fechaNacimiento !== undefined && { fechaNacimiento: new Date(fechaNacimiento) }),
-      ...(numeroDocumento !== undefined && { numeroDocumento }),
-      ...(licenciaConducir !== undefined && { licenciaConducir }),
-      ...(direccionFacturacion !== undefined && { direccionFacturacion }),
-    },
-  });
+  try {
+    await bd.user.update({
+      where: { id: userId },
+      data: {
+        ...(nombre !== undefined && { nombre }),
+        ...(apellido !== undefined && { apellido }),
+        ...(fechaNacimiento !== undefined && { fechaNacimiento: new Date(fechaNacimiento) }),
+        ...(numeroDocumento !== undefined && { numeroDocumento }),
+        ...(licenciaConducir !== undefined && { licenciaConducir }),
+        ...(direccionFacturacion !== undefined && { direccionFacturacion }),
+      },
+    });
+
+    return { success: true };
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      const campo = (err.meta?.target as string[])?.[0];
+      if (campo === "numeroDocumento") return { error: "Ya existe una cuenta con ese DNI." };
+      if (campo === "licenciaConducir") return { error: "Ya existe una cuenta con esa licencia de conducir." };
+      return { error: "Ya existe una cuenta con esos datos." };
+    }
+    return { error: "Error inesperado al guardar los datos." };
+  }
 }
 
 export async function eliminarUsuarioAdmin(userId: string) {
