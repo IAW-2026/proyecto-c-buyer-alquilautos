@@ -66,15 +66,17 @@ export default function ProfileForm({
     setError(null);
     setSuccess(false);
 
-    try {
-      await actualizarUsuario(formData);
-      setSuccess(true);
-      setIsEditing(false);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error inesperado");
-    } finally {
+    const result = await actualizarUsuario(formData);
+
+    if ("error" in result) {
+      setError(result.error);
       setIsLoading(false);
+      return;
     }
+
+    setSuccess(true);
+    setIsEditing(false);
+    setIsLoading(false);
   };
 
   const fields = [
@@ -128,17 +130,17 @@ export default function ProfileForm({
         ))}
       </div>
 
-      {error ? (
+      {error && (
         <div className="rounded-xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] px-4 py-2 text-sm text-[var(--status-unavailable-text)]">
           {error}
         </div>
-      ) : null}
+      )}
 
-      {success ? (
+      {success && (
         <div className="rounded-xl border border-[var(--status-available-border)] bg-[var(--status-available-bg)] px-4 py-2 text-sm text-[var(--status-available-text)]">
           Datos guardados correctamente.
         </div>
-      ) : null}
+      )}
 
       <div className="flex flex-col gap-3 sm:flex-row">
         {isEditing ? (
