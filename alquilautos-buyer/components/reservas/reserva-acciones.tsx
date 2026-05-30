@@ -55,7 +55,7 @@ export default function ReservaAcciones({
         <button
           type="button"
           onClick={() => setShowCoordinarModal(true)}
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--status-available-text)] text-sm font-semibold text-white transition hover:opacity-90"
+          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-success-500)] text-sm font-semibold text-white transition hover:opacity-90"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
