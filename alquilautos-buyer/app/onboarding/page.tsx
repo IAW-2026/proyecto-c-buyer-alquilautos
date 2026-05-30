@@ -54,21 +54,16 @@ export default function OnboardingPage() {
     setIsLoading(true);
     setError(null);
 
-    try {
-      const result = await completarOnboarding(formData);
+    const result = await completarOnboarding(formData);
 
-      if ("error" in result) {
-        setError(result.error);
-        setIsLoading(false);
-        return;
-      }
-
-      await session?.reload();
-      window.location.href = "/";
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error inesperado");
+    if ("error" in result) {
+      setError(result.error);
       setIsLoading(false);
+      return;
     }
+
+    await session?.reload();
+    window.location.href = "/";
   };
 
   return (
