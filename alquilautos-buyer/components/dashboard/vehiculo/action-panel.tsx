@@ -6,14 +6,7 @@ import ReservaModal from "@/components/dashboard/vehiculo/reserva-modal";
 import { addFavorito, deleteFavorito } from "@/app/actions/favorito";
 
 type ResumenVehiculo = {
-  calificacion_promedio: number;
-  cantidad_resenas: number;
-  descripcion: string;
-  promedios: {
-    calificacion_limpieza: number;
-    calificacion_estado: number;
-    calificacion_comodidad: number;
-  };
+  resumen: string;
 };
 
 type ActionPanelProps = {
@@ -27,15 +20,6 @@ type ActionPanelProps = {
   calificacion?: number;
   initialIsFavorito: boolean;
 };
-
-function FilaResumen({ label, valor }: { label: string; valor: number }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-[var(--text-secondary)]">{label}</span>
-      <span className="text-xs font-semibold text-[var(--text-primary)]">{valor.toFixed(1)}</span>
-    </div>
-  );
-}
 
 export default function ActionPanel({
   vehiculoId,
@@ -95,14 +79,8 @@ export default function ActionPanel({
         )}
 
         {resumen && (
-          <div className="mt-3 flex flex-col gap-1.5 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-3">
-            <p className="text-xs text-[var(--text-tertiary)]">
-              Basado en {resumen.cantidad_resenas} reseña{resumen.cantidad_resenas !== 1 ? "s" : ""}
-            </p>
-            <FilaResumen label="Limpieza" valor={resumen.promedios.calificacion_limpieza} />
-            <FilaResumen label="Estado" valor={resumen.promedios.calificacion_estado} />
-            <FilaResumen label="Comodidad" valor={resumen.promedios.calificacion_comodidad} />
-            <p className="mt-1 text-xs italic text-[var(--text-secondary)]">{resumen.descripcion}</p>
+          <div className="mt-3 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-3">
+            <p className="text-xs italic text-[var(--text-secondary)]">{resumen.resumen}</p>
           </div>
         )}
 

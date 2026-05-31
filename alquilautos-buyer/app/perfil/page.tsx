@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import { bd } from "@/lib/bd";
 import ProfileForm from "@/components/perfil/profile-form";
+import ResumenAlquilador from "@/components/perfil/resumen-alquilador";
 
 export default async function PerfilPage() {
   const { userId } = await auth();
@@ -60,6 +61,9 @@ export default async function PerfilPage() {
           licenciaConducir={user.licenciaConducir}
           direccionFacturacion={user.direccionFacturacion}
         />
+      </div>
+      <div className="mt-6">
+        <ResumenAlquilador userId={userId} />
       </div>
     </main>
   );

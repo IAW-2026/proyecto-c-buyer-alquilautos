@@ -127,46 +127,30 @@ export const resenasAlquiladores: ResenaAlquilador[] = [
 
 export type ResumenVehiculo = {
   id_vehiculo: number;
-  calificacion_promedio: number;
-  cantidad_resenas: number;
-  descripcion: string;
-  promedios: {
-    calificacion_limpieza: number;
-    calificacion_estado: number;
-    calificacion_comodidad: number;
-  };
+  resumen: string;
 };
 
 export type ResumenPropietario = {
   id_propietario: string;
-  calificacion_promedio: number;
-  cantidad_resenas: number;
-  descripcion: string;
-  promedios: {
-    calificacion_comunicacion: number;
-    calificacion_puntualidad: number;
-  };
+  resumen: string;
+};
+
+export type ResumenAlquilador = {
+  id_alquilador: string;
+  resumen: string;
 };
 
 export const resumenVehiculo: ResumenVehiculo = {
   id_vehiculo: 0,
-  calificacion_promedio: 4.6,
-  cantidad_resenas: 12,
-  descripcion: "Vehículo en excelente estado, muy limpio y cómodo según la mayoría de los usuarios.",
-  promedios: {
-    calificacion_limpieza: 4.9,
-    calificacion_estado: 4.7,
-    calificacion_comodidad: 4.8,
-  },
+  resumen: "Vehículo en excelente estado, muy limpio y cómodo según la mayoría de los usuarios.",
 };
 
 export const resumenPropietario: ResumenPropietario = {
   id_propietario: "0",
-  calificacion_promedio: 4.7,
-  cantidad_resenas: 20,
-  descripcion: "Propietario muy atento y puntual, con excelente comunicación durante todo el proceso.",
-  promedios: {
-    calificacion_comunicacion: 4.8,
-    calificacion_puntualidad: 4.6,
-  },
+  resumen: "Propietario muy atento y puntual, con excelente comunicación durante todo el proceso.",
+};
+
+export const resumenAlquilador: ResumenAlquilador = {
+  id_alquilador: "0",
+  resumen: "Alquilador responsable y puntual, siempre devuelve los vehículos en perfectas condiciones.",
 };

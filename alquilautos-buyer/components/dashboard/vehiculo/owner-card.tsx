@@ -4,13 +4,7 @@ import { useState, useEffect } from "react";
 import StarRating from "@/components/dashboard/vehiculo/star-rating";
 
 type ResumenPropietario = {
-  calificacion_promedio: number;
-  cantidad_resenas: number;
-  descripcion: string;
-  promedios: {
-    calificacion_comunicacion: number;
-    calificacion_puntualidad: number;
-  };
+  resumen: string;
 };
 
 type OwnerCardProps = {
@@ -21,15 +15,6 @@ type OwnerCardProps = {
   telefono: string;
   calificacion?: number;
 };
-
-function FilaResumen({ label, valor }: { label: string; valor: number }) {
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-[var(--text-secondary)]">{label}</span>
-      <span className="text-xs font-semibold text-[var(--text-primary)]">{valor.toFixed(1)}</span>
-    </div>
-  );
-}
 
 export default function OwnerCard({
   propietarioId,
@@ -71,13 +56,8 @@ export default function OwnerCard({
       </div>
 
       {resumen && (
-        <div className="mt-4 flex flex-col gap-1.5 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-3">
-          <p className="text-xs text-[var(--text-tertiary)]">
-            Basado en {resumen.cantidad_resenas} reseña{resumen.cantidad_resenas !== 1 ? "s" : ""}
-          </p>
-          <FilaResumen label="Comunicación" valor={resumen.promedios.calificacion_comunicacion} />
-          <FilaResumen label="Puntualidad" valor={resumen.promedios.calificacion_puntualidad} />
-          <p className="mt-1 text-xs italic text-[var(--text-secondary)]">{resumen.descripcion}</p>
+        <div className="mt-4 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] px-4 py-3">
+          <p className="text-xs italic text-[var(--text-secondary)]">{resumen.resumen}</p>
         </div>
       )}
 
