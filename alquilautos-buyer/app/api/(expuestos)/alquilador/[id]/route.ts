@@ -32,7 +32,6 @@ export async function GET(_req: Request, { params }: Props) {
       licencia_conducir: user.licenciaConducir,
       direccion: user.direccionFacturacion,
       id_lista: user.poolFavoritos?.id ?? null,
-      calificacion: user.calificacion,
     },
     { status: 200 },
   );

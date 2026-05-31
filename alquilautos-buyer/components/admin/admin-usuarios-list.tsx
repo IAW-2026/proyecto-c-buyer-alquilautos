@@ -62,7 +62,7 @@ export default function AdminUsuariosList({ usuarios: inicial }: AdminUsuariosLi
               </div>
               <p className="text-xs text-[var(--text-secondary)]">{usuario.email}</p>
               <p className="text-xs text-[var(--text-tertiary)]">
-                DNI: {usuario.numeroDocumento ?? "—"} · Calificación: {usuario.calificacion.toFixed(1)}
+                DNI: {usuario.numeroDocumento ?? "—"}
               </p>
             </div>
 

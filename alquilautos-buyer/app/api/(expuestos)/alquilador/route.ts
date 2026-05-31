@@ -23,7 +23,6 @@ export async function GET() {
         licencia_conducir: user.licenciaConducir,
         direccion: user.direccionFacturacion,
         id_lista: user.poolFavoritos?.id ?? null,
-        calificacion: user.calificacion,
       })),
     },
     { status: 200 },

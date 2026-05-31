@@ -5,7 +5,7 @@ export type CalificacionVehiculo = {
 };
 
 export type CalificacionPropietario = {
-  id_propietario: number;
+  id_propietario: string;
   calificacion_promedio: number;
   cantidad_resenas: number;
 };
@@ -34,11 +34,11 @@ export const calificacionesVehiculos: CalificacionVehiculo[] = [
 ];
 
 export const calificacionesPropietarios: CalificacionPropietario[] = [
-  { id_propietario: 458976, calificacion_promedio: 4.7, cantidad_resenas: 20 },
-  { id_propietario: 458977, calificacion_promedio: 4.5, cantidad_resenas: 16 },
-  { id_propietario: 458978, calificacion_promedio: 4.8, cantidad_resenas: 22 },
-  { id_propietario: 458979, calificacion_promedio: 4.6, cantidad_resenas: 18 },
-  { id_propietario: 458980, calificacion_promedio: 4.9, cantidad_resenas: 25 },
+  { id_propietario: "458976", calificacion_promedio: 4.7, cantidad_resenas: 20 },
+  { id_propietario: "458977", calificacion_promedio: 4.5, cantidad_resenas: 16 },
+  { id_propietario: "458978", calificacion_promedio: 4.8, cantidad_resenas: 22 },
+  { id_propietario: "458979", calificacion_promedio: 4.6, cantidad_resenas: 18 },
+  { id_propietario: "458980", calificacion_promedio: 4.9, cantidad_resenas: 25 },
 ];
 
 export type ResenaVehiculo = {
@@ -125,8 +125,6 @@ export const resenasAlquiladores: ResenaAlquilador[] = [
   },
 ];
 
-// Agregar al final de feedback.ts
-
 export type ResumenVehiculo = {
   id_vehiculo: number;
   calificacion_promedio: number;
@@ -140,7 +138,7 @@ export type ResumenVehiculo = {
 };
 
 export type ResumenPropietario = {
-  id_propietario: number;
+  id_propietario: string;
   calificacion_promedio: number;
   cantidad_resenas: number;
   descripcion: string;
@@ -163,7 +161,7 @@ export const resumenVehiculo: ResumenVehiculo = {
 };
 
 export const resumenPropietario: ResumenPropietario = {
-  id_propietario: 0,
+  id_propietario: "0",
   calificacion_promedio: 4.7,
   cantidad_resenas: 20,
   descripcion: "Propietario muy atento y puntual, con excelente comunicación durante todo el proceso.",
