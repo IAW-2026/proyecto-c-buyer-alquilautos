@@ -34,7 +34,7 @@ export default function DashboardVehiclesSection({
 		<div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-6">
 			<div className="flex items-center justify-between">
 				<div>
-					<h2 className="text-xl font-semibold">Dashboard de vehiculos</h2>
+					<h2 className="text-xl font-semibold">Catalogo de vehiculos</h2>
 					<p className="mt-1 text-sm text-[var(--text-secondary)]">
 						Autos disponibles del propietario.
 					</p>

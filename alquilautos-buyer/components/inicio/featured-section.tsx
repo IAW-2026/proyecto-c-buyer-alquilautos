@@ -89,7 +89,7 @@ export default function FeaturedSection() {
           href="/dashboard"
           className="h-10 w-full max-w-xs rounded-xl bg-[var(--btn-primary-bg)] text-center text-sm font-semibold leading-10 text-[var(--btn-primary-text)]"
         >
-          View all
+          Mirar todos
         </Link>
       </div>
     </section>

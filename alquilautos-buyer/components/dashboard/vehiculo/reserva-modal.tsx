@@ -13,8 +13,6 @@ type ReservaModalProps = {
 
 type Step = "fechas" | "confirmacion" | "exito";
 
-const hoy = new Date().toISOString().split("T")[0];
-
 function calcularDias(inicio: string, fin: string): number {
   if (!inicio || !fin) return 0;
   const diff = new Date(fin).getTime() - new Date(inicio).getTime();
@@ -42,6 +40,8 @@ export default function ReservaModal({
   precio,
   onClose,
 }: ReservaModalProps) {
+  const hoy = new Date().toISOString().split("T")[0];
+
   const [step, setStep] = useState<Step>("fechas");
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
@@ -156,7 +156,7 @@ export default function ReservaModal({
                     ${total.toLocaleString("es-AR")}
                   </span>
                 </div>
-          )}
+              )}
             </div>
 
             <label className="flex flex-col gap-2 text-sm font-medium text-[var(--text-primary)]">
