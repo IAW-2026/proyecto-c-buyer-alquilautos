@@ -10,8 +10,8 @@
 
 | Rol | Email | Contraseña |
 |-----|-------|------------|
-| Alquilador | alquiladorclerktest@iaw.com | alquiladorclerktest123 |
-| Admin | adminBuyerclerktest@iaw.com | adminBuyerclerktest123 |
+| Alquilador | buyer+clerktest@iaw.com | iawuser# |
+| Admin | adminbuyer+clerktest@iaw.com | iawuser# |
 
 ---
 
