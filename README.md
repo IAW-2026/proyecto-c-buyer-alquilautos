@@ -28,7 +28,7 @@ pnpm dev
 
 **Build command en Vercel:**
 ```bash
-pnpm prisma generate && pnpm run build
+pnpm prisma migrate deploy && pnpm prisma generate && pnpm run build
 ```
 
 ---
@@ -58,12 +58,6 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
 
 # Base de datos
 DATABASE_URL=
-
-# URLs de otras apps (pendiente integración)
-SELLER_APP_URL=
-SHIPPING_APP_URL=
-PAYMENTS_APP_URL=
-FEEDBACK_APP_URL=
 ```
 
 ---
@@ -102,25 +96,6 @@ Todos los endpoints en `app/api/(externos)/` tienen un comentario `TODO` indican
 - **Client Components** → fetchean via `fetch("/api/...")` a los endpoints de `app/api/`
 - **Nunca** importar datos mock directamente en componentes — siempre pasar por servicios o APIs
 
-### Estructura de APIs
-
-```
-app/api/
-  (expuestos)/        ← Endpoints que otras apps nos llaman a nosotros
-    alquilador/       ← GET listar / GET por id / PATCH calificacion
-  (externos)/         ← Endpoints que nosotros llamamos a otras apps (proxies con mocks)
-    vehiculo/
-    propietario/
-    reserva/
-    entrega/
-    horario/
-    pago/
-    resena/
-    resumen/
-    promedio/
-    respuesta/
-```
-
 ### Servicios (`app/services/`)
 
 Capa de abstracción para Server Components. Por ahora retornan mocks pero tienen el `TODO` para el fetch real.
@@ -137,7 +112,8 @@ Capa de abstracción para Server Components. Por ahora retornan mocks pero tiene
 
 ### Exploración
 - Listado de vehículos disponibles con filtros por modelo y precio máximo
-- Vista de detalle de vehículo con calificaciones, resumen de reseñas y datos del propietario
+- Vista de detalle de vehículo con calificaciones, resumen generado por IA y datos del propietario
+- Sección de reseñas del vehículo al final del detalle
 - Sección de vehículos destacados en la página de inicio (ordenados por calificación)
 
 ### Reservas
@@ -149,8 +125,9 @@ Capa de abstracción para Server Components. Por ahora retornan mocks pero tiene
 
 ```
 Pendiente → Aceptada → Coordinada → Pagada → Entregada → Finalizada
-         ↘ Rechazada
-         ↘ Cancelada  ↗
+              ↘
+         ↘ Cancelada
+         ↘ Rechazada  
 ```
 
 > Las transiciones de estado las maneja la Seller App. Las cancelaciones marcadas en el diagrama reflejan únicamente los estados desde los cuales **el usuario alquilador puede cancelar desde esta app** (`Pendiente` y `Aceptada`). Los demás cambios de estado son gestionados externamente.
@@ -168,7 +145,7 @@ Acciones disponibles según estado:
 - Modal para escribir reseña de vehículo o propietario (desde reservas finalizadas)
 - Sección de reseñas en el detalle de reserva finalizada (vehículo, propietario y sobre el alquilador)
 - Posibilidad de responder la reseña hecha sobre el alquilador
-- Resumen de reseñas con subcalificaciones y descripción generada por IA en el detalle de vehículo
+- Resumen de reseñas generado por IA en el detalle de vehículo
 
 ### Favoritos
 - Agregar y eliminar vehículos de favoritos
