@@ -42,7 +42,7 @@ export const sellerData: SellerData = {
     { id_vehiculo: 897655, id_propietario: 458976, marca: "Renault", modelo: "Sandero", año: 2021, precio: 17500, fotos: "/vehiculos/renault-sandero.webp", estado: "disponible" },
     { id_vehiculo: 897656, id_propietario: 458977, marca: "Honda", modelo: "Civic", año: 2020, precio: 26000, fotos: "/vehiculos/honda-civic.webp", estado: "disponible" },
     { id_vehiculo: 897657, id_propietario: 458978, marca: "Nissan", modelo: "Sentra", año: 2019, precio: 21000, fotos: "/vehiculos/nissan-sentra.webp", estado: "disponible" },
-    { id_vehiculo: 897658, id_propietario: 458979, marca: "Fiat", modelo: "Cronos", año: 2022, precio: 18500, fotos: "/vehiculos/fiat-cronos.webp", estado: "disponible" },
+    { id_vehiculo: 897658, id_propietario: 458979, marca: "Fiat", modelo: "Cronos", año: 2022, precio: 18500, fotos: "/vehiculos/Fiat-Cronos.webp", estado: "disponible" },
     { id_vehiculo: 897659, id_propietario: 458980, marca: "Hyundai", modelo: "HB20", año: 2021, precio: 20000, fotos: "/vehiculos/hyundai-hb20.webp", estado: "disponible" },
     { id_vehiculo: 897660, id_propietario: 458976, marca: "Kia", modelo: "Rio", año: 2018, precio: 17000, fotos: "/vehiculos/kia-rio.webp", estado: "indisponible" },
     { id_vehiculo: 897661, id_propietario: 458977, marca: "Mazda", modelo: "3", año: 2020, precio: 25500, fotos: "/vehiculos/mazda-3.webp", estado: "indisponible" },
