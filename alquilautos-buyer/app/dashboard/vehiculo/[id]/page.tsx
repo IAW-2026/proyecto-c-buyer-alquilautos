@@ -8,6 +8,7 @@ import { bd } from "@/lib/bd";
 import VehicleInfoPanel from "@/components/dashboard/vehiculo/vehicle-info-panel";
 import OwnerCard from "@/components/dashboard/vehiculo/owner-card";
 import ActionPanel from "@/components/dashboard/vehiculo/action-panel";
+import ResenasVehiculo from "@/components/dashboard/vehiculo/resenas-vehiculo";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -24,7 +25,7 @@ export default async function VehiculoPage({ params }: Props) {
 
   const calificacionVehiculo = await getCalificacionVehiculo(vehiculoId);
   const calificacionPropietario = propietario
-    ? await getCalificacionPropietario(propietario.id_propietario)
+    ? await getCalificacionPropietario(String(propietario.id_propietario))
     : null;
 
   const { userId } = await auth();
@@ -117,6 +118,7 @@ export default async function VehiculoPage({ params }: Props) {
           )}
         </div>
       </div>
+      <ResenasVehiculo vehiculoId={vehiculo.id_vehiculo} />
     </main>
   );
 }

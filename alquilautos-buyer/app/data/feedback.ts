@@ -84,6 +84,7 @@ export type RespuestaResena = {
   fecha_creacion: string;
 };
 
+// Reseñas para reservas (se muestran en reserva finalizada)
 export const resenasVehiculos: ResenaVehiculo[] = [
   {
     id_resena: 1,
@@ -117,11 +118,62 @@ export const resenasAlquiladores: ResenaAlquilador[] = [
     id_reserva: 100,
     id_emisor: 2,
     calificacion_general: 5,
+    descripcion: "Muy buen cliente.",
+    fecha_creacion: "01-06-2026",
+    calificacion_comunicacion: 5,
+    calificacion_puntualidad: 5,
+    calificacion_devolucion: 5,
+  },
+];
+
+// Reseñas para publicaciones (se muestran en detalle de vehículo y perfil)
+export const resenasVehiculosPublicacion: ResenaVehiculo[] = [
+  {
+    id_resena: 10,
+    id_reserva: 1001,
+    id_emisor: 1,
+    calificacion_general: 5,
+    descripcion: "Auto impecable, muy cómodo y limpio.",
+    fecha_creacion: "03-06-2026",
+    calificacion_limpieza: 5,
+    calificacion_estado: 5,
+    calificacion_comodidad: 4,
+  },
+  {
+    id_resena: 11,
+    id_reserva: 1002,
+    id_emisor: 2,
+    calificacion_general: 4,
+    descripcion: "Muy buen vehículo, anduvo perfecto durante todo el viaje.",
+    fecha_creacion: "15-05-2026",
+    calificacion_limpieza: 4,
+    calificacion_estado: 4,
+    calificacion_comodidad: 4,
+  },
+];
+
+export const resenasAlquiladoresPublicacion: ResenaAlquilador[] = [
+  {
+    id_resena: 20,
+    id_reserva: 1001,
+    id_emisor: 2,
+    calificacion_general: 5,
     descripcion: "Muy buen cliente, devolvió el auto en perfectas condiciones.",
     fecha_creacion: "01-06-2026",
     calificacion_comunicacion: 5,
     calificacion_puntualidad: 5,
     calificacion_devolucion: 5,
+  },
+  {
+    id_resena: 21,
+    id_reserva: 1002,
+    id_emisor: 3,
+    calificacion_general: 4,
+    descripcion: "Buen alquilador, puntual y respetuoso con el vehículo.",
+    fecha_creacion: "20-05-2026",
+    calificacion_comunicacion: 4,
+    calificacion_puntualidad: 4,
+    calificacion_devolucion: 4,
   },
 ];
 

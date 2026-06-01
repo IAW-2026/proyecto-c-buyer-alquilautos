@@ -10,7 +10,6 @@ type Usuario = {
   nombre: string | null;
   apellido: string | null;
   numeroDocumento: string | null;
-  calificacion: number;
   role: string | null;
 };
 

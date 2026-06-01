@@ -4,7 +4,7 @@ import { resenasPropietarios } from "@/app/data/feedback";
 
 type Props = { params: Promise<{ id: string }> };
 
-//Obtiene las reseñas hechas sobre un propietario para una reserva consultando a la Feedback App
+// Obtiene todas las reseñas hechas sobre un propietario por su id consultando a la Feedback App (sin uso actualmente)
 
 export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
@@ -15,6 +15,5 @@ export async function GET(_req: Request, { params }: Props) {
   const { id } = await params;
   // TODO: const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/resena/propietario/${id}`);
   // return NextResponse.json(await res.json());
-  const resenas = resenasPropietarios.filter((r) => r.id_reserva === Number(id));
-  return NextResponse.json({ resenas });
+  return NextResponse.json({ resenas: resenasPropietarios });
 }

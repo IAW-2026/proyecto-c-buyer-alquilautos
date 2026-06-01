@@ -94,7 +94,10 @@ export default async function ReservaDetallePage({ params }: Props) {
       </div>
 
       {reserva.estado === "Finalizada" && (
-        <ResenasSection idEmisor={userId ?? ""} />
+        <ResenasSection
+          idReserva={reserva.id_reserva}
+          idEmisor={userId ?? ""}
+        />
       )}
     </main>
   );

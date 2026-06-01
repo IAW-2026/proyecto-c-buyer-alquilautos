@@ -4,6 +4,7 @@ import Image from "next/image";
 import { bd } from "@/lib/bd";
 import ProfileForm from "@/components/perfil/profile-form";
 import ResumenAlquilador from "@/components/perfil/resumen-alquilador";
+import ResenasAlquilador from "@/components/perfil/resenas-alquilador";
 
 export default async function PerfilPage() {
   const { userId } = await auth();
@@ -64,6 +65,9 @@ export default async function PerfilPage() {
       </div>
       <div className="mt-6">
         <ResumenAlquilador userId={userId} />
+      </div>
+      <div className="mt-6">
+        <ResenasAlquilador userId={userId} />
       </div>
     </main>
   );

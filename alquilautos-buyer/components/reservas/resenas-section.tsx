@@ -66,10 +66,11 @@ function FilaCalificacion({ label, valor }: { label: string; valor: number }) {
 }
 
 type ResenasSectionProps = {
+  idReserva: number;
   idEmisor: string;
 };
 
-export default function ResenasSection({ idEmisor }: ResenasSectionProps) {
+export default function ResenasSection({ idReserva, idEmisor }: ResenasSectionProps) {
   const [resenaVehiculo, setResenaVehiculo] = useState<ResenaVehiculo | null>(null);
   const [resenaPropietario, setResenaPropietario] = useState<ResenaPropietario | null>(null);
   const [resenaAlquilador, setResenaAlquilador] = useState<ResenaAlquilador | null>(null);
@@ -82,21 +83,20 @@ export default function ResenasSection({ idEmisor }: ResenasSectionProps) {
 
   useEffect(() => {
     const fetchResenas = async () => {
-      // TODO: reemplazar 100 por idReserva cuando se integre con Feedback App
       const [rv, rp, ra] = await Promise.all([
-        fetch(`/api/resena/vehiculo/100`).then((r) => r.ok ? r.json() : null).catch(() => null),
-        fetch(`/api/resena/propietario/100`).then((r) => r.ok ? r.json() : null).catch(() => null),
-        fetch(`/api/resena/alquilador/100`).then((r) => r.ok ? r.json() : null).catch(() => null),
+        fetch(`/api/resena/vehiculo/reserva/${idReserva}`).then((r) => r.ok ? r.json() : null).catch(() => null),
+        fetch(`/api/resena/propietario/reserva/${idReserva}`).then((r) => r.ok ? r.json() : null).catch(() => null),
+        fetch(`/api/resena/alquilador/reserva/${idReserva}`).then((r) => r.ok ? r.json() : null).catch(() => null),
       ]);
 
-      setResenaVehiculo(rv?.resenas?.[0] ?? null);
-      setResenaPropietario(rp?.resenas?.[0] ?? null);
-      setResenaAlquilador(ra?.resenas?.[0] ?? null);
+      setResenaVehiculo(rv ?? null);
+      setResenaPropietario(rp ?? null);
+      setResenaAlquilador(ra ?? null);
       setIsLoading(false);
     };
 
     fetchResenas();
-  }, []);
+  }, [idReserva]);
 
   const handleResponder = async () => {
     if (!comentario.trim() || !resenaAlquilador) return;
@@ -140,8 +140,6 @@ export default function ResenasSection({ idEmisor }: ResenasSectionProps) {
       </h2>
 
       <div className="flex flex-col gap-4">
-
-        {/* Reseña vehículo */}
         {resenaVehiculo && (
           <div className="flex flex-col gap-3 rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5">
             <div className="flex items-center justify-between">
@@ -158,7 +156,6 @@ export default function ResenasSection({ idEmisor }: ResenasSectionProps) {
           </div>
         )}
 
-        {/* Reseña propietario */}
         {resenaPropietario && (
           <div className="flex flex-col gap-3 rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5">
             <div className="flex items-center justify-between">
@@ -174,7 +171,6 @@ export default function ResenasSection({ idEmisor }: ResenasSectionProps) {
           </div>
         )}
 
-        {/* Reseña alquilador */}
         {resenaAlquilador && (
           <div className="flex flex-col gap-3 rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5">
             <div className="flex items-center justify-between">
@@ -189,7 +185,6 @@ export default function ResenasSection({ idEmisor }: ResenasSectionProps) {
             </div>
             <p className="text-xs text-[var(--text-tertiary)]">{resenaAlquilador.fecha_creacion}</p>
 
-            {/* Respuesta */}
             <div className="border-t border-[var(--border-default)] pt-3">
               {respuestaEnviada ? (
                 <div className="flex items-center gap-2 rounded-2xl bg-[var(--status-available-bg)] px-4 py-2.5">

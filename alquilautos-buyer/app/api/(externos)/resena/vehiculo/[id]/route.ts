@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { resenasVehiculos } from "@/app/data/feedback";
+import { resenasVehiculosPublicacion } from "@/app/data/feedback";
 
 type Props = { params: Promise<{ id: string }> };
 
-//Obtiene las reseñas hechas sobre un vehículo para una reserva consultando a la Feedback App
+// Obtiene todas las reseñas hechas sobre un vehículo por su id consultando a la Feedback App
 
 export async function GET(_req: Request, { params }: Props) {
   const { userId } = await auth();
@@ -15,6 +15,5 @@ export async function GET(_req: Request, { params }: Props) {
   const { id } = await params;
   // TODO: const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/resena/vehiculo/${id}`);
   // return NextResponse.json(await res.json());
-  const resenas = resenasVehiculos.filter((r) => r.id_reserva === Number(id));
-  return NextResponse.json({ resenas });
+  return NextResponse.json({ resenas: resenasVehiculosPublicacion });
 }
