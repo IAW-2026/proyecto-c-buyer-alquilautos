@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
-//Envía la respuesta del alquilador a una reseña hecha sobre él a la Feedback App (VERIFICADO)
+//Envía la respuesta del alquilador a una reseña hecha sobre él a la Feedback App 
 
 export async function POST(req: Request) {
   const { userId } = await auth();

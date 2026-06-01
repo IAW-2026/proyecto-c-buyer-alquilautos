@@ -3,7 +3,7 @@ import { sellerData } from "@/app/data/seller";
 
 export const runtime = "nodejs";
 
-// Obtiene el listado de todos los vehículos disponibles e indisponibles consultando a la Seller App (VERIFICADO)
+// Obtiene el listado de todos los vehículos disponibles e indisponibles consultando a la Seller App 
 
 export async function GET() {
   // TODO: reemplazar por fetch real a la Seller App

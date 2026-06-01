@@ -3,7 +3,7 @@ import { calificacionesPropietarios } from "@/app/data/feedback";
 
 type Props = { params: Promise<{ id: string }> };
 
-//Obtiene la calificación promedio y cantidad de reseñas de un propietario consultando a la Feedback App (VERIFICADO)
+//Obtiene la calificación promedio y cantidad de reseñas de un propietario consultando a la Feedback App 
 
 export async function GET(_req: Request, { params }: Props) {
   const { id } = await params;

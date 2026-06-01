@@ -5,7 +5,7 @@ type Props = {
   params: Promise<{ id_reserva: string }>;
 };
 
-// Notifica a la Payments App que el usuario generó el link de pago para una reserva, enviando el estado pendiente (VERIFICADO)
+// Notifica a la Payments App que el usuario generó el link de pago para una reserva, enviando el estado pendiente 
 
 export async function PATCH(_req: Request, { params }: Props) {
   const { userId } = await auth();
