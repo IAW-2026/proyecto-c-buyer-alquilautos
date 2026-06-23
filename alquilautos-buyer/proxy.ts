@@ -5,6 +5,7 @@ const isPublicRoute = createRouteMatcher([
   "/",
   "/dashboard",
   "/dashboard/vehiculo/(.*)",
+  "/dashboard/propietario/(.*)",
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/onboarding",
@@ -16,6 +17,7 @@ const isPublicRoute = createRouteMatcher([
   "/api/respuesta",
   "/api/resumen/(.*)",
   "/api/promedio/(.*)",
+  "/api/metricas/(.*)",
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
