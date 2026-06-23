@@ -4,6 +4,34 @@ import { bd } from "@/lib/bd";
 
 // Devuelve el ranking de vehículos más guardados como favorito (top 10)
 
+async function fetchVehiculoNombres(token: string | null): Promise<Record<string, string>> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const endpoints = [
+    `${process.env.SELLER_APP_URL}/api/vehiculo/disponible`,
+    `${process.env.SELLER_APP_URL}/api/vehiculo`,
+  ];
+
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, { headers, cache: "no-store" });
+      console.log(`[mas-favoriteados] fetch ${url} → ${res.status}`);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const lista: { id_vehiculo: string; marca: string; modelo: string }[] =
+        data.data?.vehiculos ?? data.vehiculos ?? [];
+      if (lista.length === 0) continue;
+      const map: Record<string, string> = {};
+      for (const v of lista) {
+        map[v.id_vehiculo] = `${v.marca} ${v.modelo}`;
+      }
+      return map;
+    } catch { continue; }
+  }
+  return {};
+}
+
 export async function GET(req: NextRequest) {
   const agrupados = await bd.favoriteItem.groupBy({
     by: ["vehiculoExternoId"],
@@ -16,27 +44,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ vehiculos: [] }, { status: 200 });
   }
 
-  // Intentar enriquecer con nombre del vehículo desde Seller App
-  let nombresPorId: Record<string, string> = {};
+  let token: string | null = null;
   try {
     const { getToken } = await auth();
-    const token = (await getToken()) ?? req.headers.get("authorization")?.replace("Bearer ", "");
+    token = await getToken();
+  } catch { /* sin sesión */ }
+  if (!token) {
+    token = req.headers.get("authorization")?.replace("Bearer ", "") ?? null;
+  }
 
-    if (token) {
-      const res = await fetch(`${process.env.SELLER_APP_URL}/api/vehiculo/disponible`, {
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        cache: "no-store",
-      });
-      if (res.ok) {
-        const data = await res.json();
-        const lista: { id_vehiculo: string; marca: string; modelo: string }[] =
-          data.data?.vehiculos ?? data.vehiculos ?? [];
-        for (const v of lista) {
-          nombresPorId[v.id_vehiculo] = `${v.marca} ${v.modelo}`;
-        }
-      }
-    }
-  } catch { /* sin nombres, igual se devuelve el ranking */ }
+  console.log("[mas-favoriteados] token:", token ? "presente" : "null");
+
+  const nombresPorId = await fetchVehiculoNombres(token);
+
+  console.log("[mas-favoriteados] nombresPorId keys:", Object.keys(nombresPorId));
+  console.log("[mas-favoriteados] ids buscados:", agrupados.map((v) => v.vehiculoExternoId));
 
   const vehiculos = agrupados.map((v) => ({
     id_vehiculo: v.vehiculoExternoId,
