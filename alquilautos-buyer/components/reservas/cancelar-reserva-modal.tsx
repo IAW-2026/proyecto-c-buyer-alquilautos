@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 type CancelarReservaModalProps = {
-  idReserva: number;
+  idReserva: string;
   onClose: () => void;
 };
 

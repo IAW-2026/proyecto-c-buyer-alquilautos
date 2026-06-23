@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 type PagoLinkModalProps = {
-  idReserva: number;
+  idReserva: string;
   onClose: () => void;
 };
 

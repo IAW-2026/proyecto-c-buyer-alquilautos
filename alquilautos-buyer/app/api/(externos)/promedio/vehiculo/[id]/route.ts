@@ -1,19 +1,28 @@
 import { NextResponse } from "next/server";
-import { calificacionesVehiculos } from "@/app/data/feedback";
+import { auth } from "@clerk/nextjs/server";
 
 type Props = { params: Promise<{ id: string }> };
 
-//Obtiene la calificación promedio y cantidad de reseñas de un vehículo consultando a la Feedback App 
+// Obtiene la calificación promedio y cantidad de reseñas de un vehículo consultando a la Feedback App
 
 export async function GET(_req: Request, { params }: Props) {
+  const { getToken } = await auth();
+  const token = await getToken();
   const { id } = await params;
-  // TODO: const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/promedio/vehiculo/${id}`);
-  // return NextResponse.json(await res.json());
-  const cal = calificacionesVehiculos.find((c) => c.id_vehiculo === Number(id));
-  if (!cal) return NextResponse.json({ error: "No encontrado" }, { status: 404 });
-  return NextResponse.json({
-    id_vehiculo: cal.id_vehiculo,
-    calificacion_promedio: cal.calificacion_promedio,
-    cantidad_resenas: cal.cantidad_resenas,
-  });
+
+  try {
+    const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/promedio/vehiculo/${id}`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return NextResponse.json({ error: "No encontrado" }, { status: res.status });
+    }
+
+    const data = await res.json();
+    return NextResponse.json(data, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: "Error al obtener promedio" }, { status: 500 });
+  }
 }

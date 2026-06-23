@@ -22,7 +22,7 @@ function calcularDias(inicio: string, fin: string): number {
 export default async function ReservaDetallePage({ params }: Props) {
   const { id_reserva } = await params;
 
-  const reserva = await getReservaById(Number(id_reserva));
+  const reserva = await getReservaById(id_reserva);
   if (!reserva) notFound();
 
   const vehiculo = await getVehiculoById(reserva.id_vehiculo);
@@ -80,7 +80,7 @@ export default async function ReservaDetallePage({ params }: Props) {
             idReserva={reserva.id_reserva}
             estado={reserva.estado}
             idVehiculo={reserva.id_vehiculo}
-            idPropietario={vehiculo?.id_propietario ?? 0}
+            idPropietario={vehiculo?.id_propietario ?? ""}
             idEmisor={userId ?? ""}
           />
           {propietario && (

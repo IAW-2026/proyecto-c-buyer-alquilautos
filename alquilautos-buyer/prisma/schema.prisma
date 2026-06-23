@@ -43,7 +43,7 @@ model FavoriteItem {
   id                Int          @id @default(autoincrement())
 
   // ID que viene de la Seller App
-  vehiculoExternoId Int
+  vehiculoExternoId String
 
   poolId            Int
   pool              FavoritePool @relation(fields: [poolId], references: [id], onDelete: Cascade)

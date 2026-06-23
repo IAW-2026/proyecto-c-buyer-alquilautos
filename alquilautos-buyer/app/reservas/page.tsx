@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getReservasByAlquilador } from "@/app/services/reserva";
-import { getTodasLasReservas } from "@/app/services/reserva";//mock
 import { getVehiculoById } from "@/app/services/seller";
 import ReservaCard from "@/components/reservas/reserva-card";
 
@@ -9,7 +8,7 @@ export default async function ReservasPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
-  const reservas = await getTodasLasReservas(); //mock
+  const reservas = await getReservasByAlquilador(userId);
   const vehiculos = await Promise.all(
     reservas.map((r) => getVehiculoById(r.id_vehiculo)),
   );

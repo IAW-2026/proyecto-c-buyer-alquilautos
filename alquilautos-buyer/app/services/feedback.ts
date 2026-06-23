@@ -1,18 +1,32 @@
-import {
-  calificacionesVehiculos,
-  calificacionesPropietarios,
-  type CalificacionVehiculo,
-  type CalificacionPropietario,
-} from "@/app/data/feedback";
+import { auth } from "@clerk/nextjs/server";
+import type { CalificacionVehiculo, CalificacionPropietario } from "@/app/data/feedback";
 
-export async function getCalificacionVehiculo(idVehiculo: number): Promise<CalificacionVehiculo | null> {
-  // TODO: const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/promedio/vehiculo/${idVehiculo}`);
-  // return res.json();
-  return calificacionesVehiculos.find((c) => c.id_vehiculo === idVehiculo) ?? null;
+export async function getCalificacionVehiculo(idVehiculo: string): Promise<CalificacionVehiculo | null> {
+  try {
+    const { getToken } = await auth();
+    const token = await getToken();
+    const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/promedio/vehiculo/${idVehiculo}`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 export async function getCalificacionPropietario(idPropietario: string): Promise<CalificacionPropietario | null> {
-  // TODO: const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/promedio/propietario/${idPropietario}`);
-  // return res.json();
-  return calificacionesPropietarios.find((c) => c.id_propietario === idPropietario) ?? null;
+  try {
+    const { getToken } = await auth();
+    const token = await getToken();
+    const res = await fetch(`${process.env.FEEDBACK_APP_URL}/api/promedio/propietario/${idPropietario}`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
 }

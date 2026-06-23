@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sellerData } from "@/app/data/seller";
+import { auth } from "@clerk/nextjs/server";
 
 export const runtime = "nodejs";
 
@@ -7,23 +7,27 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
-//Obtiene los datos completos de un propietario por su ID consultando a la Seller App 
+// Obtiene los datos completos de un propietario por su ID consultando a la Seller App
 
 export async function GET(_req: Request, { params }: Props) {
+  const { getToken } = await auth();
+  const token = await getToken();
   const { id } = await params;
-  const propietarioId = Number(id);
 
-  // TODO: reemplazar por fetch real a la Seller App
-  // const res = await fetch(`${process.env.SELLER_APP_URL}/api/propietario/${propietarioId}`);
-  // return NextResponse.json(await res.json());
+  try {
+    const res = await fetch(`${process.env.SELLER_APP_URL}/api/propietario/${id}`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
 
-  const propietario = sellerData.owners.find((o) => o.id_propietario === propietarioId);
-  if (!propietario) {
-    return NextResponse.json({ error: "Propietario no encontrado" }, { status: 404 });
+    if (!res.ok) {
+      return NextResponse.json({ error: "Propietario no encontrado" }, { status: res.status });
+    }
+
+    const data = await res.json();
+    const propietario = data.data ?? data;
+    return NextResponse.json(propietario, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: "Error al obtener propietario" }, { status: 500 });
   }
-
-  return NextResponse.json(propietario, {
-    status: 200,
-    headers: { "Cache-Control": "no-store" },
-  });
 }

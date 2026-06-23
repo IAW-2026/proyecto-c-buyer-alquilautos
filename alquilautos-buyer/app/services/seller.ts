@@ -1,25 +1,55 @@
-import { sellerData, type SellerVehicle, type SellerOwner } from "@/app/data/seller";
+import { auth } from "@clerk/nextjs/server";
+import type { SellerVehicle, SellerOwner } from "@/app/data/seller";
 
-export async function getVehiculos(): Promise<SellerVehicle[]> {
-  // TODO: const res = await fetch(`${process.env.SELLER_APP_URL}/api/vehiculo/disponible`);
-  // return (await res.json()).vehiculos;
-  return sellerData.vehicles;
+type RawVehiculo = {
+  id_vehiculo: string;
+  id_propietario: string;
+  marca: string;
+  modelo: string;
+  año?: number;
+  anio?: number;
+  precio: number;
+  fotos: string;
+  estado: string;
+};
+
+function normalizeVehiculo(v: RawVehiculo): SellerVehicle {
+  return {
+    ...v,
+    año: v.año ?? v.anio ?? 0,
+    estado: v.estado?.toLowerCase() === "disponible" ? "disponible" : "indisponible",
+  };
 }
 
-export async function getVehiculoById(id: number): Promise<SellerVehicle | null> {
-  // TODO: const res = await fetch(`${process.env.SELLER_APP_URL}/api/vehiculo/disponible`);
-  // const { vehiculos } = await res.json();
-  // return vehiculos.find((v: SellerVehicle) => v.id_vehiculo === id) ?? null;
-  return sellerData.vehicles.find((v) => v.id_vehiculo === id) ?? null;
+export async function getPropietarioById(id: string): Promise<SellerOwner | null> {
+  try {
+    const { getToken } = await auth();
+    const token = await getToken();
+    const res = await fetch(`${process.env.SELLER_APP_URL}/api/propietario/${id}`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.data ?? data;
+  } catch {
+    return null;
+  }
 }
 
-export async function getPropietarios(): Promise<SellerOwner[]> {
-  // TODO: no hay endpoint bulk, habría que fetchear uno por uno
-  return sellerData.owners;
-}
-
-export async function getPropietarioById(id: number): Promise<SellerOwner | null> {
-  // TODO: const res = await fetch(`${process.env.SELLER_APP_URL}/api/propietario/${id}`);
-  // return res.ok ? res.json() : null;
-  return sellerData.owners.find((o) => o.id_propietario === id) ?? null;
+export async function getVehiculoById(id: string): Promise<SellerVehicle | null> {
+  try {
+    const { getToken } = await auth();
+    const token = await getToken();
+    const res = await fetch(`${process.env.SELLER_APP_URL}/api/vehiculo/disponible`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const raw: RawVehiculo[] = data.data?.vehiculos ?? data.vehiculos ?? [];
+    return raw.map(normalizeVehiculo).find((v) => v.id_vehiculo === id) ?? null;
+  } catch {
+    return null;
+  }
 }

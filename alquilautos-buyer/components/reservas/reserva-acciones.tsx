@@ -8,10 +8,10 @@ import PagoLinkModal from "@/components/reservas/pago-link-modal";
 import ResenaModal from "@/components/reservas/resena-modal";
 
 type ReservaAccionesProps = {
-  idReserva: number;
+  idReserva: string;
   estado: EstadoReserva;
-  idVehiculo: number;
-  idPropietario: number;
+  idVehiculo: string;
+  idPropietario: string;
   idEmisor: string;
 };
 

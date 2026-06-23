@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 type ReservaModalProps = {
-  vehiculoId: number;
-  propietarioId: number;
+  vehiculoId: string;
+  propietarioId: string;
   marca: string;
   modelo: string;
   precio: number;
@@ -47,7 +47,7 @@ export default function ReservaModal({
   const [fechaFin, setFechaFin] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [idReserva, setIdReserva] = useState<number | null>(null);
+  const [idReserva, setIdReserva] = useState<string | null>(null);
 
   const dias = calcularDias(fechaInicio, fechaFin);
   const total = dias > 0 ? dias * precio : 0;

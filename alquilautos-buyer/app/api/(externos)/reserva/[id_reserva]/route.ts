@@ -1,45 +1,50 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { reservasMock } from "@/app/data/reservas";
 
 type Props = {
   params: Promise<{ id_reserva: string }>;
 };
 
-// Obtiene los datos de una reserva específica por su ID consultando a la Seller App 
+// Obtiene los datos de una reserva específica por su ID consultando a la Seller App
 
 export async function GET(_req: Request, { params }: Props) {
-  const { userId } = await auth();
+  const { userId, getToken } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
+  const token = await getToken();
   const { id_reserva } = await params;
 
-  // TODO: reemplazar por fetch real a la Seller App
-  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id_reserva}`);
-  // const reserva = await response.json();
-  // return NextResponse.json(reserva, { status: 200 });
+  try {
+    const res = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id_reserva}`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
 
-  const reserva = reservasMock.find((r) => r.id_reserva === Number(id_reserva));
+    if (!res.ok) {
+      return NextResponse.json({ error: "Reserva no encontrada" }, { status: res.status });
+    }
 
-  if (!reserva) {
-    return NextResponse.json({ error: "Reserva no encontrada" }, { status: 404 });
+    const data = await res.json();
+    const reserva = data.data ?? data;
+    return NextResponse.json(reserva, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: "Error al obtener reserva" }, { status: 500 });
   }
-
-  return NextResponse.json(reserva, { status: 200 });
 }
 
-// Actualiza el estado de una reserva enviando el cambio a la Seller App 
+// Actualiza el estado de una reserva enviando el cambio a la Seller App
 
 export async function PATCH(req: Request, { params }: Props) {
-  const { userId } = await auth();
+  const { userId, getToken } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
+  const token = await getToken();
   const { id_reserva } = await params;
   const body = await req.json();
   const { estado } = body;
@@ -48,14 +53,20 @@ export async function PATCH(req: Request, { params }: Props) {
     return NextResponse.json({ error: "Estado requerido" }, { status: 400 });
   }
 
-  // TODO: reemplazar por fetch real a la Seller App
-  // const response = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id_reserva}`, {
-  //   method: "PATCH",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ estado }),
-  // });
+  try {
+    const res = await fetch(`${process.env.SELLER_APP_URL}/api/reserva/${id_reserva}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ estado }),
+    });
 
-  console.log(`PATCH /api/reserva/${id_reserva} →`, { estado });
+    if (!res.ok) {
+      return NextResponse.json({ error: "Error al actualizar reserva" }, { status: res.status });
+    }
 
-  return NextResponse.json({ success: true }, { status: 200 });
+    const data = await res.json();
+    return NextResponse.json(data.data ?? data, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: "Error al actualizar reserva" }, { status: 500 });
+  }
 }

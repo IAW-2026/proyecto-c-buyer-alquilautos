@@ -5,9 +5,9 @@ import { useState } from "react";
 type Tab = "vehiculo" | "propietario";
 
 type ResenaModalProps = {
-  idReserva: number;
-  idVehiculo: number;
-  idPropietario: number;
+  idReserva: string;
+  idVehiculo: string;
+  idPropietario: string;
   idEmisor: string;
   onClose: () => void;
 };

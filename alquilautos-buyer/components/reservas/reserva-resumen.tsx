@@ -1,7 +1,7 @@
 import type { EstadoReserva } from "@/app/data/reservas";
 
 type ReservaResumenProps = {
-  idReserva: number;
+  idReserva: string;
   estado: EstadoReserva;
   fechaInicio: string;
   fechaFinal: string;

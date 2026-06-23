@@ -16,7 +16,7 @@ type HorariosData = {
 };
 
 type CoordinarEntregaModalProps = {
-  idReserva: number;
+  idReserva: string;
   onClose: () => void;
 };
 
@@ -114,7 +114,7 @@ export default function CoordinarEntregaModal({
     setError(null);
 
     try {
-      const response = await fetch(`/api/cancelar/${idReserva}`, {
+      const response = await fetch(`/api/entregas/${idReserva}`, {
         method: "PATCH",
       });
 

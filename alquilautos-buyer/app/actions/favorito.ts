@@ -17,13 +17,11 @@ export async function getFavoritos() {
   return pool.items;
 }
 
-export async function addFavorito(vehiculoExternoId: number) {
+export async function addFavorito(vehiculoExternoId: string) {
   const { userId } = await auth();
   if (!userId) throw new Error("No autenticado");
 
-  if (!vehiculoExternoId || typeof vehiculoExternoId !== "number") {
-    throw new Error("vehiculoExternoId requerido");
-  }
+  if (!vehiculoExternoId) throw new Error("vehiculoExternoId requerido");
 
   const pool = await bd.favoritePool.findUnique({
     where: { userId },
@@ -41,11 +39,11 @@ export async function addFavorito(vehiculoExternoId: number) {
   return item;
 }
 
-export async function deleteFavorito(vehiculoExternoId: number) {
+export async function deleteFavorito(vehiculoExternoId: string) {
   const { userId } = await auth();
   if (!userId) throw new Error("No autenticado");
 
-  if (isNaN(vehiculoExternoId)) throw new Error("ID inválido");
+  if (!vehiculoExternoId) throw new Error("ID inválido");
 
   const pool = await bd.favoritePool.findUnique({
     where: { userId },

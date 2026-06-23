@@ -3,12 +3,13 @@ import { NextResponse } from "next/server";
 
 //Confirma los horarios de entrega y devolución de una reserva enviándolos a la Shipping App 
 export async function PATCH(req: Request) {
-  const { userId } = await auth();
+  const { userId, getToken } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
+  const token = await getToken();
   const body = await req.json();
   const { id_reserva, horarios } = body;
 
@@ -16,22 +17,20 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Faltan campos requeridos" }, { status: 400 });
   }
 
-  // TODO: reemplazar por fetch real a la Shipping App
-  // const response = await fetch(`${process.env.SHIPPING_APP_URL}/api/entrega/horario`, {
-  //   method: "PATCH",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ id_reserva, horarios }),
-  // });
-  // const data = await response.json();
-  // return NextResponse.json(data, { status: 200 });
+  try {
+    const res = await fetch(`${process.env.SHIPPING_APP_URL}/api/entrega/horario`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ id_reserva, horarios }),
+    });
 
-  console.log("PATCH /api/entrega/horario →", { userId, id_reserva, horarios });
+    if (!res.ok) {
+      return NextResponse.json({ error: "Error al confirmar horarios" }, { status: res.status });
+    }
 
-  return NextResponse.json(
-    {
-      id_reserva,
-      horarios,
-    },
-    { status: 200 },
-  );
+    const data = await res.json();
+    return NextResponse.json(data, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: "Error al confirmar horarios" }, { status: 500 });
+  }
 }

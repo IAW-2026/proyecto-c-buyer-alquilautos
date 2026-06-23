@@ -10,8 +10,8 @@ type ResumenVehiculo = {
 };
 
 type ActionPanelProps = {
-  vehiculoId: number;
-  propietarioId: number;
+  vehiculoId: string;
+  propietarioId: string;
   marca: string;
   modelo: string;
   año: number;

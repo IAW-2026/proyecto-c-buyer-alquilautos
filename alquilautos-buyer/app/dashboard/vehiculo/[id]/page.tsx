@@ -16,14 +16,13 @@ type Props = {
 
 export default async function VehiculoPage({ params }: Props) {
   const { id } = await params;
-  const vehiculoId = Number(id);
 
-  const vehiculo = await getVehiculoById(vehiculoId);
+  const vehiculo = await getVehiculoById(id);
   if (!vehiculo) notFound();
 
   const propietario = await getPropietarioById(vehiculo.id_propietario);
 
-  const calificacionVehiculo = await getCalificacionVehiculo(vehiculoId);
+  const calificacionVehiculo = await getCalificacionVehiculo(id);
   const calificacionPropietario = propietario
     ? await getCalificacionPropietario(String(propietario.id_propietario))
     : null;
@@ -37,7 +36,7 @@ export default async function VehiculoPage({ params }: Props) {
       where: { userId },
       include: {
         items: {
-          where: { vehiculoExternoId: vehiculoId },
+          where: { vehiculoExternoId: id },
         },
       },
     });

@@ -1,41 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
-type ResenaVehiculo = {
-  id_resena: number;
-  id_reserva: number;
-  id_emisor: number;
-  calificacion_general: number;
-  descripcion: string;
-  fecha_creacion: string;
-  calificacion_limpieza: number;
-  calificacion_estado: number;
-  calificacion_comodidad: number;
-};
-
-type ResenaPropietario = {
-  id_resena: number;
-  id_reserva: number;
-  id_emisor: number;
-  calificacion_general: number;
-  descripcion: string;
-  fecha_creacion: string;
-  calificacion_comunicacion: number;
-  calificacion_puntualidad: number;
-};
-
-type ResenaAlquilador = {
-  id_resena: number;
-  id_reserva: number;
-  id_emisor: number;
-  calificacion_general: number;
-  descripcion: string;
-  fecha_creacion: string;
-  calificacion_comunicacion: number;
-  calificacion_puntualidad: number;
-  calificacion_devolucion: number;
-};
+import type { ResenaVehiculo, ResenaPropietario, ResenaAlquilador } from "@/app/data/feedback";
 
 function EstrellasMini({ valor }: { valor: number }) {
   return (
@@ -66,7 +32,7 @@ function FilaCalificacion({ label, valor }: { label: string; valor: number }) {
 }
 
 type ResenasSectionProps = {
-  idReserva: number;
+  idReserva: string;
   idEmisor: string;
 };
 
