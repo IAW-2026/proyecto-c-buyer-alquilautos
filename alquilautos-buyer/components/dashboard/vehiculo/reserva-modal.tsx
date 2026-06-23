@@ -40,7 +40,9 @@ export default function ReservaModal({
   precio,
   onClose,
 }: ReservaModalProps) {
-  const hoy = new Date().toISOString().split("T")[0];
+  const manana = new Date();
+  manana.setDate(manana.getDate() + 1);
+  const hoy = manana.toISOString().split("T")[0];
 
   const [step, setStep] = useState<Step>("fechas");
   const [fechaInicio, setFechaInicio] = useState("");
@@ -279,7 +281,7 @@ export default function ReservaModal({
                 ¡Reserva solicitada exitosamente!
               </p>
               <p className="mt-1 text-sm text-[var(--text-secondary)]">
-                ID de reserva: <span className="font-semibold">{idReserva}</span>
+                ID de reserva: <span className="font-semibold">#{idReserva?.slice(0, 7)}</span>
               </p>
             </div>
             <button

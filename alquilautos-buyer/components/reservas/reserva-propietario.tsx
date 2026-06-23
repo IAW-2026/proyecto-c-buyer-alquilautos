@@ -1,10 +1,13 @@
+import Link from "next/link";
+
 type ReservaPropietarioProps = {
+  propietarioId: string;
   nombre: string;
   apellido: string;
   email: string;
 };
 
-export default function ReservaPropietario({ nombre, apellido, email }: ReservaPropietarioProps) {
+export default function ReservaPropietario({ propietarioId, nombre, apellido, email }: ReservaPropietarioProps) {
   return (
     <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-6">
       <h2 className="text-sm font-semibold text-[var(--text-secondary)]">Propietario</h2>
@@ -13,7 +16,12 @@ export default function ReservaPropietario({ nombre, apellido, email }: ReservaP
           {nombre.charAt(0)}
         </div>
         <div>
-          <p className="text-sm font-semibold text-[var(--text-primary)]">{nombre} {apellido}</p>
+          <Link
+            href={`/dashboard/propietario/${propietarioId}`}
+            className="text-sm font-semibold text-[var(--text-primary)] hover:underline"
+          >
+            {nombre} {apellido}
+          </Link>
           <p className="text-xs text-[var(--text-secondary)]">{email}</p>
         </div>
       </div>

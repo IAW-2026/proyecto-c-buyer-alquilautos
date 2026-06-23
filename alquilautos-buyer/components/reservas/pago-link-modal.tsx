@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type PagoLinkModalProps = {
   idReserva: string;
@@ -8,6 +9,7 @@ type PagoLinkModalProps = {
 };
 
 export default function PagoLinkModal({ idReserva, onClose }: PagoLinkModalProps) {
+  const router = useRouter();
   const [link, setLink] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [copiado, setCopiado] = useState(false);
@@ -29,6 +31,7 @@ export default function PagoLinkModal({ idReserva, onClose }: PagoLinkModalProps
       if (!res.ok) throw new Error("No se pudo obtener el link de pago");
       const data = await res.json();
       setLink(data.link);
+      router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
     } finally {

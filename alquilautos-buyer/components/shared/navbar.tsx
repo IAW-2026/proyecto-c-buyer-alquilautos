@@ -12,7 +12,7 @@ export default function Navbar() {
   const { isSignedIn, user } = useUser();
   const pathname = usePathname();
 
-  const isAdmin = user?.publicMetadata?.role === "adminBuyer";
+  const isAdmin = user?.publicMetadata?.role === "adminBuyer" || user?.publicMetadata?.role === "adminGlobal";
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);

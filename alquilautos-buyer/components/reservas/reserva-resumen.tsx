@@ -21,8 +21,11 @@ const estadoStyles: Record<EstadoReserva, string> = {
 };
 
 function formatearFecha(fecha: string): string {
-  const [año, mes, dia] = fecha.split("-");
-  return `${dia}/${mes}/${año}`;
+  const d = new Date(fecha);
+  if (isNaN(d.getTime())) return fecha;
+  const dia = String(d.getUTCDate()).padStart(2, "0");
+  const mes = String(d.getUTCMonth() + 1).padStart(2, "0");
+  return `${dia}/${mes}/${d.getUTCFullYear()}`;
 }
 
 export default function ReservaResumen({
@@ -37,7 +40,7 @@ export default function ReservaResumen({
     <div className="rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-6">
       <div className="flex items-center justify-between">
         <h2 className="text-base font-semibold text-[var(--text-primary)]">
-          Reserva #{idReserva}
+          Reserva #{idReserva.slice(0, 7)}
         </h2>
         <span className={`rounded-full px-3 py-1 text-xs font-semibold ${estadoStyles[estado]}`}>
           {estado}

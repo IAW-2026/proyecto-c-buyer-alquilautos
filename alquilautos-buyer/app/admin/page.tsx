@@ -43,7 +43,7 @@ async function getMetricas() {
 export default async function AdminPage() {
   const { sessionClaims } = await auth();
   const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
-  if (role !== "adminBuyer") redirect("/");
+  if (role !== "adminBuyer" && role !== "adminGlobal") redirect("/");
 
   const [usuarios, metricas] = await Promise.all([getUsuarios(), getMetricas()]);
 

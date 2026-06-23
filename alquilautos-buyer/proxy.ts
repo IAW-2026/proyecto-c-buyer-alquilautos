@@ -38,7 +38,7 @@ export default clerkMiddleware(
 
     // Proteger rutas admin
     if (isAdminRoute(req)) {
-      if (metadata?.role !== "adminBuyer") {
+      if (metadata?.role !== "adminBuyer" && metadata?.role !== "adminGlobal") {
         return NextResponse.redirect(new URL("/", req.url));
       }
     }

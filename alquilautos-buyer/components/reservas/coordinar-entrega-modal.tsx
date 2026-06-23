@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 type Horario = {
   tipo: "entrega" | "devolucion";
@@ -39,6 +40,7 @@ export default function CoordinarEntregaModal({
   idReserva,
   onClose,
 }: CoordinarEntregaModalProps) {
+  const router = useRouter();
   const [horariosData, setHorariosData] = useState<HorariosData | null>(null);
   const [isLoadingHorarios, setIsLoadingHorarios] = useState(true);
   const [horaEntrega, setHoraEntrega] = useState("");
@@ -101,6 +103,7 @@ export default function CoordinarEntregaModal({
         throw new Error(data.error ?? "Error al coordinar la entrega");
       }
 
+      router.refresh();
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
@@ -123,6 +126,7 @@ export default function CoordinarEntregaModal({
         throw new Error(data.error ?? "Error al cancelar la entrega");
       }
 
+      router.refresh();
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");

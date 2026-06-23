@@ -11,7 +11,7 @@ type Props = {
 export default async function AdminUsuarioPage({ params }: Props) {
   const { sessionClaims } = await auth();
   const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
-  if (role !== "adminBuyer") redirect("/");
+  if (role !== "adminBuyer" && role !== "adminGlobal") redirect("/");
 
   const { id } = await params;
 

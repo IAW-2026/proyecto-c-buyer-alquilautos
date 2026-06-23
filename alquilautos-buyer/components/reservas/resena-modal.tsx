@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Tab = "vehiculo" | "propietario";
 
@@ -63,6 +64,7 @@ export default function ResenaModal({
   idEmisor,
   onClose,
 }: ResenaModalProps) {
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("vehiculo");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -124,6 +126,7 @@ export default function ResenaModal({
         throw new Error(data.error ?? "Error al enviar la reseña");
       }
 
+      router.refresh();
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");

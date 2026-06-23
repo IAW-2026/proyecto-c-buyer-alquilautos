@@ -83,8 +83,9 @@ export default async function ReservaDetallePage({ params }: Props) {
             idPropietario={vehiculo?.id_propietario ?? ""}
             idEmisor={userId ?? ""}
           />
-          {propietario && (
+          {propietario && vehiculo && (
             <ReservaPropietario
+              propietarioId={String(vehiculo.id_propietario)}
               nombre={propietario.nombre}
               apellido={propietario.apellido}
               email={propietario.email}

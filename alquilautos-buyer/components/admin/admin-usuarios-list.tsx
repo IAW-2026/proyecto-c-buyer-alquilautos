@@ -53,7 +53,7 @@ export default function AdminUsuariosList({ usuarios: inicial }: AdminUsuariosLi
                     ? `${usuario.nombre} ${usuario.apellido}`
                     : "Sin nombre"}
                 </p>
-                {usuario.role === "adminBuyer" && (
+                {(usuario.role === "adminBuyer" || usuario.role === "adminGlobal") && (
                   <span className="rounded-full bg-[var(--color-primary-50)] px-2 py-0.5 text-xs font-semibold text-[var(--color-primary-500)]">
                     Admin
                   </span>
@@ -66,7 +66,7 @@ export default function AdminUsuariosList({ usuarios: inicial }: AdminUsuariosLi
             </div>
 
             <div className="flex gap-2 sm:shrink-0">
-              {usuario.role !== "adminBuyer" && (
+              {usuario.role !== "adminBuyer" && usuario.role !== "adminGlobal" && (
                 <>
                   <button
                     type="button"

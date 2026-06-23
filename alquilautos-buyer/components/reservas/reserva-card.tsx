@@ -20,8 +20,11 @@ const estadoStyles: Record<string, string> = {
 };
 
 function formatearFecha(fecha: string): string {
-  const [año, mes, dia] = fecha.split("-");
-  return `${dia}/${mes}/${año}`;
+  const d = new Date(fecha);
+  if (isNaN(d.getTime())) return fecha;
+  const dia = String(d.getUTCDate()).padStart(2, "0");
+  const mes = String(d.getUTCMonth() + 1).padStart(2, "0");
+  return `${dia}/${mes}/${d.getUTCFullYear()}`;
 }
 
 export default function ReservaCard({ reserva, vehiculo }: ReservaCardProps) {
@@ -49,7 +52,7 @@ export default function ReservaCard({ reserva, vehiculo }: ReservaCardProps) {
               {formatearFecha(reserva.fecha_inicio)} → {formatearFecha(reserva.fecha_final)}
             </p>
             <p className="mt-0.5 text-xs text-[var(--text-tertiary)]">
-              Reserva #{reserva.id_reserva}
+              Reserva #{reserva.id_reserva.slice(0, 7)}
             </p>
           </div>
           <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${estadoStyles[reserva.estado] ?? ""}`}>

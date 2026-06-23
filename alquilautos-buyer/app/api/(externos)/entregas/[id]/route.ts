@@ -23,13 +23,22 @@ export async function PATCH(_req: Request, { params }: Props) {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     });
 
+    const text = await res.text();
+    console.error(`[cancelar entrega] status=${res.status} body=${text}`);
+
     if (!res.ok) {
-      return NextResponse.json({ error: "Error al cancelar entrega" }, { status: res.status });
+      let errorMsg = "Error al cancelar entrega";
+      try { errorMsg = JSON.parse(text)?.error ?? errorMsg; } catch { /* body no es JSON */ }
+      return NextResponse.json({ error: errorMsg }, { status: res.status });
     }
 
-    const data = await res.json();
-    return NextResponse.json(data, { status: 200 });
-  } catch {
+    try {
+      return NextResponse.json(JSON.parse(text), { status: 200 });
+    } catch {
+      return NextResponse.json({ ok: true }, { status: 200 });
+    }
+  } catch (err) {
+    console.error("[cancelar entrega] fetch error:", err);
     return NextResponse.json({ error: "Error al cancelar entrega" }, { status: 500 });
   }
 }

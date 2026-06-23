@@ -16,7 +16,7 @@ type UsuarioAdminData = {
 async function verificarAdmin() {
   const { sessionClaims } = await auth();
   const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
-  if (role !== "adminBuyer") throw new Error("No autorizado");
+  if (role !== "adminBuyer" && role !== "adminGlobal") throw new Error("No autorizado");
 }
 
 export async function actualizarUsuarioAdmin(userId: string, data: UsuarioAdminData): Promise<{ success: boolean } | { error: string }> {
