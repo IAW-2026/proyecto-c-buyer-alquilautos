@@ -8,7 +8,7 @@ type FavoriteCardProps = {
   vehicle: SellerVehicle;
   owner: SellerOwner | undefined;
   calificacion?: number;
-  onDelete: (vehiculoExternoId: number) => void;
+  onDelete: (vehiculoExternoId: string) => void;
   isDeleting: boolean;
 };
 

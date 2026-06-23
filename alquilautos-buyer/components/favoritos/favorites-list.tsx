@@ -16,7 +16,7 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   const [vehicles, setVehicles] = useState<SellerVehicle[]>([]);
   const [owners, setOwners] = useState<SellerOwner[]>([]);
   const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>([]);
-  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +52,7 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
     fetchData();
   }, []);
 
-  const handleDelete = async (vehiculoExternoId: number) => {
+  const handleDelete = async (vehiculoExternoId: string) => {
     setDeletingId(vehiculoExternoId);
 
     try {
