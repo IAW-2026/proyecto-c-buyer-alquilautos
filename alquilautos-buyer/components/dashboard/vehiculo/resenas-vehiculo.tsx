@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 
 type ResenaVehiculo = {
-  id_resena: number;
-  id_reserva: number;
-  id_emisor: number;
+  id_resena: string;
+  id_reserva: string;
+  id_emisor: string;
   calificacion_general: number;
   descripcion: string;
   fecha_creacion: string;
@@ -42,7 +42,7 @@ function FilaCalificacion({ label, valor }: { label: string; valor: number }) {
   );
 }
 
-export default function ResenasVehiculo({ vehiculoId }: { vehiculoId: number }) {
+export default function ResenasVehiculo({ vehiculoId }: { vehiculoId: string }) {
   const [resenas, setResenas] = useState<ResenaVehiculo[]>([]);
 
   useEffect(() => {
