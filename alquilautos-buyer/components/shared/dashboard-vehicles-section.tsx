@@ -12,7 +12,7 @@ type DashboardVehiclesSectionProps = {
 	isLoading: boolean;
 };
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 6;
 
 export default function DashboardVehiclesSection({
 	vehicles,
