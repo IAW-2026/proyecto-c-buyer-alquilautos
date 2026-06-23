@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import StarRating from "@/components/dashboard/vehiculo/star-rating";
 
@@ -8,7 +9,7 @@ type ResumenPropietario = {
 };
 
 type OwnerCardProps = {
-  propietarioId: number;
+  propietarioId: string;
   nombre: string;
   apellido: string;
   email: string;
@@ -43,9 +44,12 @@ export default function OwnerCard({
           {nombre.charAt(0)}
         </div>
         <div>
-          <p className="text-sm font-semibold text-[var(--text-primary)]">
+          <Link
+            href={`/dashboard/propietario/${propietarioId}`}
+            className="text-sm font-semibold text-[var(--text-primary)] hover:underline"
+          >
             {nombre} {apellido}
-          </p>
+          </Link>
           {calificacion !== undefined && (
             <StarRating
               rating={calificacion}

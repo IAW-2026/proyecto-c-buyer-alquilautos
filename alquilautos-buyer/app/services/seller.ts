@@ -53,3 +53,20 @@ export async function getVehiculoById(id: string): Promise<SellerVehicle | null>
     return null;
   }
 }
+
+export async function getVehiculosByPropietario(idPropietario: string): Promise<SellerVehicle[]> {
+  try {
+    const { getToken } = await auth();
+    const token = await getToken();
+    const res = await fetch(`${process.env.SELLER_APP_URL}/api/propietario/${idPropietario}/vehiculo`, {
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const raw: RawVehiculo[] = data.data?.vehiculos ?? data.vehiculos ?? [];
+    return raw.map(normalizeVehiculo);
+  } catch {
+    return [];
+  }
+}
