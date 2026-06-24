@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from "react";
 import FavoriteCard from "@/components/favoritos/favorite-card";
+import Pagination from "@/components/shared/pagination";
 import { deleteFavorito } from "@/app/actions/favorito";
 import type { FavoriteItem } from "@prisma/client";
 import type { SellerVehicle, SellerOwner } from "@/app/data/seller";
 import type { CalificacionVehiculo } from "@/app/data/feedback";
+
+const POR_PAGINA = 5;
 
 type FavoritesListProps = {
   initialItems: FavoriteItem[];
@@ -17,6 +20,7 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   const [owners, setOwners] = useState<SellerOwner[]>([]);
   const [calificaciones, setCalificaciones] = useState<CalificacionVehiculo[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,15 +61,21 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
 
     try {
       await deleteFavorito(vehiculoExternoId);
-      setItems((prev) =>
-        prev.filter((item) => item.vehiculoExternoId !== vehiculoExternoId),
-      );
+      setItems((prev) => {
+        const newItems = prev.filter((item) => item.vehiculoExternoId !== vehiculoExternoId);
+        const newTotalPages = Math.ceil(newItems.length / POR_PAGINA);
+        if (pagina > newTotalPages && newTotalPages > 0) setPagina(newTotalPages);
+        return newItems;
+      });
     } catch (err) {
       console.error(err);
     } finally {
       setDeletingId(null);
     }
   };
+
+  const totalPages = Math.ceil(items.length / POR_PAGINA);
+  const itemsPagina = items.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
   if (items.length === 0) {
     return (
@@ -88,29 +98,32 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {items.map((item) => {
-        const vehicle = vehicles.find((v) => v.id_vehiculo === item.vehiculoExternoId);
-        const owner = vehicle
-          ? owners.find((o) => o.id_propietario === vehicle.id_propietario)
-          : undefined;
-        const calificacion = calificaciones.find(
-          (c) => c.id_vehiculo === item.vehiculoExternoId,
-        )?.calificacion_promedio;
+    <>
+      <div className="flex flex-col gap-4">
+        {itemsPagina.map((item) => {
+          const vehicle = vehicles.find((v) => v.id_vehiculo === item.vehiculoExternoId);
+          const owner = vehicle
+            ? owners.find((o) => o.id_propietario === vehicle.id_propietario)
+            : undefined;
+          const calificacion = calificaciones.find(
+            (c) => c.id_vehiculo === item.vehiculoExternoId,
+          )?.calificacion_promedio;
 
-        if (!vehicle) return null;
+          if (!vehicle) return null;
 
-        return (
-          <FavoriteCard
-            key={item.id}
-            vehicle={vehicle}
-            owner={owner}
-            calificacion={calificacion}
-            onDelete={handleDelete}
-            isDeleting={deletingId === item.vehiculoExternoId}
-          />
-        );
-      })}
-    </div>
+          return (
+            <FavoriteCard
+              key={item.id}
+              vehicle={vehicle}
+              owner={owner}
+              calificacion={calificacion}
+              onDelete={handleDelete}
+              isDeleting={deletingId === item.vehiculoExternoId}
+            />
+          );
+        })}
+      </div>
+      <Pagination currentPage={pagina} totalPages={totalPages} onPageChange={setPagina} />
+    </>
   );
 }

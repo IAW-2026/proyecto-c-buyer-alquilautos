@@ -3,14 +3,28 @@ import { redirect } from "next/navigation";
 import { getReservasByAlquilador } from "@/app/services/reserva";
 import { getVehiculoById } from "@/app/services/seller";
 import ReservaCard from "@/components/reservas/reserva-card";
+import ReservasPagination from "@/components/reservas/reservas-pagination";
 
-export default async function ReservasPage() {
+const POR_PAGINA = 5;
+
+type Props = {
+  searchParams: Promise<{ page?: string }>;
+};
+
+export default async function ReservasPage({ searchParams }: Props) {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, parseInt(pageParam ?? "1", 10));
+
   const reservas = await getReservasByAlquilador(userId);
+  const totalPages = Math.ceil(reservas.length / POR_PAGINA);
+  const currentPage = Math.min(page, Math.max(totalPages, 1));
+  const paginadas = reservas.slice((currentPage - 1) * POR_PAGINA, currentPage * POR_PAGINA);
+
   const vehiculos = await Promise.all(
-    reservas.map((r) => getVehiculoById(r.id_vehiculo)),
+    paginadas.map((r) => getVehiculoById(r.id_vehiculo)),
   );
 
   return (
@@ -36,15 +50,18 @@ export default async function ReservasPage() {
           </p>
         </div>
       ) : (
-        <div className="flex flex-col gap-4">
-          {reservas.map((reserva, index) => (
-            <ReservaCard
-              key={reserva.id_reserva}
-              reserva={reserva}
-              vehiculo={vehiculos[index] ?? undefined}
-            />
-          ))}
-        </div>
+        <>
+          <div className="flex flex-col gap-4">
+            {paginadas.map((reserva, index) => (
+              <ReservaCard
+                key={reserva.id_reserva}
+                reserva={reserva}
+                vehiculo={vehiculos[index] ?? undefined}
+              />
+            ))}
+          </div>
+          <ReservasPagination currentPage={currentPage} totalPages={totalPages} />
+        </>
       )}
     </main>
   );
