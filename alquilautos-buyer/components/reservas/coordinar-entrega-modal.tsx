@@ -21,11 +21,17 @@ type CoordinarEntregaModalProps = {
   onClose: () => void;
 };
 
-function generarOpciones(horaInicio: string, horaFin: string): string[] {
+function esHoy(fecha: string): boolean {
+  return fecha.slice(0, 10) === new Date().toLocaleDateString("en-CA");
+}
+
+// horaLimite: deshabilita horas <= este valor (-1 = sin límite)
+function generarOpciones(horaInicio: string, horaFin: string, horaLimite = -1): string[] {
   const opciones: string[] = [];
   const [inicioH] = horaInicio.split(":").map(Number);
   const [finH] = horaFin.split(":").map(Number);
   for (let h = inicioH; h <= finH; h++) {
+    if (h <= horaLimite) continue;
     opciones.push(`${String(h).padStart(2, "0")}:00`);
   }
   return opciones;
@@ -51,6 +57,7 @@ export default function CoordinarEntregaModal({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [sinHorarios, setSinHorarios] = useState(false);
 
   useEffect(() => {
     const fetchHorarios = async () => {
@@ -58,6 +65,26 @@ export default function CoordinarEntregaModal({
         const response = await fetch(`/api/horario/${idReserva}`);
         if (!response.ok) throw new Error("Error al obtener horarios");
         const data = await response.json();
+
+        // Si la entrega es hoy, verificar si quedan horarios disponibles
+        const entrega = data.horarios?.find((h: Horario) => h.tipo === "entrega");
+        if (entrega && esHoy(entrega.fecha)) {
+          const horaLimite = new Date().getHours() + 1;
+          const disponibles = generarOpciones(
+            entrega.hora_inicio_disponible,
+            entrega.hora_fin_disponible,
+            horaLimite
+          );
+          if (disponibles.length === 0) {
+            setSinHorarios(true);
+            // Cancelar automáticamente en background
+            fetch(`/api/entregas/${idReserva}`, { method: "PATCH" })
+              .then(() => router.refresh())
+              .catch(() => {});
+            return;
+          }
+        }
+
         setHorariosData(data);
       } catch {
         setError("No se pudieron cargar los horarios disponibles.");
@@ -72,8 +99,12 @@ export default function CoordinarEntregaModal({
   const horarioEntrega = horariosData?.horarios.find((h) => h.tipo === "entrega");
   const horarioDevolucion = horariosData?.horarios.find((h) => h.tipo === "devolucion");
 
+  const horaLimiteEntrega = horarioEntrega && esHoy(horarioEntrega.fecha)
+    ? new Date().getHours() + 1
+    : -1;
+
   const opcionesEntrega = horarioEntrega
-    ? generarOpciones(horarioEntrega.hora_inicio_disponible, horarioEntrega.hora_fin_disponible)
+    ? generarOpciones(horarioEntrega.hora_inicio_disponible, horarioEntrega.hora_fin_disponible, horaLimiteEntrega)
     : [];
   const opcionesDevolucion = horarioDevolucion
     ? generarOpciones(horarioDevolucion.hora_inicio_disponible, horarioDevolucion.hora_fin_disponible)
@@ -156,7 +187,32 @@ export default function CoordinarEntregaModal({
           </button>
         </div>
 
-        {success ? (
+        {sinHorarios ? (
+          <div className="flex flex-col items-center gap-4 py-4 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--status-unavailable-bg)]">
+              <svg viewBox="0 0 24 24" className="h-7 w-7 text-[var(--status-unavailable-text)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-base font-semibold text-[var(--text-primary)]">
+                Sin horarios disponibles
+              </p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Todos los horarios de entrega para hoy ya pasaron. La coordinación fue cancelada automáticamente.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-[var(--border-default)] bg-transparent text-sm font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-elevated)]"
+            >
+              Cerrar
+            </button>
+          </div>
+        ) : success ? (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--status-available-bg)]">
               <svg viewBox="0 0 24 24" className="h-7 w-7 text-[var(--status-available-text)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

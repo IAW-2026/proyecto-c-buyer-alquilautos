@@ -21,9 +21,15 @@ function calcularDias(inicio: string, fin: string): number {
 
 function calcularMaxFin(inicio: string): string {
   if (!inicio) return "";
-  const fecha = new Date(inicio);
+  const fecha = new Date(inicio + "T12:00:00");
   fecha.setFullYear(fecha.getFullYear() + 1);
-  return fecha.toISOString().split("T")[0];
+  return fecha.toLocaleDateString("en-CA");
+}
+
+function diaSiguiente(fecha: string): string {
+  const d = new Date(fecha + "T12:00:00");
+  d.setDate(d.getDate() + 1);
+  return d.toLocaleDateString("en-CA");
 }
 
 function formatearFecha(fecha: string): string {
@@ -40,9 +46,7 @@ export default function ReservaModal({
   precio,
   onClose,
 }: ReservaModalProps) {
-  const manana = new Date();
-  manana.setDate(manana.getDate() + 1);
-  const hoy = manana.toISOString().split("T")[0];
+  const hoy = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD en hora local
 
   const [step, setStep] = useState<Step>("fechas");
   const [fechaInicio, setFechaInicio] = useState("");
@@ -54,6 +58,7 @@ export default function ReservaModal({
   const dias = calcularDias(fechaInicio, fechaFin);
   const total = dias > 0 ? dias * precio : 0;
   const maxFin = calcularMaxFin(fechaInicio);
+  const minFin = fechaInicio ? diaSiguiente(fechaInicio) : hoy;
 
   const handleFechaInicioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const valor = e.target.value;
@@ -178,7 +183,7 @@ export default function ReservaModal({
               <input
                 type="date"
                 required
-                min={fechaInicio || hoy}
+                min={minFin}
                 max={maxFin}
                 value={fechaFin}
                 onChange={handleFechaFinChange}
