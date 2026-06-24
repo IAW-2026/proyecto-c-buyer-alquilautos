@@ -9,6 +9,7 @@ import VehicleInfoPanel from "@/components/dashboard/vehiculo/vehicle-info-panel
 import OwnerCard from "@/components/dashboard/vehiculo/owner-card";
 import ActionPanel from "@/components/dashboard/vehiculo/action-panel";
 import ResenasVehiculo from "@/components/dashboard/vehiculo/resenas-vehiculo";
+import BfcacheRefresh from "@/components/shared/bfcache-refresh";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -45,6 +46,7 @@ export default async function VehiculoPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 pb-16 pt-28">
+      <BfcacheRefresh />
       <nav className="mb-6 flex items-center gap-2 text-sm text-[var(--text-secondary)]">
         <Link
           href="/dashboard"
