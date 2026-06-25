@@ -5,10 +5,16 @@ import { bd } from "@/lib/bd";
 import ProfileForm from "@/components/perfil/profile-form";
 import ResumenAlquilador from "@/components/perfil/resumen-alquilador";
 import ResenasAlquilador from "@/components/perfil/resenas-alquilador";
+import { asegurarAdminGlobalEnBD } from "@/app/actions/admin";
 
 export default async function PerfilPage() {
-  const { userId } = await auth();
+  const { userId, sessionClaims } = await auth();
   if (!userId) redirect("/sign-in");
+
+  const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
+  const esAdminGlobal = role === "adminGlobal";
+
+  if (esAdminGlobal) await asegurarAdminGlobalEnBD();
 
   const clerk = await clerkClient();
   const clerkUser = await clerk.users.getUser(userId);
@@ -17,7 +23,8 @@ export default async function PerfilPage() {
     where: { id: userId },
   });
 
-  if (!user) redirect("/onboarding");
+  if (!user && !esAdminGlobal) redirect("/onboarding");
+  if (!user) redirect("/");
 
   const email = clerkUser.emailAddresses[0]?.emailAddress ?? "";
   const imageUrl = clerkUser.imageUrl;
