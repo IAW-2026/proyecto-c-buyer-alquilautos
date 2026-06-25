@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import FavoriteCard from "@/components/favoritos/favorite-card";
 import Pagination from "@/components/shared/pagination";
 import { deleteFavorito } from "@/app/actions/favorito";
@@ -15,6 +16,7 @@ type FavoritesListProps = {
 };
 
 export default function FavoritesList({ initialItems }: FavoritesListProps) {
+  const router = useRouter();
   const [items, setItems] = useState<FavoriteItem[]>(initialItems);
   const [vehicles, setVehicles] = useState<SellerVehicle[]>([]);
   const [owners, setOwners] = useState<SellerOwner[]>([]);
@@ -30,6 +32,15 @@ export default function FavoritesList({ initialItems }: FavoritesListProps) {
 
         const { vehiculos } = await res.json();
         setVehicles(vehiculos);
+
+        // Eliminar favoritos huérfanos (vehículo borrado del Seller App)
+        const idsExistentes = new Set<string>(vehiculos.map((v: SellerVehicle) => v.id_vehiculo));
+        const huerfanos = items.filter((item) => !idsExistentes.has(item.vehiculoExternoId));
+        if (huerfanos.length > 0) {
+          await Promise.allSettled(huerfanos.map((item) => deleteFavorito(item.vehiculoExternoId)));
+          setItems((prev) => prev.filter((item) => idsExistentes.has(item.vehiculoExternoId)));
+          router.refresh();
+        }
 
         const ownersRaw = await Promise.all(
           vehiculos.map((v: SellerVehicle) =>
