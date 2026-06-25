@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 type Tab = "vehiculo" | "propietario";
@@ -70,6 +70,10 @@ export default function ResenaModal({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  const [vehiculoResenado, setVehiculoResenado] = useState(false);
+  const [propietarioResenado, setPropietarioResenado] = useState(false);
+  const [checkingResenas, setCheckingResenas] = useState(true);
+
   // Campos comunes
   const [calificacionGeneral, setCalificacionGeneral] = useState(3);
   const [descripcion, setDescripcion] = useState("");
@@ -82,6 +86,36 @@ export default function ResenaModal({
   // Campos propietario
   const [calificacionComunicacion, setCalificacionComunicacion] = useState(3);
   const [calificacionPuntualidad, setCalificacionPuntualidad] = useState(3);
+
+  useEffect(() => {
+    const checkResenas = async () => {
+      const [rvData, rpData] = await Promise.all([
+        fetch(`/api/resena/vehiculo/reserva/${idReserva}`).then((r) => r.ok ? r.json() : null).catch(() => null),
+        fetch(`/api/resena/propietario/reserva/${idReserva}`).then((r) => r.ok ? r.json() : null).catch(() => null),
+      ]);
+
+      // Deshabilita el tab si la reseña existe y NO está RECHAZADA
+      const estadoMod = (mods: { id: number; estado: string }[]) => {
+        if (!mods?.length) return "PENDIENTE";
+        return [...mods].sort((a, b) => b.id - a.id)[0].estado;
+      };
+
+      const rvEstado = rvData?.resena ? estadoMod(rvData.resena.moderaciones ?? []) : null;
+      const rpEstado = rpData?.resena ? estadoMod(rpData.resena.moderaciones ?? []) : null;
+
+      const vehiculoBlockeado = !!rvEstado && rvEstado !== "RECHAZADA";
+      const propietarioBlockeado = !!rpEstado && rpEstado !== "RECHAZADA";
+
+      setVehiculoResenado(vehiculoBlockeado);
+      setPropietarioResenado(propietarioBlockeado);
+      if (vehiculoBlockeado && !propietarioBlockeado) setTab("propietario");
+      setCheckingResenas(false);
+    };
+    checkResenas();
+  }, [idReserva]);
+
+  const ambosResenados = vehiculoResenado && propietarioResenado;
+  const tabActualResenado = tab === "vehiculo" ? vehiculoResenado : propietarioResenado;
 
   const handleEnviar = async () => {
     if (!descripcion.trim()) {
@@ -126,6 +160,9 @@ export default function ResenaModal({
         throw new Error(data.error ?? "Error al enviar la reseña");
       }
 
+      if (tab === "vehiculo") setVehiculoResenado(true);
+      else setPropietarioResenado(true);
+
       router.refresh();
       setSuccess(true);
     } catch (err) {
@@ -153,7 +190,11 @@ export default function ResenaModal({
           </button>
         </div>
 
-        {success ? (
+        {checkingResenas ? (
+          <div className="py-8 text-center text-sm text-[var(--text-secondary)]">
+            Cargando...
+          </div>
+        ) : success ? (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--status-available-bg)]">
               <svg viewBox="0 0 24 24" className="h-7 w-7 text-[var(--status-available-text)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -176,25 +217,60 @@ export default function ResenaModal({
               Cerrar
             </button>
           </div>
+        ) : ambosResenados ? (
+          <div className="flex flex-col items-center gap-4 py-4 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--status-available-bg)]">
+              <svg viewBox="0 0 24 24" className="h-7 w-7 text-[var(--status-available-text)]" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-base font-semibold text-[var(--text-primary)]">
+                Ya reseñaste esta reserva
+              </p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                Enviaste reseñas tanto del vehículo como del propietario.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-2xl border border-[var(--border-default)] bg-transparent text-sm font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-elevated)]"
+            >
+              Cerrar
+            </button>
+          </div>
         ) : (
           <div className="flex flex-col gap-5">
 
             {/* Tabs */}
             <div className="flex rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-1">
-              {(["vehiculo", "propietario"] as Tab[]).map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => { setTab(t); setError(null); }}
-                  className={`flex-1 rounded-xl py-2 text-sm font-semibold transition ${
-                    tab === t
-                      ? "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  {t === "vehiculo" ? "Vehículo" : "Propietario"}
-                </button>
-              ))}
+              {(["vehiculo", "propietario"] as Tab[]).map((t) => {
+                const yaResenado = t === "vehiculo" ? vehiculoResenado : propietarioResenado;
+                const esActivo = tab === t;
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => { if (!yaResenado) { setTab(t); setError(null); } }}
+                    disabled={yaResenado}
+                    className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold transition ${
+                      esActivo && !yaResenado
+                        ? "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)]"
+                        : yaResenado
+                        ? "cursor-not-allowed text-[var(--text-tertiary)]"
+                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    }`}
+                  >
+                    {yaResenado && (
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    )}
+                    {t === "vehiculo" ? "Vehículo" : "Propietario"}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Calificación general */}
@@ -207,34 +283,14 @@ export default function ResenaModal({
             {/* Campos específicos por tab */}
             {tab === "vehiculo" ? (
               <>
-                <StarSelector
-                  label="Limpieza"
-                  value={calificacionLimpieza}
-                  onChange={setCalificacionLimpieza}
-                />
-                <StarSelector
-                  label="Estado"
-                  value={calificacionEstado}
-                  onChange={setCalificacionEstado}
-                />
-                <StarSelector
-                  label="Comodidad"
-                  value={calificacionComodidad}
-                  onChange={setCalificacionComodidad}
-                />
+                <StarSelector label="Limpieza" value={calificacionLimpieza} onChange={setCalificacionLimpieza} />
+                <StarSelector label="Estado" value={calificacionEstado} onChange={setCalificacionEstado} />
+                <StarSelector label="Comodidad" value={calificacionComodidad} onChange={setCalificacionComodidad} />
               </>
             ) : (
               <>
-                <StarSelector
-                  label="Comunicación"
-                  value={calificacionComunicacion}
-                  onChange={setCalificacionComunicacion}
-                />
-                <StarSelector
-                  label="Puntualidad"
-                  value={calificacionPuntualidad}
-                  onChange={setCalificacionPuntualidad}
-                />
+                <StarSelector label="Comunicación" value={calificacionComunicacion} onChange={setCalificacionComunicacion} />
+                <StarSelector label="Puntualidad" value={calificacionPuntualidad} onChange={setCalificacionPuntualidad} />
               </>
             )}
 
@@ -261,11 +317,13 @@ export default function ResenaModal({
             <button
               type="button"
               onClick={handleEnviar}
-              disabled={isLoading}
+              disabled={isLoading || tabActualResenado}
               className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-[var(--btn-primary-bg)] text-sm font-semibold text-[var(--btn-primary-text)] transition hover:bg-[var(--btn-primary-bg-hover)] disabled:opacity-60"
             >
               {isLoading
                 ? "Enviando..."
+                : tabActualResenado
+                ? "Ya reseñaste este"
                 : `Enviar reseña de ${tab === "vehiculo" ? "vehículo" : "propietario"}`}
             </button>
           </div>

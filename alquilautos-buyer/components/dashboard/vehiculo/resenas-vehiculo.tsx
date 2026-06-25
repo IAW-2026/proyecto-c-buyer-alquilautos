@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Pagination from "@/components/shared/pagination";
+
+const POR_PAGINA = 3;
 
 type ResenaVehiculo = {
   id_resena: string;
@@ -13,6 +16,14 @@ type ResenaVehiculo = {
   calificacion_estado: number;
   calificacion_comodidad: number;
 };
+
+function formatFecha(fecha: string): string {
+  const d = new Date(fecha);
+  if (isNaN(d.getTime())) return fecha;
+  const dia = String(d.getUTCDate()).padStart(2, "0");
+  const mes = String(d.getUTCMonth() + 1).padStart(2, "0");
+  return `${dia}/${mes}/${d.getUTCFullYear()}`;
+}
 
 function EstrellasMini({ valor }: { valor: number }) {
   return (
@@ -44,6 +55,7 @@ function FilaCalificacion({ label, valor }: { label: string; valor: number }) {
 
 export default function ResenasVehiculo({ vehiculoId }: { vehiculoId: string }) {
   const [resenas, setResenas] = useState<ResenaVehiculo[]>([]);
+  const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
     fetch(`/api/resena/vehiculo/${vehiculoId}`)
@@ -54,15 +66,18 @@ export default function ResenasVehiculo({ vehiculoId }: { vehiculoId: string }) 
 
   if (resenas.length === 0) return null;
 
+  const totalPages = Math.ceil(resenas.length / POR_PAGINA);
+  const paginadas = resenas.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+
   return (
     <div className="mt-8 flex flex-col gap-4">
       <h2 className="text-lg font-semibold text-[var(--text-primary)]">Reseñas del vehículo</h2>
       <div className="flex flex-col gap-4">
-        {resenas.map((resena) => (
+        {paginadas.map((resena) => (
           <div key={resena.id_resena} className="flex flex-col gap-3 rounded-3xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-5">
             <div className="flex items-center justify-between">
               <EstrellasMini valor={resena.calificacion_general} />
-              <p className="text-xs text-[var(--text-tertiary)]">{resena.fecha_creacion}</p>
+              <p className="text-xs text-[var(--text-tertiary)]">{formatFecha(resena.fecha_creacion)}</p>
             </div>
             <p className="text-sm text-[var(--text-secondary)]">{resena.descripcion}</p>
             <div className="flex flex-col gap-1.5 border-t border-[var(--border-default)] pt-3">
@@ -73,6 +88,7 @@ export default function ResenasVehiculo({ vehiculoId }: { vehiculoId: string }) 
           </div>
         ))}
       </div>
+      <Pagination currentPage={pagina} totalPages={totalPages} onPageChange={setPagina} />
     </div>
   );
 }
