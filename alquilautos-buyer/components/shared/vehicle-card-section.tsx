@@ -33,7 +33,7 @@ export default function VehicleCard({
 		<article className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-4">
 			<div className="relative aspect-[4/3] overflow-hidden rounded-xl">
 				<Image
-					src={vehicle.fotos}
+					src={vehicle.fotos || "/placeholder-car.png"}
 					alt={`${vehicle.marca} ${vehicle.modelo}`}
 					fill
 					className="object-cover"

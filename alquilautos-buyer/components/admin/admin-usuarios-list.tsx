@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { eliminarUsuarioAdmin } from "@/app/actions/admin";
+import Pagination from "@/components/shared/pagination";
+
+const POR_PAGINA = 10;
 
 type Usuario = {
   id: string;
@@ -23,13 +26,19 @@ export default function AdminUsuariosList({ usuarios: inicial }: AdminUsuariosLi
   const [confirmandoId, setConfirmandoId] = useState<string | null>(null);
   const [eliminandoId, setEliminandoId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [pagina, setPagina] = useState(1);
 
   const handleEliminar = async (userId: string) => {
     setEliminandoId(userId);
     setError(null);
     try {
       await eliminarUsuarioAdmin(userId);
-      setUsuarios((prev) => prev.filter((u) => u.id !== userId));
+      setUsuarios((prev) => {
+        const next = prev.filter((u) => u.id !== userId);
+        const newTotalPages = Math.ceil(next.length / POR_PAGINA);
+        if (pagina > newTotalPages && newTotalPages > 0) setPagina(newTotalPages);
+        return next;
+      });
       setConfirmandoId(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error inesperado");
@@ -38,10 +47,13 @@ export default function AdminUsuariosList({ usuarios: inicial }: AdminUsuariosLi
     }
   };
 
+  const totalPages = Math.ceil(usuarios.length / POR_PAGINA);
+  const usuariosPagina = usuarios.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+
   return (
     <>
       <div className="flex flex-col gap-3">
-        {usuarios.map((usuario) => (
+        {usuariosPagina.map((usuario) => (
           <div
             key={usuario.id}
             className="flex flex-col gap-3 rounded-2xl border border-[var(--border-default)] bg-[var(--bg-surface)] p-4 sm:flex-row sm:items-center sm:justify-between"
@@ -88,6 +100,8 @@ export default function AdminUsuariosList({ usuarios: inicial }: AdminUsuariosLi
           </div>
         ))}
       </div>
+
+      <Pagination currentPage={pagina} totalPages={totalPages} onPageChange={setPagina} />
 
       {error && (
         <div className="mt-4 rounded-xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] px-4 py-2 text-sm text-[var(--status-unavailable-text)]">
