@@ -142,6 +142,20 @@ function PendienteCard({ titulo }: { titulo: string }) {
   );
 }
 
+function RechazadaCard({ titulo }: { titulo: string }) {
+  return (
+    <div className="flex flex-col gap-2 rounded-3xl border border-[var(--status-unavailable-border)] bg-[var(--status-unavailable-bg)] p-5">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-semibold text-[var(--status-unavailable-text)]">{titulo}</p>
+        <span className="rounded-full border border-[var(--status-unavailable-border)] px-2 py-0.5 text-xs font-semibold text-[var(--status-unavailable-text)]">
+          Rechazada
+        </span>
+      </div>
+      <p className="text-sm italic text-[var(--status-unavailable-text)]">Tu reseña fue rechazada por la moderación.</p>
+    </div>
+  );
+}
+
 type ResenasSectionProps = {
   idReserva: string;
   idEmisor: string;
@@ -208,8 +222,10 @@ export default function ResenasSection({ idReserva, idEmisor }: ResenasSectionPr
 
       <div className="flex flex-col gap-4">
         {/* Vehículo */}
-        {!resenaVehiculo || resenaVehiculo.estado === "RECHAZADA" ? (
+        {!resenaVehiculo ? (
           <PlaceholderCard titulo="Vehículo" mensaje="Todavía no enviaste una reseña" />
+        ) : resenaVehiculo.estado === "RECHAZADA" ? (
+          <RechazadaCard titulo="Vehículo" />
         ) : resenaVehiculo.estado === "PENDIENTE" ? (
           <PendienteCard titulo="Vehículo" />
         ) : (
@@ -235,8 +251,10 @@ export default function ResenasSection({ idReserva, idEmisor }: ResenasSectionPr
         )}
 
         {/* Propietario */}
-        {!resenaPropietario || resenaPropietario.estado === "RECHAZADA" ? (
+        {!resenaPropietario ? (
           <PlaceholderCard titulo="Propietario" mensaje="Todavía no enviaste una reseña" />
+        ) : resenaPropietario.estado === "RECHAZADA" ? (
+          <RechazadaCard titulo="Propietario" />
         ) : resenaPropietario.estado === "PENDIENTE" ? (
           <PendienteCard titulo="Propietario" />
         ) : (

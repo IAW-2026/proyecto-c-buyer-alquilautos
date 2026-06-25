@@ -71,7 +71,9 @@ export default function ResenaModal({
   const [success, setSuccess] = useState(false);
 
   const [vehiculoResenado, setVehiculoResenado] = useState(false);
+  const [vehiculoEstado, setVehiculoEstado] = useState<string | null>(null);
   const [propietarioResenado, setPropietarioResenado] = useState(false);
+  const [propietarioEstado, setPropietarioEstado] = useState<string | null>(null);
   const [checkingResenas, setCheckingResenas] = useState(true);
 
   // Campos comunes
@@ -103,9 +105,11 @@ export default function ResenaModal({
       const rvEstado = rvData?.resena ? estadoMod(rvData.resena.moderaciones ?? []) : null;
       const rpEstado = rpData?.resena ? estadoMod(rpData.resena.moderaciones ?? []) : null;
 
-      const vehiculoBlockeado = !!rvEstado && rvEstado !== "RECHAZADA";
-      const propietarioBlockeado = !!rpEstado && rpEstado !== "RECHAZADA";
+      const vehiculoBlockeado = !!rvEstado;
+      const propietarioBlockeado = !!rpEstado;
 
+      setVehiculoEstado(rvEstado ?? null);
+      setPropietarioEstado(rpEstado ?? null);
       setVehiculoResenado(vehiculoBlockeado);
       setPropietarioResenado(propietarioBlockeado);
       if (vehiculoBlockeado && !propietarioBlockeado) setTab("propietario");
@@ -247,6 +251,7 @@ export default function ResenaModal({
             <div className="flex rounded-2xl border border-[var(--border-default)] bg-[var(--bg-elevated)] p-1">
               {(["vehiculo", "propietario"] as Tab[]).map((t) => {
                 const yaResenado = t === "vehiculo" ? vehiculoResenado : propietarioResenado;
+                const esRechazado = t === "vehiculo" ? vehiculoEstado === "RECHAZADA" : propietarioEstado === "RECHAZADA";
                 const esActivo = tab === t;
                 return (
                   <button
@@ -263,9 +268,15 @@ export default function ResenaModal({
                     }`}
                   >
                     {yaResenado && (
-                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
+                      esRechazado ? (
+                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      )
                     )}
                     {t === "vehiculo" ? "Vehículo" : "Propietario"}
                   </button>
@@ -323,7 +334,9 @@ export default function ResenaModal({
               {isLoading
                 ? "Enviando..."
                 : tabActualResenado
-                ? "Ya reseñaste este"
+                ? (tab === "vehiculo" ? vehiculoEstado : propietarioEstado) === "RECHAZADA"
+                  ? "Reseña rechazada"
+                  : "Ya reseñaste este"
                 : `Enviar reseña de ${tab === "vehiculo" ? "vehículo" : "propietario"}`}
             </button>
           </div>
