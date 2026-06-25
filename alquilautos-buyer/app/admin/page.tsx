@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { getUsuarios } from "@/app/actions/admin";
+import { getUsuarios, asegurarAdminGlobalEnBD } from "@/app/actions/admin";
 import { bd } from "@/lib/bd";
 import AdminUsuariosList from "@/components/admin/admin-usuarios-list";
 
@@ -44,6 +44,8 @@ export default async function AdminPage() {
   const { sessionClaims } = await auth();
   const role = (sessionClaims?.publicMetadata as { role?: string })?.role;
   if (role !== "adminBuyer" && role !== "adminGlobal") redirect("/");
+
+  await asegurarAdminGlobalEnBD();
 
   const [usuarios, metricas] = await Promise.all([getUsuarios(), getMetricas()]);
 

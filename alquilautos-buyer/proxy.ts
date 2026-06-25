@@ -31,8 +31,11 @@ export default clerkMiddleware(
       onboardingCompleto?: boolean;
     } | undefined;
 
+    // adminGlobal siempre pasa — se auto-registra en BD sin onboarding
+    const esAdminGlobal = metadata?.role === "adminGlobal";
+
     // Si está logueado y no completó el onboarding → redirigir al onboarding
-    if (userId && !metadata?.onboardingCompleto && !isOnboardingRoute(req)) {
+    if (userId && !esAdminGlobal && !metadata?.onboardingCompleto && !isOnboardingRoute(req)) {
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
 
